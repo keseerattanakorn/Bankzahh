@@ -21,7 +21,7 @@ function library:Win(title)
     local main = Instance.new("Frame")
     main.Size = UDim2.new(0,400,0,300)
     main.Position = UDim2.new(0.5,-200,0.5,-150)
-    main.BackgroundColor3 = Color3.fromRGB(30,30,30)
+    main.BackgroundColor3 = Color3.fromRGB(15,15,15)
     main.Active = true
     main.Parent = gui
 
@@ -76,7 +76,7 @@ function library:Win(title)
     local pageFrame = Instance.new("Frame")
     pageFrame.Size = UDim2.new(1,-120,1,-30)
     pageFrame.Position = UDim2.new(0,120,0,30)
-    pageFrame.BackgroundColor3 = Color3.fromRGB(35,35,35)
+    pageFrame.BackgroundColor3 = Color3.fromRGB(18,18,18)
     pageFrame.Parent = main
 
     library.tabFrame = tabFrame
@@ -128,6 +128,8 @@ function tabs:Tab(name)
     tabBtn.Size = UDim2.new(1,-10,0,30)
     tabBtn.Text = name
     tabBtn.Parent = library.tabFrame
+    tabBtn.BackgroundColor3 = Color3.fromRGB(30,30,30)
+    tabBtn.TextColor3 = Color3.fromRGB(255,255,255)
 
     local page = Instance.new("ScrollingFrame")
     page.Size = UDim2.new(1,0,1,0)
@@ -170,6 +172,8 @@ function tabs:Tab(name)
     function api:Button(text,callback)
         local b = Instance.new("TextButton")
         b.Size = UDim2.new(1,0,0,30)
+        b.BackgroundColor3 = Color3.fromRGB(35,35,35)
+        b.TextColor3 = Color3.fromRGB(255,255,255)
         b.Text = text
         b.Parent = page
         b.MouseButton1Click:Connect(function()
@@ -177,6 +181,14 @@ function tabs:Tab(name)
         end)
     end
 
+    b.MouseEnter:Connect(function()
+    b.BackgroundColor3 = Color3.fromRGB(0,120,255)
+end)
+
+    b.MouseLeave:Connect(function()
+    b.BackgroundColor3 = Color3.fromRGB(35,35,35)
+end)
+    
     function api:Toggle(text,default,callback)
         local t = Instance.new("TextButton")
         t.Size = UDim2.new(1,0,0,30)
@@ -190,9 +202,20 @@ function tabs:Tab(name)
         end)
     end
 
+    t.MouseEnter:Connect(function()
+    t.BackgroundColor3 = Color3.fromRGB(0,120,255)
+end)
+
+t.MouseLeave:Connect(function()
+    t.BackgroundColor3 = Color3.fromRGB(35,35,35)
+end)
+
     function api:Textbox(text,placeholder,callback)
         local box = Instance.new("TextBox")
         box.Size = UDim2.new(1,0,0,30)
+        box.BackgroundColor3 = Color3.fromRGB(35,35,35)
+        box.TextColor3 = Color3.fromRGB(255,255,255)
+        box.PlaceholderColor3 = Color3.fromRGB(150,150,150)
         box.PlaceholderText = placeholder or text
         box.Text = ""
         box.Parent = page
@@ -201,6 +224,14 @@ function tabs:Tab(name)
         end)
     end
 
+    box.MouseEnter:Connect(function()
+    box.BackgroundColor3 = Color3.fromRGB(0,120,255)
+end)
+
+    box.MouseLeave:Connect(function()
+    box.BackgroundColor3 = Color3.fromRGB(35,35,35)
+end)
+    
     function api:Dropdown(text,list,callback)
         local b = Instance.new("TextButton")
         b.Size = UDim2.new(1,0,0,30)
@@ -216,6 +247,14 @@ function tabs:Tab(name)
         end)
     end
 
+    b.MouseEnter:Connect(function()
+    b.BackgroundColor3 = Color3.fromRGB(0,120,255)
+end)
+
+    b.MouseLeave:Connect(function()
+    b.BackgroundColor3 = Color3.fromRGB(35,35,35)
+end)
+    
     return api
 end
 
