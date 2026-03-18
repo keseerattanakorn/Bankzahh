@@ -1,4 +1,4 @@
-local ui = loadstring(game:HttpGet("ลิงก์สคริปคุณ"))()
+local ui = loadstring(game:HttpGet("https://raw.githubusercontent.com/keseerattanakorn/Bankzahh/refs/heads/main/Lib.lua"))()
 
 -- สร้างหน้าต่าง
 local window = ui:Win("Reaper Hub")
