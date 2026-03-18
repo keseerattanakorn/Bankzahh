@@ -1,16 +1,22 @@
--- ReaperUI Improved (Layout + Draggable + Toggle)
+-- ReaperUI FIXED
 
 local library = {}
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 
 local player = Players.LocalPlayer
+local PlayerGui = player:WaitForChild("PlayerGui")
+
+-- ลบ UI เก่า ถ้ามี
+if PlayerGui:FindFirstChild("ReaperUI") then
+    PlayerGui:FindFirstChild("ReaperUI"):Destroy()
+end
 
 function library:Win(title)
     local gui = Instance.new("ScreenGui")
     gui.Name = "ReaperUI"
     gui.ResetOnSpawn = false
-    gui.Parent = player:WaitForChild("PlayerGui")
+    gui.Parent = PlayerGui
 
     local main = Instance.new("Frame")
     main.Size = UDim2.new(0,400,0,300)
@@ -60,7 +66,7 @@ function library:Win(title)
 
     local tabLayout = Instance.new("UIListLayout")
     tabLayout.Parent = tabFrame
-    tabLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    tabLayout.Padding = UDim.new(0,5)
 
     local tabPadding = Instance.new("UIPadding")
     tabPadding.PaddingTop = UDim.new(0,5)
@@ -130,25 +136,26 @@ function tabs:Tab(name)
     page.Visible = false
     page.Parent = library.pageFrame
 
-    -- LAYOUT ใน PAGE
+    -- FIX สำคัญ: Layout + Padding ต้องใส่แบบนี้
     local layout = Instance.new("UIListLayout")
     layout.Parent = page
-    layout.SortOrder = Enum.SortOrder.LayoutOrder
     layout.Padding = UDim.new(0,5)
-
-    layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        page.CanvasSize = UDim2.new(0,0,0,layout.AbsoluteContentSize.Y + 10)
-    end)
 
     local padding = Instance.new("UIPadding")
     padding.PaddingTop = UDim.new(0,5)
     padding.PaddingLeft = UDim.new(0,5)
     padding.PaddingRight = UDim.new(0,5)
-    page.Padding = padding
+    padding.Parent = page
+
+    layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        page.CanvasSize = UDim2.new(0,0,0,layout.AbsoluteContentSize.Y + 10)
+    end)
 
     tabBtn.MouseButton1Click:Connect(function()
         for _,v in pairs(library.pageFrame:GetChildren()) do
-            if v:IsA("ScrollingFrame") then v.Visible = false end
+            if v:IsA("ScrollingFrame") then
+                v.Visible = false
+            end
         end
         page.Visible = true
     end)
