@@ -1,220 +1,214 @@
--- ReaperUI V2 (Dark Smooth)
+-- ReaperUI Improved (Layout + Draggable + Toggle)
 
-local TweenService = game:GetService("TweenService")
+local library = {}
 local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+
 local player = Players.LocalPlayer
 
-local lib = {}
-
-function lib:Create(title)
+function library:Win(title)
     local gui = Instance.new("ScreenGui")
     gui.Name = "ReaperUI"
     gui.ResetOnSpawn = false
     gui.Parent = player:WaitForChild("PlayerGui")
 
     local main = Instance.new("Frame")
-    main.Size = UDim2.new(0, 450, 0, 320)
-    main.Position = UDim2.new(0.5, -225, 0.5, -160)
-    main.BackgroundColor3 = Color3.fromRGB(20,20,20)
-    main.BackgroundTransparency = 0.15
+    main.Size = UDim2.new(0,400,0,300)
+    main.Position = UDim2.new(0.5,-200,0.5,-150)
+    main.BackgroundColor3 = Color3.fromRGB(30,30,30)
+    main.Active = true
     main.Parent = gui
-    main.ClipsDescendants = true
 
-    Instance.new("UICorner", main).CornerRadius = UDim.new(0, 12)
-
+    -- TITLE
     local titleLabel = Instance.new("TextLabel")
-    titleLabel.Size = UDim2.new(1,0,0,40)
-    titleLabel.Text = title or "Reaper UI"
-    titleLabel.BackgroundTransparency = 1
+    titleLabel.Size = UDim2.new(1,-30,0,30)
+    titleLabel.Text = title or "UI"
     titleLabel.TextColor3 = Color3.new(1,1,1)
-    titleLabel.TextSize = 18
-    titleLabel.Font = Enum.Font.GothamBold
+    titleLabel.BackgroundTransparency = 1
     titleLabel.Parent = main
 
+    -- CLOSE
+    local closeBtn = Instance.new("TextButton")
+    closeBtn.Size = UDim2.new(0,30,0,30)
+    closeBtn.Position = UDim2.new(1,-30,0,0)
+    closeBtn.Text = "X"
+    closeBtn.BackgroundColor3 = Color3.fromRGB(200,50,50)
+    closeBtn.TextColor3 = Color3.new(1,1,1)
+    closeBtn.Parent = main
+
+    closeBtn.MouseButton1Click:Connect(function()
+        main.Visible = false
+    end)
+
+    -- OPEN BUTTON
+    local openBtn = Instance.new("TextButton")
+    openBtn.Size = UDim2.new(0,100,0,30)
+    openBtn.Position = UDim2.new(0,10,0,10)
+    openBtn.Text = "Open UI"
+    openBtn.Parent = gui
+
+    openBtn.MouseButton1Click:Connect(function()
+        main.Visible = not main.Visible
+    end)
+
+    -- TAB FRAME
     local tabFrame = Instance.new("Frame")
-    tabFrame.Size = UDim2.new(0,130,1,-40)
-    tabFrame.Position = UDim2.new(0,0,0,40)
-    tabFrame.BackgroundTransparency = 1
+    tabFrame.Size = UDim2.new(0,120,1,-30)
+    tabFrame.Position = UDim2.new(0,0,0,30)
+    tabFrame.BackgroundColor3 = Color3.fromRGB(25,25,25)
     tabFrame.Parent = main
 
+    local tabLayout = Instance.new("UIListLayout")
+    tabLayout.Parent = tabFrame
+    tabLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+    local tabPadding = Instance.new("UIPadding")
+    tabPadding.PaddingTop = UDim.new(0,5)
+    tabPadding.Parent = tabFrame
+
+    -- PAGE FRAME
     local pageFrame = Instance.new("Frame")
-    pageFrame.Size = UDim2.new(1,-130,1,-40)
-    pageFrame.Position = UDim2.new(0,130,0,40)
-    pageFrame.BackgroundTransparency = 1
+    pageFrame.Size = UDim2.new(1,-120,1,-30)
+    pageFrame.Position = UDim2.new(0,120,0,30)
+    pageFrame.BackgroundColor3 = Color3.fromRGB(35,35,35)
     pageFrame.Parent = main
 
-    local layout = Instance.new("UIListLayout", tabFrame)
-    layout.Padding = UDim.new(0,5)
+    library.tabFrame = tabFrame
+    library.pageFrame = pageFrame
 
-    lib.tabFrame = tabFrame
-    lib.pageFrame = pageFrame
+    -- DRAG
+    local dragging = false
+    local dragInput, mousePos, framePos
 
-    return lib
+    main.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            mousePos = input.Position
+            framePos = main.Position
+
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end)
+
+    main.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement then
+            dragInput = input
+        end
+    end)
+
+    UserInputService.InputChanged:Connect(function(input)
+        if input == dragInput and dragging then
+            local delta = input.Position - mousePos
+            main.Position = UDim2.new(
+                framePos.X.Scale,
+                framePos.X.Offset + delta.X,
+                framePos.Y.Scale,
+                framePos.Y.Offset + delta.Y
+            )
+        end
+    end)
+
+    return library
 end
-
--- DRAG SYSTEM (Mouse + Mobile)
-local UserInputService = game:GetService("UserInputService")
-
-local dragging = false
-local dragInput
-local dragStart
-local startPos
-
-local function update(input)
-    local delta = input.Position - dragStart
-    main.Position = UDim2.new(
-        startPos.X.Scale,
-        startPos.X.Offset + delta.X,
-        startPos.Y.Scale,
-        startPos.Y.Offset + delta.Y
-    )
-end
-
-main.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1
-    or input.UserInputType == Enum.UserInputType.Touch then
-
-        dragging = true
-        dragStart = input.Position
-        startPos = main.Position
-
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                dragging = false
-            end
-        end)
-    end
-end)
-
-main.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement
-    or input.UserInputType == Enum.UserInputType.Touch then
-        dragInput = input
-    end
-end)
-
-UserInputService.InputChanged:Connect(function(input)
-    if input == dragInput and dragging then
-        update(input)
-    end
-end)
 
 local tabs = {}
 
 function tabs:Tab(name)
-    local btn = Instance.new("TextButton")
-    btn.Size = UDim2.new(1,-10,0,35)
-    btn.Text = name
-    btn.BackgroundColor3 = Color3.fromRGB(30,30,30)
-    btn.TextColor3 = Color3.new(1,1,1)
-    btn.Font = Enum.Font.Gotham
-    btn.TextSize = 14
-    btn.Parent = lib.tabFrame
-    Instance.new("UICorner", btn).CornerRadius = UDim.new(0,8)
+    local tabBtn = Instance.new("TextButton")
+    tabBtn.Size = UDim2.new(1,-10,0,30)
+    tabBtn.Text = name
+    tabBtn.Parent = library.tabFrame
 
-    local page = Instance.new("Frame")
+    local page = Instance.new("ScrollingFrame")
     page.Size = UDim2.new(1,0,1,0)
+    page.CanvasSize = UDim2.new(0,0,0,0)
+    page.ScrollBarThickness = 4
     page.Visible = false
-    page.BackgroundTransparency = 1
-    page.Parent = lib.pageFrame
+    page.Parent = library.pageFrame
 
-    local layout = Instance.new("UIListLayout", page)
-    layout.Padding = UDim.new(0,6)
+    -- LAYOUT ใน PAGE
+    local layout = Instance.new("UIListLayout")
+    layout.Parent = page
+    layout.SortOrder = Enum.SortOrder.LayoutOrder
+    layout.Padding = UDim.new(0,5)
 
-    btn.MouseEnter:Connect(function()
-        TweenService:Create(btn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(50,50,50)}):Play()
+    layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        page.CanvasSize = UDim2.new(0,0,0,layout.AbsoluteContentSize.Y + 10)
     end)
 
-    btn.MouseLeave:Connect(function()
-        TweenService:Create(btn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(30,30,30)}):Play()
-    end)
+    local padding = Instance.new("UIPadding")
+    padding.PaddingTop = UDim.new(0,5)
+    padding.PaddingLeft = UDim.new(0,5)
+    padding.PaddingRight = UDim.new(0,5)
+    page.Padding = padding
 
-    btn.MouseButton1Click:Connect(function()
-        for _,v in pairs(lib.pageFrame:GetChildren()) do
-            if v:IsA("Frame") then v.Visible = false end
+    tabBtn.MouseButton1Click:Connect(function()
+        for _,v in pairs(library.pageFrame:GetChildren()) do
+            if v:IsA("ScrollingFrame") then v.Visible = false end
         end
         page.Visible = true
     end)
 
     local api = {}
 
-    function api:Button(text, callback)
-        local b = btn:Clone()
+    function api:Button(text,callback)
+        local b = Instance.new("TextButton")
+        b.Size = UDim2.new(1,0,0,30)
         b.Text = text
         b.Parent = page
 
         b.MouseButton1Click:Connect(function()
-            TweenService:Create(b, TweenInfo.new(0.1), {Size = UDim2.new(1,-10,0,30)}):Play()
-            task.wait(0.1)
-            TweenService:Create(b, TweenInfo.new(0.1), {Size = UDim2.new(1,-10,0,35)}):Play()
             if callback then callback() end
         end)
     end
 
-    function api:Toggle(text, default, callback)
-        local t = btn:Clone()
+    function api:Toggle(text,default,callback)
+        local t = Instance.new("TextButton")
+        t.Size = UDim2.new(1,0,0,30)
         local state = default or false
-        t.Text = text.." : "..(state and "ON" or "OFF")
+        t.Text = text..": "..tostring(state)
         t.Parent = page
 
         t.MouseButton1Click:Connect(function()
             state = not state
-            t.Text = text.." : "..(state and "ON" or "OFF")
+            t.Text = text..": "..tostring(state)
             if callback then callback(state) end
         end)
     end
 
-    function api:Textbox(text, placeholder, callback)
+    function api:Textbox(text,placeholder,callback)
         local box = Instance.new("TextBox")
-        box.Size = UDim2.new(1,-10,0,35)
-        box.PlaceholderText = placeholder or ""
+        box.Size = UDim2.new(1,0,0,30)
+        box.PlaceholderText = placeholder or text
         box.Text = ""
-        box.BackgroundColor3 = Color3.fromRGB(30,30,30)
-        box.TextColor3 = Color3.new(1,1,1)
         box.Parent = page
-        Instance.new("UICorner", box).CornerRadius = UDim.new(0,8)
 
         box.FocusLost:Connect(function()
             if callback then callback(box.Text) end
         end)
     end
 
-    function api:Dropdown(text, list, callback)
-        local d = btn:Clone()
-        local open = false
-        d.Text = text
-        d.Parent = page
+    function api:Dropdown(text,list,callback)
+        local b = Instance.new("TextButton")
+        b.Size = UDim2.new(1,0,0,30)
+        b.Text = text
+        b.Parent = page
 
-        local drop = Instance.new("Frame")
-        drop.Size = UDim2.new(1,-10,0,0)
-        drop.ClipsDescendants = true
-        drop.BackgroundTransparency = 1
-        drop.Parent = page
-
-        local lay = Instance.new("UIListLayout", drop)
-
-        for _,v in pairs(list) do
-            local opt = btn:Clone()
-            opt.Text = v
-            opt.Parent = drop
-
-            opt.MouseButton1Click:Connect(function()
-                d.Text = text.." : "..v
-                if callback then callback(v) end
-            end)
-        end
-
-        d.MouseButton1Click:Connect(function()
-            open = not open
-            local size = open and (#list * 40) or 0
-            TweenService:Create(drop, TweenInfo.new(0.25), {
-                Size = UDim2.new(1,-10,0,size)
-            }):Play()
+        local i = 1
+        b.MouseButton1Click:Connect(function()
+            i = i + 1
+            if i > #list then i = 1 end
+            b.Text = text..": "..list[i]
+            if callback then callback(list[i]) end
         end)
     end
 
     return api
 end
 
-lib.tabs = tabs
-return lib
+library.tabs = tabs
+return library
