@@ -136,7 +136,6 @@ function tabs:Tab(name)
     page.Visible = false
     page.Parent = library.pageFrame
 
-    -- FIX สำคัญ: Layout + Padding ต้องใส่แบบนี้
     local layout = Instance.new("UIListLayout")
     layout.Parent = page
     layout.Padding = UDim.new(0,5)
@@ -160,6 +159,12 @@ function tabs:Tab(name)
         page.Visible = true
     end)
 
+    -- 🔥 AUTO SHOW TAB แรก
+    task.wait()
+    if #library.pageFrame:GetChildren() == 1 then
+        page.Visible = true
+    end
+
     local api = {}
 
     function api:Button(text,callback)
@@ -167,7 +172,6 @@ function tabs:Tab(name)
         b.Size = UDim2.new(1,0,0,30)
         b.Text = text
         b.Parent = page
-
         b.MouseButton1Click:Connect(function()
             if callback then callback() end
         end)
@@ -179,7 +183,6 @@ function tabs:Tab(name)
         local state = default or false
         t.Text = text..": "..tostring(state)
         t.Parent = page
-
         t.MouseButton1Click:Connect(function()
             state = not state
             t.Text = text..": "..tostring(state)
@@ -193,7 +196,6 @@ function tabs:Tab(name)
         box.PlaceholderText = placeholder or text
         box.Text = ""
         box.Parent = page
-
         box.FocusLost:Connect(function()
             if callback then callback(box.Text) end
         end)
