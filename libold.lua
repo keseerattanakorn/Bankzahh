@@ -109,31 +109,56 @@ end)
     pages.BackgroundTransparency = 1
     pages.Parent = main
 
-    -- Make window draggable by titleBar
-    local dragging, dragStart, startPos
-    titleBar.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = true
-            dragStart = input.Position
-            startPos = main.Position
-        end
-    end)
-    titleBar.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = false
-        end
-    end)
-    UserInputService.InputChanged:Connect(function(input)
-        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-            local delta = input.Position - dragStart
-            main.Position = UDim2.new(
-                startPos.X.Scale,
-                startPos.X.Offset + delta.X,
-                startPos.Y.Scale,
-                startPos.Y.Offset + delta.Y
-            )
-        end
-    end)
+    local dragging = false
+local dragStart, startPos
+local dragInput
+local UserInputService = game:GetService("UserInputService")
+
+titleBar.Active = true -- 🔥 สำคัญมาก (กัน input ทะลุ)
+
+titleBar.InputBegan:Connect(function(input)
+    -- รองรับทั้งเมาส์ + ทัช
+    if input.UserInputType == Enum.UserInputType.MouseButton1 
+    or input.UserInputType == Enum.UserInputType.Touch then
+        
+        -- 🔥 กัน auto click (ต้อง “นิ่งก่อน” ถึงลากได้)
+        local startTime = tick()
+        local startPosInput = input.Position
+
+        task.delay(0.12, function()
+            if input.UserInputState == Enum.UserInputState.Begin then
+                local moved = (input.Position - startPosInput).Magnitude
+
+                -- ต้องนิ่ง + ไม่ใช่คลิกรัว
+                if moved < 5 and (tick() - startTime) > 0.1 then
+                    dragging = true
+                    dragStart = input.Position
+                    startPos = main.Position
+                    dragInput = input
+                end
+            end
+        end)
+    end
+end)
+
+titleBar.InputEnded:Connect(function(input)
+    if input == dragInput then
+        dragging = false
+        dragInput = nil
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if dragging and input == dragInput then
+        local delta = input.Position - dragStart
+        main.Position = UDim2.new(
+            startPos.X.Scale,
+            startPos.X.Offset + delta.X,
+            startPos.Y.Scale,
+            startPos.Y.Offset + delta.Y
+        )
+    end
+end)
 
     -- Hub Toggle (small rounded horizontal button to reopen)
     local hubToggle = Instance.new("TextButton")
