@@ -784,7 +784,7 @@ end)
 local isRunning1 = false
 local task1Thread
 
-tab4:Toggle("ออโต้สุ่ม", false, function(rol)
+tab4:Toggle("Auto Reroll [ Not Worling Now ]", false, function(rol)
     isRunning1 = rol
 
     if isRunning1 then
