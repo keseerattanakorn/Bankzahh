@@ -217,9 +217,10 @@ end
 -- สร้าง Tab 
 local tab0 = lib.tabs:Taps("Update ! ! ! ")
 tab0:Label("- NEW!!! Add Auto Claim Challenge And Auto Claim Gem&Beri Gift")
+tab0:Label("- NEW!!! Add Function Sam Quest & Function Random Affinities 1.0 To 2.0")
 tab0:Label("- Add Auto Fishing Now")
 tab0:Label("- Add Tab Players Now You Can Use It!")
-tab0:Label("- Dont Worry. Me Add Kick You If Admin Join in Your Server Now :P")
+tab0:Label("- Dont Worry. Me Add Kick You If Admin Join in Your Server Now :P")	
 
 local tab = lib.tabs:Taps("Autos")
 tab:Label("Function Autos")
@@ -688,7 +689,273 @@ end)
 
 local tab4 = lib.tabs:Taps("Sam")
 tab4:Label("Function Quest Sam")
+tab4:Label("ฝั่งชั่น เควสแซม")
+tab4:Toggle("Auto Find Compass [ Not Working Now ]", false, function(comp)
+    AutoComp = comp
+end)
 
+spawn(function()
+    while wait() do
+        pcall(function()
+            if not AutoComp then return end;
+            local Compass = game.Players.LocalPlayer.Backpack:FindFirstChild("Compass");
+            local Compass2 = game.Players.LocalPlayer.Character:FindFirstChild("Compass");
+	    local Compass3 = game.Players.LocalPlayer.Character:FindFirstChild("Compass");
+            if Compass or Compass2 or Compass3 then
+                local OldPostiton = game.Players.LocalPlayer.Character.HumanoidRootPart.Position;
+                game.Players.LocalPlayer.Character.Humanoid:UnequipTools();
+                Compass.Parent = game.Players.LocalPlayer.Character;
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Compass.Poser.Value);
+                Compass:Activate();
+                wait(0.2);
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(OldPostiton);
+            end
+        end)
+    end
+end)
+
+tab4:Toggle("Auto Claim Comapss 1 Token", false, function(clmp)
+    AutoClaimComp1 = clmp
+end)
+
+spawn(function()
+    while wait() do
+        pcall(function()
+            if not AutoClaimComp1 then return end;
+            game.Workspace.Merchants.QuestMerchant.Clickable.Retum:FireServer("Claim1");
+            game.Workspace.Merchants.QuestMerchant.Clickable.Retum:FireServer("Claim1");
+        end)
+    end
+end)
+
+tab4:Toggle("Auto Claim Comapss 10 Token", false, function(clmpp)
+    AutoClaimComp2 = clmpp
+end)
+
+spawn(function()
+    while wait() do
+        pcall(function()
+            if not AutoClaimComp2 then return end;
+            game.Workspace.Merchants.QuestMerchant.Clickable.Retum:FireServer("Claim10");
+            game.Workspace.Merchants.QuestMerchant.Clickable.Retum:FireServer("Claim10");
+        end)
+    end
+end)
+		
+tab4:Label("Function Affinities [  1.0 To 2.0 ]")
+
+-- Prepare dropdownDF
+local player = game.Players.LocalPlayer
+local char = workspace:FindFirstChild(player.Name)
+
+local dropdownDF = {}
+local dfMap = {} -- Map เธชเธณเธซเธฃเธฑเธเน€เธเนเธเธงเนเธฒเน€เธฅเธทเธญเธเธเธฅเนเธซเธเน€เธเนเธ DFT1 เธซเธฃเธทเธญ DFT2
+
+if char then
+    local df1 = char:FindFirstChild("DevilFruit")
+    local df2 = char:FindFirstChild("DevilFruit2")
+
+    if df1 and df1:IsA("StringValue") and df1.Value ~= "" then
+        table.insert(dropdownDF, df1.Value)
+        dfMap[df1.Value] = "DFT1" -- เน€เธเนเธ mapping
+    end
+
+    if df2 and df2:IsA("StringValue") and df2.Value ~= "" then
+        table.insert(dropdownDF, df2.Value)
+        dfMap[df2.Value] = "DFT2"
+    end
+end
+
+local selectedDF = nil
+local lockvalue = nil
+
+tab4:Dropdown("Select Devil Fruit :", dropdownDF, function(dfs)
+    selectedDF = dfs
+end)
+
+tab4:Dropdown("Select Value :", {"1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7", "1.8", "1.9", "2"}, function(lkvs)
+    lockvalue = tonumber(lkvs)
+end)
+
+tab4:Dropdown("Select Amount :", {"Beri", "Gems"}, function(srll)
+    selectedrol = srll
+end)
+
+local isRunning1 = false
+local task1Thread
+
+tab4:Toggle("ออโต้สุ่ม", false, function(rol)
+    isRunning1 = rol
+
+    if isRunning1 then
+        task1Thread = task.spawn(function()
+            while isRunning1 do
+                task.wait(8)
+
+                -- Check selections
+                if not selectedDF or not lockvalue then
+                    warn("Please select Fruit Reroll and Lock Value first.")
+                    continue
+                end
+
+                -- Get UserData
+                local player = game.Players.LocalPlayer
+                local playerId = player.UserId
+                local userDataName = game.Workspace.UserData:FindFirstChild("User_" .. playerId)
+                if not userDataName then continue end
+
+                -- Determine DFT name from dfMap
+                local dftName = dfMap[selectedDF]
+                if not dftName then
+                    warn("Invalid fruit selection!")
+                    continue
+                end
+
+                -- Read affinities
+                local AffMelee = userDataName.Data[dftName .. "Melee"].Value
+                local AffSniper = userDataName.Data[dftName .. "Sniper"].Value
+                local AffDefense = userDataName.Data[dftName .. "Defense"].Value
+                local AffSword = userDataName.Data[dftName .. "Sword"].Value
+
+                -- Stop if all affinities >= lockvalue
+                if AffSniper == lockvalue and AffSword == lockvalue and AffMelee == lockvalue and AffDefense == lockvalue then
+                    isRunning1 = false
+                    break
+                end
+
+                -- Prepare args
+                local args1 = {
+                    [1] = dftName,
+                    [2] = false, -- defense
+                    [3] = false, -- melee
+                    [4] = false, -- sniper
+                    [5] = false, -- sword
+                    [6] = (selectedrol == "Beri" and "Cash") or (selectedrol == "Gems" and "Gems") or "Cash"
+                }
+
+                if AffDefense >= lockvalue then args1[2] = 0/0 end
+                if AffMelee >= lockvalue then args1[3] = 0/0 end
+                if AffSniper >= lockvalue then args1[4] = 0/0 end
+                if AffSword >= lockvalue then args1[5] = 0/0 end
+
+                -- Fire Retum
+                local merchant = workspace:FindFirstChild("Merchants")
+                if merchant then
+                    local affinityMerchant = merchant:FindFirstChild("AffinityMerchant")
+                    if affinityMerchant then
+                        local clickable = affinityMerchant:FindFirstChild("Clickable")
+                        if clickable then
+                            local retum = clickable:FindFirstChild("Retum")
+                            if retum then
+                                retum:FireServer(unpack(args1))
+                            end
+                        end
+                    end
+                end
+            end
+        end)
+    end
+end)
+
+tab4:Label("Function Check Rare/Ultra Rare")
+tab4:Toggle("Check Rare/Ultra Rare Fruit&Box", false, function(chre)
+    _G.checkrare = chre
+end)
+
+local Players = game:GetService("Players")
+
+spawn(function()
+	while wait(1) do
+		if _G.checkrare then
+			pcall(function()
+				local players = Players:GetPlayers()
+
+				for i = 1, #players do
+					local player = players[i]
+					if player:FindFirstChild("Backpack") then
+						local backpackItems = player.Backpack:GetChildren()
+						for j = 1, #backpackItems do
+							local item = backpackItems[j]
+							for k = 1, #rareFruits do
+								if item.Name == rareFruits[k] then
+									local msg = " Found Player has :" .. item.Name .. " In Inventory By " .. player.Name
+									print(msg)
+									lib:Notifile("", msg, 3)
+								end
+							end
+						end
+					end
+
+					--
+					local character = workspace:FindFirstChild(player.Name)
+					if character then
+						local characterItems = character:GetChildren()
+						for j = 1, #characterItems do
+							local item = characterItems[j]
+							for k = 1, #rareFruits do
+								if item.Name == rareFruits[k] then
+									local msg = " Found Player Has : " .. item.Name .. " In Player Name by :" .. player.Name
+									print(msg)
+									lib:Notifile("", msg, 3)
+								end
+							end
+						end
+					end
+				end
+			end)
+		end
+	end
+end)
+
+local Players = game:GetService("Players")
+
+local targetBoxes = {
+	"Rare Box",
+	"Ultra Rare Box"
+}
+
+spawn(function()
+	while wait(1) do
+		if _G.checkrare then
+			pcall(function()
+				local players = Players:GetPlayers()
+
+				for i = 1, #players do
+					local player = players[i]
+					if player:FindFirstChild("Backpack") then
+						local backpackItems = player.Backpack:GetChildren()
+						for j = 1, #backpackItems do
+							local item = backpackItems[j]
+							for k = 1, #targetBoxes do
+								if item.Name == targetBoxes[k] then
+									local msb = " Found Player Has : " .. item.Name .. " In Player Name By : " .. player.Name
+									print(msb)
+									lib:Notifile("", msb, 3)
+								end
+							end
+						end
+					end
+
+					local character = workspace:FindFirstChild(player.Name)
+					if character then
+						local characterItems = character:GetChildren()
+						for j = 1, #characterItems do
+							local item = characterItems[j]
+							for k = 1, #targetBoxes do
+								if item.Name == targetBoxes[k] then
+									local msb = " Found Player Has :" .. item.Name .. " In Player By : " .. player.Name
+									print(msg)
+									lib:Notifile("", msb, 3)
+								end
+							end
+						end
+					end
+				end
+			end)
+		end
+	end
+end)
+		
 local tab5 = lib.tabs:Taps("Shop")
 tab5:Label("Function Buy")
 
