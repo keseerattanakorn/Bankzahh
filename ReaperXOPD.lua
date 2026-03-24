@@ -747,25 +747,44 @@ tab4:Label("Function Affinities [  1.0 To 2.0 ]")
 -- Prepare dropdownDF
 local player = game.Players.LocalPlayer
 
+-- 🔥 ถ้าคุณมี data อยู่แล้ว ใช้ของเดิม แต่เช็คก่อน
+if not data then
+    warn("data เป็น nil !!")
+    return
+end
+
 local dropdownDF = {}
 local dfMap = {}
 
 local df1 = data:FindFirstChild("DevilFruit")
 local df2 = data:FindFirstChild("DevilFruit2")
 
-if df1 and df1.Value ~= "" then
-    table.insert(dropdownDF, df1.Value)
+print("df1:", df1)
+print("df2:", df2)
+
+if df1 and df1:IsA("StringValue") then
+    print("df1 value:", df1.Value)
+    if df1.Value ~= "" then
+        table.insert(dropdownDF, df1.Value)
+        dfMap[df1.Value] = "DFT1"
+    end
 end
 
-if df2 and df2.Value ~= "" then
-    table.insert(dropdownDF, df2.Value)
+if df2 and df2:IsA("StringValue") then
+    print("df2 value:", df2.Value)
+    if df2.Value ~= "" then
+        table.insert(dropdownDF, df2.Value)
+        dfMap[df2.Value] = "DFT2"
+    end
 end
+
+print("dropdown size:", #dropdownDF)
 
 local selectedDF = nil
-local lockvalue = nil
 
 tab4:Dropdown("Select Devil Fruit :", dropdownDF, function(dfs)
     selectedDF = dfs
+    print("Select:", dfs)
 end)
 
 tab4:Dropdown("Select Value :", {"1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7", "1.8", "1.9", "2"}, function(lkvs)
