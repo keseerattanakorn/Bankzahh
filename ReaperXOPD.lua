@@ -746,14 +746,14 @@ tab4:Label("Function Affinities [  1.0 To 2.0 ]")
 
 -- Prepare dropdownDF
 local player = game.Players.LocalPlayer
-local char = workspace:FindFirstChild(player.Name)
+
 
 local dropdownDF = {}
-local dfMap = {} -- Map เธชเธณเธซเธฃเธฑเธเน€เธเนเธเธงเนเธฒเน€เธฅเธทเธญเธเธเธฅเนเธซเธเน€เธเนเธ DFT1 เธซเธฃเธทเธญ DFT2
+local dfMap = {}
 
-if char then
-    local df1 = char:FindFirstChild("DevilFruit")
-    local df2 = char:FindFirstChild("DevilFruit2")
+if data then
+    local df1 = data:FindFirstChild("DevilFruit")
+    local df2 = data:FindFirstChild("DevilFruit2")
 
     if df1 and df1:IsA("StringValue") and df1.Value ~= "" then
         table.insert(dropdownDF, df1.Value)
