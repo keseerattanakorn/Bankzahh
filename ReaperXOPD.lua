@@ -769,7 +769,7 @@ end
 local selectedDF = nil
 local lockvalue = nil
 
-tab5:Dropdown("เลือกผลที่จะสุ่ม :", dropdownDF, function(dfs)
+tab4:Dropdown("เลือกผลที่จะสุ่ม :", dropdownDF, function(dfs)
     selectedDF = dfs
 end)
 
