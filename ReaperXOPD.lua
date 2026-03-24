@@ -137,8 +137,8 @@ local rareFruits = {
     "Vampire Fruit", "Quake Fruit", "Phoenix Fruit", "Dark Fruit",
     "Ope Fruit", "Venom Fruit", "Candy Fruit", "Hollow Fruit",
     "Chilly Fruit", "Gas Fruit", "Flare Fruit", "Light Fruit",
-    "Smoke Fruit", "Sand Fruit", "Rumble Fruit", "Magma Fruit",
-    "Snow Fruit", "Gravity Fruit", "Plasma Fruit"
+    "Slash Fruit", "Sand Fruit", "Rumble Fruit", "Magma Fruit",
+    "Snow Fruit", "Gravity Fruit", "Plasma Fruit", "Blood Fruit"
 		}
 
 local SafeZoneOuterSpace = Instance.new("Part",game.Workspace)
@@ -752,8 +752,8 @@ local dropdownDF = {}
 local dfMap = {} -- Map เธชเธณเธซเธฃเธฑเธเน€เธเนเธเธงเนเธฒเน€เธฅเธทเธญเธเธเธฅเนเธซเธเน€เธเนเธ DFT1 เธซเธฃเธทเธญ DFT2
 
 if char then
-    local df1 = char:FindFirstChild("DevilFruit")
-    local df2 = char:FindFirstChild("DevilFruit2")
+    local df1 = data:FindFirstChild("DevilFruit")
+    local df2 = data:FindFirstChild("DevilFruit2")
 
     if df1 and df1:IsA("StringValue") and df1.Value ~= "" then
         table.insert(dropdownDF, df1.Value)
