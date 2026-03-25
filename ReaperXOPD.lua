@@ -93,37 +93,6 @@ local win = lib:Win("ReaperX Hub | For Map: One Piece: Divine")
 
 -- Notifile แจ้งเตือนมุมขวาล่าง
 lib:Notifile("Alert", "ช่วงทดลอง!", 3)
-
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-
-local targetNames = {
-    ["sunvyer"] = true,
-    ["GODoSLAYER"] = true,
-	["DubExit"] = true,
-    ["Quixotize"] = true,
-	["Hiroki_Ashima"] = true,
-    ["utaaxghoul"] = true,
-	["CAIOHENRIQUEAL"] = true,
-    ["Chizewe"] = true,
-	["eonardoe10"] = true,
-}
-
-local function checkPlayers()
-    for _, plr in pairs(Players:GetPlayers()) do
-        if targetNames[plr.Name] and plr ~= LocalPlayer then
-            LocalPlayer:Kick("Admin เข้ามาในเซิฟ Protect by ReaperX Hub :) ")
-        end
-    end
-end
-
--- เช็คตอนเข้า
-checkPlayers()
-
--- เช็คตอนมีคนเข้าใหม่
-Players.PlayerAdded:Connect(function()
-    checkPlayers()
-end)
 		
 local Cache = { DevConfig = {} };
 
