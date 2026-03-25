@@ -455,38 +455,31 @@ end)
 local tab1 = lib.tabs:Taps("Farm")
 tab1:Label("Function Farm Haki")
 local AutoHaki = false
+local hakiArgs = {
+    [1] = "On",
+    [2] = 2
+}
 local player = game.Players.LocalPlayer
-
-local hakiArgs = {"On", 1} -- ต้องมี
 
 tab1:Toggle("Auto Farm Haki", false, function(hki)
     AutoHaki = hki
 
     if AutoHaki then
         task.spawn(function()
-            local userData = workspace:WaitForChild("UserData")
-            local userFolder = userData:WaitForChild("User_" .. tostring(player.UserId), 5)
+            local userFolder = workspace.UserData:FindFirstChild("User_" .. tostring(player.UserId))
+            local remoteEvent = userFolder and userFolder:FindFirstChild("III")
 
-            if userFolder then
-                local remoteEvent = userFolder:FindFirstChild("III")
-
-                if remoteEvent then
-                    print("เจอ Remote แล้ว") -- debug
-
-                    while AutoHaki do
-                        remoteEvent:FireServer(unpack(hakiArgs))
-                        task.wait(0.55)
-                    end
-                else
-                    warn("ไม่เจอ III")
-                    lib:Notify({
-                        Title = "Error",
-                        Content = "Remote 'III' not found",
-                        Duration = 3
-                    })
+            if remoteEvent then
+                while AutoHaki do
+                    remoteEvent:FireServer(unpack(hakiArgs))
+                    task.wait(0.55)
                 end
             else
-                warn("ไม่เจอ UserFolder")
+                lib:Notify({
+                    Title = "Error",
+                    Content = "UserData or RemoteEvent 'III' not found",
+                    Duration = 3
+                })
             end
         end)
     end
