@@ -959,7 +959,150 @@ end)
 local tab5 = lib.tabs:Taps("Shop")
 tab5:Label("Function Buy")
 
-local tab = lib.tabs:Taps("Misc")
-tab:Label("Another Functions")
+local tab7 = lib.tabs:Taps("Misc")
+tab7:Label("Function Server")
+tab7:Button("Rejoin Server", function()
+create:Notifile("", "รอ 3 วิ เพื่อรีจอย " .. game.Players.LocalPlayer.Name .. " Pls Wait", 3)
+wait(3)
+		   game.Players.LocalPlayer:Kick()
+game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId)
+end)
+
+tab7:Label("Function Anti")
+tab7:Button("กันแลค", function()
+create:Notifile("", "โปรดรอ 2 วิ เพื่อเปิดใช้งานกันแลค & โชว์ FPS", 3)
+wait(2)
+
+local ToDisable = {
+ Textures = true,
+ VisualEffects = true,
+ Parts = true,
+ Particles = true,
+ Sky = true
+}
+ 
+local ToEnable = {
+ FullBright = false
+}
+ 
+local Stuff = {}
+ 
+for _, v in next, game:GetDescendants() do
+ if ToDisable.Parts then
+  if v:IsA("Part") or v:IsA("Union") or v:IsA("BasePart") then
+   v.Material = Enum.Material.SmoothPlastic
+   table.insert(Stuff, 1, v)
+  end
+ end
+ 
+ if ToDisable.Particles then
+  if v:IsA("ParticleEmitter") or v:IsA("Smoke") or v:IsA("Explosion") or v:IsA("Sparkles") or v:IsA("Fire") then
+   v.Enabled = false
+   table.insert(Stuff, 1, v)
+  end
+ end
+ 
+ if ToDisable.VisualEffects then
+  if v:IsA("BloomEffect") or v:IsA("BlurEffect") or v:IsA("DepthOfFieldEffect") or v:IsA("SunRaysEffect") then
+   v.Enabled = false
+   table.insert(Stuff, 1, v)
+  end
+ end
+ 
+ if ToDisable.Textures then
+  if v:IsA("Decal") or v:IsA("Texture") then
+   v.Texture = ""
+   table.insert(Stuff, 1, v)
+  end
+ end
+ 
+ if ToDisable.Sky then
+  if v:IsA("Sky") then
+   v.Parent = nil
+   table.insert(Stuff, 1, v)
+  end
+ end
+end
+ 
+game:GetService("TestService"):Message("Effects Disabler Script : Successfully disabled "..#Stuff.." assets / effects. Settings :")
+ 
+for i, v in next, ToDisable do
+ print(tostring(i)..": "..tostring(v))
+end
+ 
+if ToEnable.FullBright then
+    local Lighting = game:GetService("Lighting")
+ 
+    Lighting.FogColor = Color3.fromRGB(255, 255, 255)
+    Lighting.FogEnd = math.huge
+    Lighting.FogStart = math.huge
+    Lighting.Ambient = Color3.fromRGB(255, 255, 255)
+    Lighting.Brightness = 5
+    Lighting.ColorShift_Bottom = Color3.fromRGB(255, 255, 255)
+    Lighting.ColorShift_Top = Color3.fromRGB(255, 255, 255)
+    Lighting.OutdoorAmbient = Color3.fromRGB(255, 255, 255)
+    Lighting.Outlines = true
+				end
+-- FPS Counter Script (LocalScript)
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+
+-- เธชเธฃเนเธฒเธ GUI
+local player = Players.LocalPlayer
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "FPSCounter"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+-- เธชเธฃเนเธฒเธ TextLabel เนเธชเธ”เธ FPS
+local fpsLabel = Instance.new("TextLabel")
+fpsLabel.Size = UDim2.new(0, 120, 0, 35)                      -- เธเธเธฒเธ”เนเธซเธเนเธเธถเนเธเธเธดเธ”เธซเธเนเธญเธข
+fpsLabel.Position = UDim2.new(1, -130, 0, 10)                 -- เธกเธธเธกเธเธงเธฒเธเธ
+fpsLabel.AnchorPoint = Vector2.new(0, 0)
+fpsLabel.BackgroundTransparency = 1                           -- เนเธกเนเธกเธตเธเธทเนเธเธซเธฅเธฑเธ
+fpsLabel.BorderSizePixel = 0
+fpsLabel.TextColor3 = Color3.fromRGB(0, 255, 0)               -- เธชเธตเน€เธเธตเธขเธง
+fpsLabel.TextStrokeTransparency = 0.5                         -- เธเธญเธเธ•เธฑเธงเธญเธฑเธเธฉเธฃ
+fpsLabel.Font = Enum.Font.SourceSansBold
+fpsLabel.TextSize = 22                                        -- เธ•เธฑเธงเธญเธฑเธเธฉเธฃเนเธซเธเนเธเธถเนเธ
+fpsLabel.Text = "FPS: 0"
+fpsLabel.TextXAlignment = Enum.TextXAlignment.Right          -- เธเธดเธ”เธเธงเธฒ
+fpsLabel.Parent = screenGui
+
+-- เธญเธฑเธเน€เธ”เธ• FPS เธ—เธธเธเธงเธดเธเธฒเธ—เธต
+local lastUpdate = tick()
+local frameCount = 0
+
+RunService.RenderStepped:Connect(function()
+	frameCount += 1
+	local currentTime = tick()
+	if currentTime - lastUpdate >= 1 then
+		local fps = math.floor(frameCount / (currentTime - lastUpdate))
+		fpsLabel.Text = "FPS: " .. fps
+		lastUpdate = currentTime
+		frameCount = 0
+	end
+end)
+end)
+
+local afkConnection
+
+tab7:Toggle("Anti AFK", false, function(state)
+
+    if state then
+	create:Notifile("", "ปกป้อง โดนเตะ " .. game.Players.LocalPlayer.Name .. " Can AFK Now :)", 3)
+        local vu = game:GetService("VirtualUser")
+        afkConnection = game:GetService("Players").LocalPlayer.Idled:Connect(function()
+            vu:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+            wait(1)
+            vu:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+        end)
+    else
+        if afkConnection then
+            afkConnection:Disconnect()
+            afkConnection = nil
+        end
+    end
+end)
 
 end)
