@@ -216,7 +216,7 @@ end
 
 -- สร้าง Tab 
 local tab0 = lib.tabs:Taps("Update ! ! ! ")
-tab0:Label("- Fixing Auto Claim")
+tab0:Label("- Fixing Auto Claim Compass")
 tab0:Label("- =Fixing Function Sam Quest & Function Random Affinities 1.0 To 2.0")
 tab0:Label("- Fixing Function Drinks")
 tab0:Label("- NEW!!! Add More Function Anti & Function Server")
@@ -457,25 +457,36 @@ tab1:Label("Function Farm Haki")
 local AutoHaki = false
 local player = game.Players.LocalPlayer
 
-tab1:Toggle("Auto Fast Haki [ Very Ping ]", false, function(hki)
+local hakiArgs = {"On", 1} -- ต้องมี
+
+tab1:Toggle("Auto Farm Haki", false, function(hki)
     AutoHaki = hki
 
     if AutoHaki then
         task.spawn(function()
-            local userFolder = workspace.UserData:FindFirstChild("User_" .. tostring(player.UserId))
-            local remoteEvent = userFolder and userFolder:FindFirstChild("III")
+            local userData = workspace:WaitForChild("UserData")
+            local userFolder = userData:WaitForChild("User_" .. tostring(player.UserId), 5)
 
-            if remoteEvent then
-                while AutoHaki do
-                    remoteEvent:FireServer(unpack(hakiArgs))
-                    task.wait(0.55)
+            if userFolder then
+                local remoteEvent = userFolder:FindFirstChild("III")
+
+                if remoteEvent then
+                    print("เจอ Remote แล้ว") -- debug
+
+                    while AutoHaki do
+                        remoteEvent:FireServer(unpack(hakiArgs))
+                        task.wait(0.55)
+                    end
+                else
+                    warn("ไม่เจอ III")
+                    lib:Notify({
+                        Title = "Error",
+                        Content = "Remote 'III' not found",
+                        Duration = 3
+                    })
                 end
             else
-                Fluent:Notify({
-                    Title = "Error",
-                    Content = "UserData or RemoteEvent 'III' not found",
-                    Duration = 3
-                })
+                warn("ไม่เจอ UserFolder")
             end
         end)
     end
