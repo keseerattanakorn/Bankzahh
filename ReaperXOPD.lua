@@ -183,186 +183,10 @@ for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) 
     end
 end
 
--- สร้าง Tab 
-local tab0 = lib.tabs:Taps("Update ! ! ! ")
-tab0:Label("- Fixing Auto Claim Compass")
-tab0:Label("- =Fixing Function Sam Quest & Function Random Affinities 1.0 To 2.0")
-tab0:Label("- Fixing Function Drinks")
-tab0:Label("- NEW!!! Add More Function Anti & Function Server")
-	
-
 local tab = lib.tabs:Taps("Autos")
 tab:Label("Function Autos")
 
-tab:Toggle("Auto Claim Challenge", false, function(chllge)
-_G.autoclaim = chllge
-end)
-
-spawn(function()
-    while wait() do
-        pcall(function()
-            if _G.autoclaim then
-local A_1 = "Claim"
-local A_2 = "Daily1"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-local A_1 = "Claim"
-local A_2 = "Daily2"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-local A_1 = "Claim"
-local A_2 = "Daily3"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-local A_1 = "Claim"
-local A_2 = "Daily4"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-            end
-        end)
-    end
-end)
-
-spawn(function()
-    while wait() do
-        pcall(function()
-            if _G.autoclaim then
-local A_1 = "Claim"
-local A_2 = "Weekly1"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-local A_1 = "Claim"
-local A_2 = "Weekly2"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-local A_1 = "Claim"
-local A_2 = "Weekly3"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-            end
-        end)
-    end
-end)
-
-spawn(function()
-    while wait() do
-        pcall(function()
-            if _G.autoclaim then
-local A_1 = "Claim"
-local A_2 = "Challenge1"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-local A_1 = "Claim"
-local A_2 = "Challenge2"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-local A_1 = "Claim"
-local A_2 = "Challenge3"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-local A_1 = "Claim"
-local A_2 = "Challenge4"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-local A_1 = "Claim"
-local A_2 = "Challenge5"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-local A_1 = "Claim"
-local A_2 = "Challenge6"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-local A_1 = "Claim"
-local A_2 = "Challenge7"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-local A_1 = "Claim"
-local A_2 = "Challenge8"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-local A_1 = "Claim"
-local A_2 = "Challenge9"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-local A_1 = "Claim"
-local A_2 = "Challenge10"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-local A_1 = "Claim"
-local A_2 = "Challenge11"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-local A_1 = "Claim"
-local A_2 = "Challenge12"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-local A_1 = "Claim"
-local A_2 = "Challenge13"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-local A_1 = "Claim"
-local A_2 = "Challenge14"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-            end
-        end)
-    end
-end)
-
-tab:Toggle("Auto Claim Beri Gift", false, function(bri)
-_G.berigift = bri
-end)
-
-spawn(function()
-    while wait(0) do
-        pcall(function()
-            if _G.berigift then
-local A_1 = "RewardMark"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ClaimRewardHourly
-    Event:FireServer(A_1)
-            end
-        end)
-    end
-end)
-
-tab:Toggle("Auto Claim Gem Gift", false, function(gxm)
-_G.gemsgift = gxm
-end)
-
-spawn(function()
-    while wait(0) do
-        pcall(function()
-            if _G.gemsgift then
-local A_1 = "RewardMark"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ClaimRewardDaily
-    Event:FireServer(A_1)
-            end
-        end)
-    end
-end)
-
-tab:Toggle("Auto Fishing", false, function(fshg)
+tab:Toggle("Auto Fishing Super Rod", false, function(fshg)
         _G.AutoFishing = fshg
 end)
 
@@ -421,128 +245,64 @@ spawn(function()
     end
 end)
 
-local tab1 = lib.tabs:Taps("Farm")
-tab1:Label("Function Farm Haki")
-local AutoHaki = false
-local hakiArgs = {
-    [1] = "On",
-    [2] = 2
-}
-local player = game.Players.LocalPlayer
-
-tab1:Toggle("Auto Farm Haki", false, function(hki)
-    AutoHaki = hki
-
-    if AutoHaki then
-        task.spawn(function()
-            local userFolder = workspace.UserData:FindFirstChild("User_" .. tostring(player.UserId))
-            local remoteEvent = userFolder and userFolder:FindFirstChild("III")
-
-            if remoteEvent then
-                while AutoHaki do
-                    remoteEvent:FireServer(unpack(hakiArgs))
-                    task.wait(0.55)
-                end
-            else
-                lib:Notify({
-                    Title = "Error",
-                    Content = "UserData or RemoteEvent 'III' not found",
-                    Duration = 3
-                })
-            end
-        end)
-    end
+tab:Toggle("Auto Fishing Wood Rod", false, function(fsd)
+        _G.AutoWoodRod = fsd
 end)
 		
-local tab2 = lib.tabs:Taps("Teleport")
-tab2:Label("Function Teleport Island")
-tab2:Dropdown("Select Island :", {"Grassy", "Kaizu Island", "Snowy Mountains", "Pursuer Island", "Bar", "Cliffs", "Windmill", "Cave", "Krizma", "Pirate", "Green", "Trees", "Pyramid", "Package", "Snowy", "Mountain", "Marine Ford", "Sand Castle", "Forest", "Evil", "Crescent", "Islands", "Town", "Rocky", "Plam", "Sand", "Sand 2", "Small", "Tiny", "Super Tiny", "Grass", "Atlar"}, function(t)
-    getgenv().tpisland = t
-end)
+spawn(function()
+    local player = game.Players.LocalPlayer
+    local fishing = game:GetService("ReplicatedStorage"):WaitForChild("Fishing")
+    local vu = game:GetService("VirtualUser")
 
-tab2:Button("Teleport To" , function()
-    if getgenv().tpisland == "Grassy" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(737, 241, 1209)
-      elseif getgenv().tpisland == "Kaizu Island" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(-1526.0230712891, 364.99990844727, 10510.020507812)
-      elseif getgenv().tpisland == "Snowy Mountains"  then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(6501, 408, -1261)
-      elseif getgenv().tpisland == "Pursuer Island" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(4847, 570, -7143)
-      elseif getgenv().tpisland == "Bar" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(1522, 260, 2188)
-      elseif getgenv().tpisland == "Cliffs" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(4598, 217, 4964)
-      elseif getgenv().tpisland == "Windmill" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(-7, 224, -91)
-      elseif getgenv().tpisland == "Cave" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(-280, 217, -831)
-      elseif getgenv().tpisland == "Krizma" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(-1109, 341, 1645)
-      elseif getgenv().tpisland == "Pirate" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(-1283, 218, -1348)
-      elseif getgenv().tpisland == "Green" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(-2727, 253, 1041)
-      elseif getgenv().tpisland == "Trees" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(1068, 217, 3351)
-      elseif getgenv().tpisland == "Pyramid" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(118, 216, 4773)
-      elseif getgenv().tpisland == "Package" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(-1668, 217, -300)
-      elseif getgenv().tpisland == "Snowy" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(-1896, 222, 3385)
-      elseif getgenv().tpisland == "Mountain" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(2052, 488, -701)
-      elseif getgenv().tpisland == "Marine Ford" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(-3164, 296, -3780)
-      elseif getgenv().tpisland == "Sand Castle" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(1020, 224, -3277)
-      elseif getgenv().tpisland == "Forest" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(-5781, 216, 114)
-      elseif getgenv().tpisland == "Evil" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(-5169, 523, -7803)
-      elseif getgenv().tpisland == "Crescent" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(3193, 357, 1670)
-      elseif getgenv().tpisland == "Islands" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(-4319, 245, 5252)
-      elseif getgenv().tpisland == "Town" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(1818, 218, 755)
-      elseif getgenv().tpisland == "Rocky" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(-37, 229, 2149)
-      elseif getgenv().tpisland == "Palm" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(766, 216, -1374)
-      elseif getgenv().tpisland == "Sand" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(-2747, 216, -942)
-      elseif getgenv().tpisland == "Sand 2" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(162, 216, -2265)
-      elseif getgenv().tpisland == "Small" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(1237, 240, -244)
-      elseif getgenv().tpisland == "Tiny" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(-1235, 223, 623)
-      elseif getgenv().tpisland == "Super Tiny" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(-4007, 216, -2190)
-      elseif getgenv().tpisland == "Grass" then
-       plr.Character.HumanoidRootPart.CFrame = CFrame.new(2096, 217, -1884)
-      elseif getgenv().tpisland == "Atlar" then
-        plr.Character.HumanoidRootPart.CFrame = game.workspace.Altar.RecepticalEffect.CFrame * CFrame.new(0, 5, 0)
+    while task.wait(0.1) do
+        if _G.AutoWoodRod then
+            pcall(function()
+                local char = player.Character
+                local hrp = char and char:FindFirstChild("HumanoidRootPart")
+                local hum = char and char:FindFirstChild("Humanoid")
+
+                if not char or not hrp or not hum then return end
+
+                -- หา Rod แล้วใส่
+                for _, tool in pairs(player.Backpack:GetChildren()) do
+                    if tool:IsA("Tool") and string.find(tool.Name, "Rod") then
+                        hum:EquipTool(tool)
+                        break
+                    end
                 end
-end)
 
-tab2:Label("SafeZone")
-tab2:Dropdown("Select SafeZone", {"Safe Zone (Sky)", "Safe Zone (UnderSea)"}, function(s)
-    getgenv().tpsafezone = s
-end)
+                task.wait(0.5)
 
-tab2:Button("Teleport To" , function()
-        if getgenv().tpsafezone == "Safe Zone (UnderSea)" then
-        game.Players.LocalPlayer.Character.Humanoid.Sit = true
-        wait(0.15)
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace")["SafeZoneUnderSeaPart"].CFrame * CFrame.new(0, 5, 0)
-    elseif getgenv().tpsafezone == "Safe Zone (Sky)" then
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace")["SafeZoneOuterSpacePart"].CFrame * CFrame.new(0, 5, 0)
+                -- 🔥 คลิกเมาส์ก่อน Start
+                vu:Button1Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+                task.wait(0.1)
+                vu:Button1Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+
+                task.wait(1)
+
+                -- เริ่ม Fishing
+                fishing:FireServer("Start", "Medium")
+                task.wait(1)
+
+                -- จำลองกดวง
+                for i = 1,10 do
+                    fishing:FireServer("Running", "Default")
+                    task.wait(0.2)
+                end
+
+                -- เสร็จ
+                fishing:FireServer("Finish", 10)
+                task.wait(0.5)
+
+                fishing:FireServer("Stop", "Default")
+
+                -- ⏳ รอ 16 วิ แล้ววนใหม่
+                task.wait(50)
+
+            end)
         end
-    end)
-
+    end
+end)
 local tab3 = lib.tabs:Taps("Players")
 tab3:Label("Function Players")
 local playerNames = {}
@@ -822,79 +582,6 @@ spawn(function()
 	end
 end)
 		
-local tab5 = lib.tabs:Taps("Shop")
-tab5:Label("Function Buy Drinks")
-tab5:Dropdown("Select Drink:", Cache.DevConfig["ListOfDrink"], function(knrd)
-    selectedDrinks = knrd
-end)
-
-tab5:Toggle("Auto Buy Drink [ Fixing }", false, function(bdy)
-	_G.buydrink = bdy
-end)
-
-spawn(function()
-    while wait(0) do
-        pcall(function()
-            if _G.buydrink then
-local args = {
-    [1] = selectedDrinks
-}
-
-workspace:WaitForChild("Merchants"):WaitForChild("BetterDrinkMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer(unpack(args))
-
-            end
-        end)
-    end
-end)
-
-spawn(function()
-    while wait() do
-        pcall(function()
-            if _G.buydrink then
-local A_1 = "Claim"
-local A_2 = "Challenge11"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-            end
-        end)
-    end
-end)
-
-
-tab5:Toggle("Auto Drink All [ Fixing ]", false, function(drks)
-	AutoDrinks = drks
-end)
-
-spawn(function()
-    while wait() do
-        pcall(function()
-            if not AutoDrinks then return end;
-            for _, Value in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                if table.find(Cache.DevConfig["ListOfDrink"], Value.Name) then
-                    game.Players.LocalPlayer.Character.Humanoid:UnequipTools();
-                    Value.Parent = game.Players.LocalPlayer.Character;
-                    Value:Activate();
-                end
-            end
-        end)
-    end
-end)
-
-spawn(function()
-    while wait() do
-        pcall(function()
-            if AutoDrinks then
-local A_1 = "Claim"
-local A_2 = "Challenge13"
-    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
-    Event:FireServer(A_1,A_2)
-wait(.8)
-            end
-        end)
-    end
-end)
-
 local tab7 = lib.tabs:Taps("Misc")
 tab7:Label("Function Server")
 tab7:Button("Rejoin Server", function()
