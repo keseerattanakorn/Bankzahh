@@ -216,11 +216,11 @@ end
 
 -- สร้าง Tab 
 local tab0 = lib.tabs:Taps("Update ! ! ! ")
-tab0:Label("- NEW!!! Add Auto Claim Challenge And Auto Claim Gem&Beri Gift")
-tab0:Label("- NEW!!! Add Function Sam Quest & Function Random Affinities 1.0 To 2.0")
-tab0:Label("- Add Auto Fishing Now")
-tab0:Label("- Add Tab Players Now You Can Use It!")
-tab0:Label("- Dont Worry. Me Add Kick You If Admin Join in Your Server Now :P")	
+tab0:Label("- Fixing Auto Claim")
+tab0:Label("- =Fixing Function Sam Quest & Function Random Affinities 1.0 To 2.0")
+tab0:Label("- Fixing Function Drinks")
+tab0:Label("- NEW!!! Add More Function Anti & Function Server")
+	
 
 local tab = lib.tabs:Taps("Autos")
 tab:Label("Function Autos")
@@ -823,7 +823,77 @@ spawn(function()
 end)
 		
 local tab5 = lib.tabs:Taps("Shop")
-tab5:Label("Function Buy")
+tab5:Label("Function Buy Drinks")
+tab5:Dropdown("Select Drink:", Cache.DevConfig["ListOfDrink"], function(knrd)
+    selectedDrinks = knrd
+end)
+
+tab5:Toggle("Auto Buy Drink [ Fixing }", false, function(bdy)
+	_G.buydrink = bdy
+end)
+
+spawn(function()
+    while wait(0) do
+        pcall(function()
+            if _G.buydrink then
+local args = {
+    [1] = selectedDrinks
+}
+
+workspace:WaitForChild("Merchants"):WaitForChild("BetterDrinkMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer(unpack(args))
+
+            end
+        end)
+    end
+end)
+
+spawn(function()
+    while wait() do
+        pcall(function()
+            if _G.buydrink then
+local A_1 = "Claim"
+local A_2 = "Challenge11"
+    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
+    Event:FireServer(A_1,A_2)
+wait(.8)
+            end
+        end)
+    end
+end)
+
+
+tab5:Toggle("Auto Drink All [ Fixing ]", false, function(drks)
+	AutoDrinks = drks
+end)
+
+spawn(function()
+    while wait() do
+        pcall(function()
+            if not AutoDrinks then return end;
+            for _, Value in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+                if table.find(Cache.DevConfig["ListOfDrink"], Value.Name) then
+                    game.Players.LocalPlayer.Character.Humanoid:UnequipTools();
+                    Value.Parent = game.Players.LocalPlayer.Character;
+                    Value:Activate();
+                end
+            end
+        end)
+    end
+end)
+
+spawn(function()
+    while wait() do
+        pcall(function()
+            if AutoDrinks then
+local A_1 = "Claim"
+local A_2 = "Challenge13"
+    local Event = game:GetService("Workspace").UserData["User_"..game.Players.LocalPlayer.UserId].ChallengesRemote
+    Event:FireServer(A_1,A_2)
+wait(.8)
+            end
+        end)
+    end
+end)
 
 local tab7 = lib.tabs:Taps("Misc")
 tab7:Label("Function Server")
