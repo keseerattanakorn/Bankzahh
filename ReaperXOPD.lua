@@ -454,21 +454,30 @@ end)
 
 local tab1 = lib.tabs:Taps("Farm")
 tab1:Label("Function Farm Haki")
+local AutoHaki = false
+local player = game.Players.LocalPlayer
+
 tab1:Toggle("Auto Fast Haki [ Very Ping ]", false, function(hki)
     AutoHaki = hki
-end)
 
-task.spawn(function()
-    while _G.AutoHaki do
-        for i = 1, 3 do
-            remote:FireServer("On", 1)
-            task.wait(0.1)
-        end
+    if AutoHaki then
+        task.spawn(function()
+            local userFolder = workspace.UserData:FindFirstChild("User_" .. tostring(player.UserId))
+            local remoteEvent = userFolder and userFolder:FindFirstChild("III")
 
-        task.wait(0.5) -- พักกันโดนกันสแปม
-
-        remote:FireServer("Off", 1)
-        task.wait(0.3)
+            if remoteEvent then
+                while AutoHaki do
+                    remoteEvent:FireServer(unpack(hakiArgs))
+                    task.wait(0.55)
+                end
+            else
+                Fluent:Notify({
+                    Title = "Error",
+                    Content = "UserData or RemoteEvent 'III' not found",
+                    Duration = 3
+                })
+            end
+        end)
     end
 end)
 		
@@ -710,31 +719,32 @@ tab4:Toggle("Auto Find Compass [ Not Working Now ]", false, function(comp)
     AutoComp = comp
 end)
 
+local AutoClaimComp1 = false
+local AutoClaimThread = nil
+
 tab4:Toggle("Auto Claim Comapss 1 Token", false, function(clmp)
     AutoClaimComp1 = clmp
-end)
 
-spawn(function()
-    while wait() do
-        pcall(function()
-            if not AutoClaimComp1 then return end;
-            game.Workspace.Merchants.QuestMerchant2.Clickable.Retum:FireServer("Claim1");
-            game.Workspace.Merchants.QuestMerchant2.Clickable.Retum:FireServer("Claim1");
+    if AutoClaimComp1 then
+        if AutoClaimThread then return end -- กันรันซ้อน
+
+        AutoClaimThread = task.spawn(function()
+            local remote = game:GetService("ReplicatedStorage")
+                :WaitForChild("Connections")
+                :WaitForChild("Claim_Sam")
+
+            while AutoClaimComp1 do
+                pcall(function()
+                    remote:FireServer("Claim1")
+                end)
+                task.wait(3)
+            end
+
+            AutoClaimThread = nil -- เคลียร์ตอนหยุด
         end)
-    end
-end)
 
-tab4:Toggle("Auto Claim Comapss 10 Token", false, function(clmpp)
-    AutoClaimComp2 = clmpp
-end)
-
-spawn(function()
-    while wait() do
-        pcall(function()
-            if not AutoClaimComp2 then return end;
-            game.Workspace.Merchants.QuestMerchant2.Clickable.Retum:FireServer("Claim10");
-            game.Workspace.Merchants.QuestMerchant2.Clickable.Retum:FireServer("Claim10");
-        end)
+    else
+        AutoClaimComp1 = false -- สั่งหยุด loop
     end
 end)
 		
