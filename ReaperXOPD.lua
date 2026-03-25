@@ -689,29 +689,8 @@ end)
 
 local tab4 = lib.tabs:Taps("Sam")
 tab4:Label("Function Quest Sam")
-tab4:Label("ฝั่งชั่น เควสแซม")
 tab4:Toggle("Auto Find Compass [ Not Working Now ]", false, function(comp)
     AutoComp = comp
-end)
-
-spawn(function()
-    while wait() do
-        pcall(function()
-            if not AutoComp then return end;
-            local Compass = game.Players.LocalPlayer.Backpack:FindFirstChild("Compass");
-            local Compass2 = game.Players.LocalPlayer.Character:FindFirstChild("Compass");
-	    local Compass3 = game.Players.LocalPlayer.Character:FindFirstChild("Compass");
-            if Compass or Compass2 or Compass3 then
-                local OldPostiton = game.Players.LocalPlayer.Character.HumanoidRootPart.Position;
-                game.Players.LocalPlayer.Character.Humanoid:UnequipTools();
-                Compass.Parent = game.Players.LocalPlayer.Character;
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Compass.Poser.Value);
-                Compass:Activate();
-                wait(0.2);
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(OldPostiton);
-            end
-        end)
-    end
 end)
 
 tab4:Toggle("Auto Claim Comapss 1 Token", false, function(clmp)
@@ -722,8 +701,8 @@ spawn(function()
     while wait() do
         pcall(function()
             if not AutoClaimComp1 then return end;
-            game.Workspace.Merchants.QuestMerchant.Clickable.Retum:FireServer("Claim1");
-            game.Workspace.Merchants.QuestMerchant.Clickable.Retum:FireServer("Claim1");
+            game.Workspace.Merchants.QuestMerchant2.Clickable.Retum:FireServer("Claim1");
+            game.Workspace.Merchants.QuestMerchant2.Clickable.Retum:FireServer("Claim1");
         end)
     end
 end)
@@ -736,126 +715,13 @@ spawn(function()
     while wait() do
         pcall(function()
             if not AutoClaimComp2 then return end;
-            game.Workspace.Merchants.QuestMerchant.Clickable.Retum:FireServer("Claim10");
-            game.Workspace.Merchants.QuestMerchant.Clickable.Retum:FireServer("Claim10");
+            game.Workspace.Merchants.QuestMerchant2.Clickable.Retum:FireServer("Claim10");
+            game.Workspace.Merchants.QuestMerchant2.Clickable.Retum:FireServer("Claim10");
         end)
     end
 end)
 		
-tab4:Label("Function Affinities [  1.0 To 2.0 ]")
-
--- Prepare dropdownDF
-local player = game.Players.LocalPlayer
-
-
-local dropdownDF = {}
-local dfMap = {}
-
-if data then
-    local df1 = data:FindFirstChild("DevilFruit")
-    local df2 = data:FindFirstChild("DevilFruit2")
-
-    if df1 and df1:IsA("StringValue") and df1.Value ~= "" then
-        table.insert(dropdownDF, df1.Value)
-        dfMap[df1.Value] = "DFT1" -- เน€เธเนเธ mapping
-    end
-
-    if df2 and df2:IsA("StringValue") and df2.Value ~= "" then
-        table.insert(dropdownDF, df2.Value)
-        dfMap[df2.Value] = "DFT2"
-    end
-end
-
-local selectedDF = nil
-local lockvalue = nil
-
-tab4:Dropdown("เลือกผลที่จะสุ่ม :", dropdownDF, function(dfs)
-    selectedDF = dfs
-end)
-
-tab4:Dropdown("Select Value :", {"1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7", "1.8", "1.9", "2"}, function(lkvs)
-    lockvalue = tonumber(lkvs)
-end)
-
-tab4:Dropdown("Select Amount :", {"Beri", "Gems"}, function(srll)
-    selectedrol = srll
-end)
-
-local isRunning1 = false
-local task1Thread
-
-tab4:Toggle("Auto Reroll [ Not Worling Now ]", false, function(rol)
-    isRunning1 = rol
-
-    if isRunning1 then
-        task1Thread = task.spawn(function()
-            while isRunning1 do
-                task.wait(8)
-
-                -- Check selections
-                if not selectedDF or not lockvalue then
-                    warn("Please select Fruit Reroll and Lock Value first.")
-                    continue
-                end
-
-                -- Get UserData
-                local player = game.Players.LocalPlayer
-                local playerId = player.UserId
-                local userDataName = game.Workspace.UserData:FindFirstChild("User_" .. playerId)
-                if not userDataName then continue end
-
-                -- Determine DFT name from dfMap
-                local dftName = dfMap[selectedDF]
-                if not dftName then
-                    warn("Invalid fruit selection!")
-                    continue
-                end
-
-                -- Read affinities
-                local AffMelee = userDataName.Data[dftName .. "Melee"].Value
-                local AffSniper = userDataName.Data[dftName .. "Sniper"].Value
-                local AffDefense = userDataName.Data[dftName .. "Defense"].Value
-                local AffSword = userDataName.Data[dftName .. "Sword"].Value
-
-                -- Stop if all affinities >= lockvalue
-                if AffSniper == lockvalue and AffSword == lockvalue and AffMelee == lockvalue and AffDefense == lockvalue then
-                    isRunning1 = false
-                    break
-                end
-
-                -- Prepare args
-                local args1 = {
-                    [1] = dftName,
-                    [2] = false, -- defense
-                    [3] = false, -- melee
-                    [4] = false, -- sniper
-                    [5] = false, -- sword
-                    [6] = (selectedrol == "Beri" and "Cash") or (selectedrol == "Gems" and "Gems") or "Cash"
-                }
-
-                if AffDefense >= lockvalue then args1[2] = 0/0 end
-                if AffMelee >= lockvalue then args1[3] = 0/0 end
-                if AffSniper >= lockvalue then args1[4] = 0/0 end
-                if AffSword >= lockvalue then args1[5] = 0/0 end
-
-                -- Fire Retum
-                local merchant = workspace:FindFirstChild("Merchants")
-                if merchant then
-                    local affinityMerchant = merchant:FindFirstChild("AffinityMerchant")
-                    if affinityMerchant then
-                        local clickable = affinityMerchant:FindFirstChild("Clickable")
-                        if clickable then
-                            local retum = clickable:FindFirstChild("Retum")
-                            if retum then
-                                retum:FireServer(unpack(args1))
-                            end
-                        end
-                    end
-                end
-            end
-        end)
-    end
-end)
+tab4:Label("Function Affinities [ Fix ]")
 
 tab4:Label("Function Check Rare/Ultra Rare")
 tab4:Toggle("Check Rare/Ultra Rare Fruit&Box", false, function(chre)
