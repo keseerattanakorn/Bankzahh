@@ -83,7 +83,7 @@ task.spawn(function()
 
 
 local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/keseerattanakorn/Bankzahh/refs/heads/main/libold.lua"))()
-local win = lib:Win("Test UI")
+local Win = lib:Win("Test UI")
 
 local Cache = { DevConfig = {} };
 
