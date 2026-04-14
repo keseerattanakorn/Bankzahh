@@ -1,3 +1,29 @@
+-- 🔥 HOOK PROTECTION
+local UIS = game:GetService("UserInputService")
+
+local function protectUI(inst)
+    pcall(function()
+        if syn and syn.protect_gui then
+            syn.protect_gui(inst)
+        elseif protectgui then
+            protectgui(inst)
+        elseif gethui then
+            inst.Parent = gethui()
+        end
+    end)
+end
+
+local function safeCallback(fn, ...)
+    if not fn then return end
+    task.spawn(function(...)
+        pcall(fn, ...)
+    end, ...)
+end
+
+if not UIS.MouseEnabled and not UIS.TouchEnabled then
+    return
+end
+
 local library = {}
 local TweenService = game:GetService("TweenService")
 local CoreGui = game:GetService("CoreGui")
@@ -29,7 +55,24 @@ function library:Win(title)
     local gui = Instance.new("ScreenGui")
     gui.Name = "redui"
     gui.ResetOnSpawn = false
-    gui.Parent = CoreGui
+
+protectUI(gui)
+
+pcall(function()
+    gui.Name = "redui_" .. tostring(math.random(1000,9999))
+end)
+
+gui.Parent = CoreGui
+
+pcall(function()
+    for _, v in ipairs(gui:GetDescendants()) do
+        if v:IsA("Instance") then
+            v:GetPropertyChangedSignal("Parent"):Connect(function()
+                if not v:IsDescendantOf(game) then return end
+            end)
+        end
+    end
+end)
 
     -- Main menu
     local main = Instance.new("Frame")
@@ -297,13 +340,9 @@ function tabs:Taps(name)
         button.Text = text or "Button"
         button.Parent = page
         createUICorner(button, UDim.new(0,6))
-        button.MouseButton1Click:Connect(function()
-            if callback then
-                pcall(callback)
-            end
-        end)
-        return button
-    end
+        button.MouseButton1Click:Connect(function(...)
+    safeCallback(callback, ...)
+end)
 
     function newPage:Label(txt)
         local label = Instance.new("TextLabel")
@@ -382,9 +421,7 @@ function tabs:Taps(name)
                 pcall(callback, state)
             end
         end)
-        if callback then
-            pcall(callback, state)
-        end
+        safeCallback(callback, state)
         return container
     end
 
@@ -419,9 +456,9 @@ function tabs:Taps(name)
         createUICorner(box, UDim.new(0,6))
 
         box.FocusLost:Connect(function(enter)
-            if enter and callback then
-                pcall(callback, box.Text)
-            end
+            if enter then
+    safeCallback(callback, box.Text)
+                    end
         end)
         return container
     end
@@ -530,7 +567,7 @@ function tabs:Taps(name)
                 option.MouseButton1Click:Connect(function()
                     selectedOption = item
                     dropdownButton.Text = item
-                    if callback then callback(item) end
+                    safeCallback(callback, item)
                     opened = false
                     arrow.Text = "«"
 
