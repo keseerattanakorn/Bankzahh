@@ -85,6 +85,60 @@ task.spawn(function()
 local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/keseerattanakorn/Bankzahh/refs/heads/main/libold.lua"))()
 local Win = lib:Win("Test UI")
 
+		task.wait(1)
+--// CONFIG
+_G.nodmgwater = _G.nodmgwater or false
+_G.skillmax = _G.skillmax or false
+
+--// STORAGE
+local attackremote = {}
+local remotes = {}
+
+--// HOOK เดียวจบ
+local old
+old = hookmetamethod(game, "__namecall", function(self, ...)
+    local args = {...}
+    local method = getnamecallmethod()
+
+    if method == "FireServer" or method == "InvokeServer" then
+        
+        -- 🟢 1. กันน้ำ
+        if self.Name == "Drown" and _G.nodmgwater then
+            return nil
+        end
+
+        -- 🟢 2. เก็บ animation
+        if self.Name == "RequestAnimation" then
+            local char = game.Players.LocalPlayer.Character
+            local hum = char and char:FindFirstChild("Humanoid")
+
+            if hum and hum.Health ~= 0 then
+                attackremote[self.Name] = args[1]
+            else
+                attackremote[self.Name] = ""
+            end
+
+            return old(self, unpack(args))
+        end
+
+        -- 🟢 3. ปรับ skill charge
+        if self.Name == "RemoteEvent" and args[3] == "StopCharging" then
+            
+            -- เก็บ remote
+            remotes[self.Name] = args[1]
+
+            -- ปรับเป็น max
+            if _G.skillmax then
+                args[6] = 100
+            end
+
+            return old(self, unpack(args))
+        end
+    end
+
+    return old(self, ...)
+end)
+		
 local Cache = { DevConfig = {} };
 
 Cache.DevConfig["ListOfBox1"] = {"Common Box"};
