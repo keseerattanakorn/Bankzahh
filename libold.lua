@@ -1,29 +1,3 @@
--- 🔥 HOOK PROTECTION
-local UIS = game:GetService("UserInputService")
-
-local function protectUI(inst)
-    pcall(function()
-        if syn and syn.protect_gui then
-            syn.protect_gui(inst)
-        elseif protectgui then
-            protectgui(inst)
-        elseif gethui then
-            inst.Parent = gethui()
-        end
-    end)
-end
-
-local function safeCallback(fn, ...)
-    if not fn then return end
-    task.spawn(function(...)
-        pcall(fn, ...)
-    end, ...)
-end
-
-if not UIS.MouseEnabled and not UIS.TouchEnabled then
-    return
-end
-
 local library = {}
 local TweenService = game:GetService("TweenService")
 local CoreGui = game:GetService("CoreGui")
@@ -55,24 +29,7 @@ function library:Win(title)
     local gui = Instance.new("ScreenGui")
     gui.Name = "redui"
     gui.ResetOnSpawn = false
-
-protectUI(gui)
-
-pcall(function()
-    gui.Name = "redui_" .. tostring(math.random(1000,9999))
-end)
-
-gui.Parent = CoreGui
-
-pcall(function()
-    for _, v in ipairs(gui:GetDescendants()) do
-        if v:IsA("Instance") then
-            v:GetPropertyChangedSignal("Parent"):Connect(function()
-                if not v:IsDescendantOf(game) then return end
-            end)
-        end
-    end
-end)
+    gui.Parent = CoreGui
 
     -- Main menu
     local main = Instance.new("Frame")
@@ -126,13 +83,13 @@ end)
     createUICorner(closeBtn, UDim.new(0,6))
 
     -- Left tabs area
-    -- Left tabs area (เปลี่ยนจาก Frame เป็น ScrollingFrame)
+    -- Left tabs area (เน€เธเธฅเธตเนเธขเธเธเธฒเธ Frame เน€เธเนเธ ScrollingFrame)
 local tabButtons = Instance.new("ScrollingFrame")
 tabButtons.Size = UDim2.new(0,120,1,-35)
 tabButtons.Position = UDim2.new(0,0,0,35)
 tabButtons.BackgroundTransparency = 0.9
 tabButtons.ScrollBarThickness = 4
-tabButtons.CanvasSize = UDim2.new(0,0,0,0) -- จะอัปเดตอัตโนมัติ
+tabButtons.CanvasSize = UDim2.new(0,0,0,0) -- เธเธฐเธญเธฑเธเน€เธ”เธ•เธญเธฑเธ•เนเธเธกเธฑเธ•เธด
 tabButtons.Parent = main
 
 local tabLayout = Instance.new("UIListLayout")
@@ -140,7 +97,7 @@ tabLayout.SortOrder = Enum.SortOrder.LayoutOrder
 tabLayout.Padding = UDim.new(0,6)
 tabLayout.Parent = tabButtons
 
--- อัปเดต CanvasSize ให้เท่ากับขนาดเนื้อหา
+-- เธญเธฑเธเน€เธ”เธ• CanvasSize เนเธซเนเน€เธ—เนเธฒเธเธฑเธเธเธเธฒเธ”เน€เธเธทเนเธญเธซเธฒ
 tabLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
     tabButtons.CanvasSize = UDim2.new(0, 0, 0, tabLayout.AbsoluteContentSize.Y)
 end)
@@ -157,14 +114,14 @@ local dragStart, startPos
 local dragInput
 local UserInputService = game:GetService("UserInputService")
 
-titleBar.Active = true -- 🔥 สำคัญมาก (กัน input ทะลุ)
+titleBar.Active = true -- ๐”ฅ เธชเธณเธเธฑเธเธกเธฒเธ (เธเธฑเธ input เธ—เธฐเธฅเธธ)
 
 titleBar.InputBegan:Connect(function(input)
-    -- รองรับทั้งเมาส์ + ทัช
+    -- เธฃเธญเธเธฃเธฑเธเธ—เธฑเนเธเน€เธกเธฒเธชเน + เธ—เธฑเธ
     if input.UserInputType == Enum.UserInputType.MouseButton1 
     or input.UserInputType == Enum.UserInputType.Touch then
         
-        -- 🔥 กัน auto click (ต้อง “นิ่งก่อน” ถึงลากได้)
+        -- ๐”ฅ เธเธฑเธ auto click (เธ•เนเธญเธ โ€เธเธดเนเธเธเนเธญเธโ€ เธ–เธถเธเธฅเธฒเธเนเธ”เน)
         local startTime = tick()
         local startPosInput = input.Position
 
@@ -172,7 +129,7 @@ titleBar.InputBegan:Connect(function(input)
             if input.UserInputState == Enum.UserInputState.Begin then
                 local moved = (input.Position - startPosInput).Magnitude
 
-                -- ต้องนิ่ง + ไม่ใช่คลิกรัว
+                -- เธ•เนเธญเธเธเธดเนเธ + เนเธกเนเนเธเนเธเธฅเธดเธเธฃเธฑเธง
                 if moved < 5 and (tick() - startTime) > 0.1 then
                     dragging = true
                     dragStart = input.Position
@@ -219,9 +176,9 @@ end)
     hubToggle.Parent = gui
     createUICorner(hubToggle, UDim.new(1,0))
 
-    -- ปิดเมนูหลัก
+    -- เธเธดเธ”เน€เธกเธเธนเธซเธฅเธฑเธ
 closeBtn.MouseButton1Click:Connect(function()
-    -- ย่อเมนูหลัก
+    -- เธขเนเธญเน€เธกเธเธนเธซเธฅเธฑเธ
     TweenService:Create(
         main,
         TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
@@ -231,9 +188,9 @@ closeBtn.MouseButton1Click:Connect(function()
     task.delay(0.45, function()
         main.Visible = false
         hubToggle.Visible = true
-        hubToggle.Size = UDim2.new(0, 50, 0, 50) -- เริ่มขนาดเล็ก
-        hubToggle.Position = UDim2.new(0.5, 0, -0.2, 0) -- เริ่มนอกจอด้านบน
-        -- ขยายปุ่มวงรีเล็กน้อย
+        hubToggle.Size = UDim2.new(0, 50, 0, 50) -- เน€เธฃเธดเนเธกเธเธเธฒเธ”เน€เธฅเนเธ
+        hubToggle.Position = UDim2.new(0.5, 0, -0.2, 0) -- เน€เธฃเธดเนเธกเธเธญเธเธเธญเธ”เนเธฒเธเธเธ
+        -- เธเธขเธฒเธขเธเธธเนเธกเธงเธเธฃเธตเน€เธฅเนเธเธเนเธญเธข
         TweenService:Create(
     hubToggle,
     TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
@@ -242,7 +199,7 @@ closeBtn.MouseButton1Click:Connect(function()
     end)
 end)
 
--- กดปุ่มวงรี
+-- เธเธ”เธเธธเนเธกเธงเธเธฃเธต
 hubToggle.MouseButton1Click:Connect(function()
     TweenService:Create(
         hubToggle,
@@ -254,7 +211,7 @@ hubToggle.MouseButton1Click:Connect(function()
         hubToggle.Visible = false
         main.Visible = true
         
-        -- ✅ รีเซ็ตขนาด/ตำแหน่งก่อน Tween
+        -- โ… เธฃเธตเน€เธเนเธ•เธเธเธฒเธ”/เธ•เธณเนเธซเธเนเธเธเนเธญเธ Tween
         main.Size = UDim2.new(0.5, 0, 0, 0)
         main.Position = UDim2.new(0.5, 0, -0.2, 0)
 
@@ -340,9 +297,13 @@ function tabs:Taps(name)
         button.Text = text or "Button"
         button.Parent = page
         createUICorner(button, UDim.new(0,6))
-        button.MouseButton1Click:Connect(function(...)
-    safeCallback(callback, ...)
-end)
+        button.MouseButton1Click:Connect(function()
+            if callback then
+                pcall(callback)
+            end
+        end)
+        return button
+    end
 
     function newPage:Label(txt)
         local label = Instance.new("TextLabel")
@@ -421,7 +382,9 @@ end)
                 pcall(callback, state)
             end
         end)
-        safeCallback(callback, state)
+        if callback then
+            pcall(callback, state)
+        end
         return container
     end
 
@@ -456,9 +419,9 @@ end)
         createUICorner(box, UDim.new(0,6))
 
         box.FocusLost:Connect(function(enter)
-            if enter then
-    safeCallback(callback, box.Text)
-                    end
+            if enter and callback then
+                pcall(callback, box.Text)
+            end
         end)
         return container
     end
@@ -484,7 +447,7 @@ end)
     arrow.Size = UDim2.new(0, 20, 1, 0)
     arrow.Position = UDim2.new(1, -20, 0, 0)
     arrow.BackgroundTransparency = 1
-    arrow.Text = "«"
+    arrow.Text = "ยซ"
     arrow.TextColor3 = Color3.fromRGB(255, 255, 255)
     arrow.Font = Enum.Font.SourceSans
     arrow.TextSize = 16
@@ -504,7 +467,7 @@ end)
     local opened = false
     local selectedOption = nil
 
-    -- ✅ ใช้ ScrollingFrame + ปิด/เปิด Visible
+    -- โ… เนเธเน ScrollingFrame + เธเธดเธ”/เน€เธเธดเธ” Visible
     local optionContainer = Instance.new("ScrollingFrame")
     optionContainer.Size = UDim2.new(1, -10, 0, 0)
     optionContainer.BackgroundTransparency = 0.4
@@ -512,7 +475,7 @@ end)
     optionContainer.CanvasSize = UDim2.new(0, 0, 0, 0)
     optionContainer.ScrollBarThickness = 4
     optionContainer.ZIndex = 5
-    optionContainer.Visible = false -- ❗ เริ่มต้นปิดไว้
+    optionContainer.Visible = false -- โ— เน€เธฃเธดเนเธกเธ•เนเธเธเธดเธ”เนเธงเน
     optionContainer.Parent = container
 
     local UIListLayout = Instance.new("UIListLayout")
@@ -525,7 +488,7 @@ end)
 
     local searchBox = Instance.new("TextBox")
     searchBox.Size = UDim2.new(1, 0, 0, 25)
-    searchBox.PlaceholderText = "🔍 Search..."
+    searchBox.PlaceholderText = "๐” Search..."
     searchBox.Text = ""
     searchBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     searchBox.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -567,11 +530,11 @@ end)
                 option.MouseButton1Click:Connect(function()
                     selectedOption = item
                     dropdownButton.Text = item
-                    safeCallback(callback, item)
+                    if callback then callback(item) end
                     opened = false
-                    arrow.Text = "«"
+                    arrow.Text = "ยซ"
 
-                    -- ❗ ปิด dropdown อย่างสมบูรณ์
+                    -- โ— เธเธดเธ” dropdown เธญเธขเนเธฒเธเธชเธกเธเธนเธฃเธ“เน
                     optionContainer:TweenSize(
                         UDim2.new(1, -10, 0, 0),
                         Enum.EasingDirection.Out,
@@ -593,10 +556,10 @@ end)
 
     dropdownButton.MouseButton1Click:Connect(function()
         opened = not opened
-        arrow.Text = opened and "»" or "«"
+        arrow.Text = opened and "ยป" or "ยซ"
 
         if opened then
-            optionContainer.Visible = true -- ✅ เปิดใหม่ก่อน Tween
+            optionContainer.Visible = true -- โ… เน€เธเธดเธ”เนเธซเธกเนเธเนเธญเธ Tween
             searchBox.Text = ""
             createOptions("")
         end
