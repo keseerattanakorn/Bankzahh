@@ -85,28 +85,6 @@ task.spawn(function()
 local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/keseerattanakorn/Bankzahh/refs/heads/main/libold.lua"))()
 local win = lib:Win("Test UI")
 
-local old
-old = hookmetamethod(game, "__namecall", function(self, ...)
-    local args = {...}
-    local method = getnamecallmethod()
-
-    if method == "FireServer" or method == "InvokeServer" then
-        
-        -- 🟢 กรองเฉพาะที่ต้องการจริง ๆ
-        if self.Name == "Drown" and _G.nodmgwater then
-            return nil
-        end
-
-        if self.Name == "RemoteEvent" and args[3] == "StopCharging" and _G.skillmax then
-            args[6] = 100
-            return old(self, unpack(args))
-        end
-
-    end
-
-    return old(self, ...)
-end)
-
 local Cache = { DevConfig = {} };
 
 Cache.DevConfig["ListOfBox1"] = {"Common Box"};
