@@ -2,7 +2,7 @@ local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/keseeratt
 local win = lib:Win("ReaperX Hub | For Map: One Piece: Divine")
 
 -- Notifile แจ้งเตือนมุมขวาล่าง
-lib:Notifile("Alert", "ช่วงทดลอง!", 3)
+lib:Notifile("Alert Test", "Script Opd!", 3)
 		
 local Cache = { DevConfig = {} };
 
@@ -20,6 +20,10 @@ local rareFruits = {
     "Snow Fruit", "Gravity Fruit", "Plasma Fruit", "Blood Fruit"
 		}
 
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Camera = workspace.CurrentCamera
+
 -- ดึงชื่อผู้เล่นทุกคน (ยกเว้นตัวเอง)
 local function getPlayerNames()
 	local names = {}
@@ -36,8 +40,8 @@ for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) 
     end
 end
 
-local tab = lib.tabs:Taps("Autos")
-tab:Label("Function Autos")
+local tab = lib.tabs:Taps("Fishings")
+tab:Label("Function Auto Fishings [ Waitting Fix ] ")
 --[[
 tab:Toggle("Auto Fishing Super Rod", false, function(fshg)
         _G.AutoFishing = fshg
