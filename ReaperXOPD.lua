@@ -1,93 +1,3 @@
-local TweenService = game:GetService("TweenService")
-local CoreGui = game:GetService("CoreGui")
-
-if CoreGui:FindFirstChild("LoadingScreen") then
-    CoreGui:FindFirstChild("LoadingScreen"):Destroy()
-end
-
-local ScreenGui = Instance.new("ScreenGui", CoreGui)
-ScreenGui.Name = "LoadingScreen"
-ScreenGui.ResetOnSpawn = false
-ScreenGui.IgnoreGuiInset = true
-
--- กล่องหลัก
-local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 0, 0, 0)
-mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-mainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-mainFrame.BackgroundTransparency = 0.2
-mainFrame.Parent = ScreenGui
-Instance.new("UICorner", mainFrame).CornerRadius = UDim.new(0, 15)
-
--- แอนิเมชันขยาย
-TweenService:Create(mainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-    Size = UDim2.new(0, 400, 0, 160)
-}):Play()
-
--- ข้อความ "Loading" (ต่ำลงมา)
-local title = Instance.new("TextLabel", mainFrame)
-title.Size = UDim2.new(1, 0, 0, 30)
-title.Position = UDim2.new(0, 0, 0.39, 0)
-title.BackgroundTransparency = 1
-title.Text = "Loading"
-title.Font = Enum.Font.GothamBold
-title.TextSize = 24
-title.TextColor3 = Color3.new(1, 1, 1)
-
--- หลอดโหลดพื้นหลัง
-local barBg = Instance.new("Frame", mainFrame)
-barBg.Size = UDim2.new(0.8, 0, 0, 6)
-barBg.Position = UDim2.new(0.1, 0, 0.58, 0)
-barBg.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-barBg.BackgroundTransparency = 0.6
-barBg.BorderSizePixel = 0
-Instance.new("UICorner", barBg).CornerRadius = UDim.new(1, 0)
-
--- หลอดโหลดจริง (สีขาว)
-local bar = Instance.new("Frame", barBg)
-bar.Size = UDim2.new(0, 0, 1, 0)
-bar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-bar.BorderSizePixel = 0
-Instance.new("UICorner", bar).CornerRadius = UDim.new(1, 0)
-
--- ตัวเลข %
-local percentLabel = Instance.new("TextLabel", mainFrame)
-percentLabel.Size = UDim2.new(1, 0, 0, 30)
-percentLabel.Position = UDim2.new(0, 0, 0.68, 0)
-percentLabel.BackgroundTransparency = 1
-percentLabel.Text = "0%"
-percentLabel.Font = Enum.Font.GothamBold
-percentLabel.TextSize = 22
-percentLabel.TextColor3 = Color3.fromRGB(200, 255, 200)
-
--- โหลดและอนิเมชันจุด . . .
-task.spawn(function()
-	wait(0.4) -- รอ Tween ขยายก่อน
-
-	local dots = { "", ".", ". .", ". . ." }
-	local dotIndex = 1
-	local updateLoading = true
-
-	-- วน . . .
-	task.spawn(function()
-		while updateLoading do
-			title.Text = "ReaperX Hub Loading" .. dots[dotIndex]
-			dotIndex = dotIndex % #dots + 1
-			wait(0.4)
-		end
-	end)
-
-	for i = 1, 100 do
-		bar.Size = UDim2.new(i / 100, 0, 1, 0)
-		percentLabel.Text = i .. "%"
-		wait(0.02)
-	end
-
-	updateLoading = false
-	wait(0.5)
-	ScreenGui:Destroy()
-
 local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/keseerattanakorn/Bankzahh/refs/heads/main/libold.lua"))()
 local win = lib:Win("ReaperX Hub | For Map: One Piece: Divine")
 
@@ -185,7 +95,7 @@ end
 
 local tab = lib.tabs:Taps("Autos")
 tab:Label("Function Autos")
-
+--[
 tab:Toggle("Auto Fishing Super Rod", false, function(fshg)
         _G.AutoFishing = fshg
 end)
@@ -303,6 +213,7 @@ spawn(function()
         end
     end
 end)
+		]--
 local tab3 = lib.tabs:Taps("Players")
 tab3:Label("Function Players")
 local playerNames = {}
@@ -321,10 +232,6 @@ tab3:Button("Reflash Name Player", function()
         table.insert(playerNames, player.Name)
 				end
 			end)
-		
-tab3:Button("Teleport To Player", function()
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players:FindFirstChild(selectedPlayer).Character.HumanoidRootPart.CFrame
-end)
 
 tab3:Button("check Data Player & Storage 1-12", function()
 local selectedName = selectedPlayer
@@ -404,7 +311,7 @@ end
 
 print("-- =================================== --")
 
-   lib:Notifile("", "Send /console in chat!!! ", 6)
+   lib:Notifile("", "Send /console or F9 in chat!!! ", 6)
 end)
 
 
@@ -420,300 +327,15 @@ tab3:Toggle("View Player", false, function(state)
 		end
 	end
 end)
-
-tab3:Toggle("Select Bring Player [ Not Working Now ]", false, function(plyer)
-	_G.BringPlayer = plyer
-end)
-
-tab3:Toggle("Bring Payers All [ Not Working Now ]", false, function(plal)
-	_G.BringAllPlayer = plal
-end)
-
-spawn(function() -- bring Plr
-    while wait() do
-        if _G.BringAllPlayer then
-            pcall(function()
-                for i,v in pairs(game.Players:GetChildren()) do
-                    if v.Name ~= game.Players.LocalPlayer.Name then
-                        v.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame*CFrame.new(0,0,-15 or getgenv().disbring)
-                        if v.Character.Humanoid.Health == 0 then
-                        	v.Character.HumanoidRootPart.Size = Vector3.new(0, 0, 0)
-                        end
-                    end
-                end
-            end)
-        end
-    end
-end)
-
-local tab4 = lib.tabs:Taps("Sam")
-tab4:Label("Function Quest Sam")
-tab4:Toggle("Auto Find Compass [ Not Working Now ]", false, function(comp)
-    AutoComp = comp
-end)
-
-local AutoClaimComp1 = false
-local AutoClaimThread = nil
-
-tab4:Toggle("Auto Claim Comapss 1 Token", false, function(clmp)
-    AutoClaimComp1 = clmp
-
-    if AutoClaimComp1 then
-        if AutoClaimThread then return end -- กันรันซ้อน
-
-        AutoClaimThread = task.spawn(function()
-            local remote = game:GetService("ReplicatedStorage")
-                :WaitForChild("Connections")
-                :WaitForChild("Claim_Sam")
-
-            while AutoClaimComp1 do
-                pcall(function()
-                    remote:FireServer("Claim1")
-                end)
-                task.wait(3)
-            end
-
-            AutoClaimThread = nil -- เคลียร์ตอนหยุด
-        end)
-
-    else
-        AutoClaimComp1 = false -- สั่งหยุด loop
-    end
-end)
-		
-tab4:Label("Function Affinities [ Fix ]")
-
-tab4:Label("Function Check Rare/Ultra Rare")
-tab4:Toggle("Check Rare/Ultra Rare Fruit&Box", false, function(chre)
-    _G.checkrare = chre
-end)
-
-local Players = game:GetService("Players")
-
-spawn(function()
-	while wait(1) do
-		if _G.checkrare then
-			pcall(function()
-				local players = Players:GetPlayers()
-
-				for i = 1, #players do
-					local player = players[i]
-					if player:FindFirstChild("Backpack") then
-						local backpackItems = player.Backpack:GetChildren()
-						for j = 1, #backpackItems do
-							local item = backpackItems[j]
-							for k = 1, #rareFruits do
-								if item.Name == rareFruits[k] then
-									local msg = " Found Player has :" .. item.Name .. " In Inventory By " .. player.Name
-									print(msg)
-									lib:Notifile("", msg, 3)
-								end
-							end
-						end
-					end
-
-					--
-					local character = workspace:FindFirstChild(player.Name)
-					if character then
-						local characterItems = character:GetChildren()
-						for j = 1, #characterItems do
-							local item = characterItems[j]
-							for k = 1, #rareFruits do
-								if item.Name == rareFruits[k] then
-									local msg = " Found Player Has : " .. item.Name .. " In Player Name by :" .. player.Name
-									print(msg)
-									lib:Notifile("", msg, 3)
-								end
-							end
-						end
-					end
-				end
-			end)
-		end
-	end
-end)
-
-local Players = game:GetService("Players")
-
-local targetBoxes = {
-	"Rare Box",
-	"Ultra Rare Box"
-}
-
-spawn(function()
-	while wait(1) do
-		if _G.checkrare then
-			pcall(function()
-				local players = Players:GetPlayers()
-
-				for i = 1, #players do
-					local player = players[i]
-					if player:FindFirstChild("Backpack") then
-						local backpackItems = player.Backpack:GetChildren()
-						for j = 1, #backpackItems do
-							local item = backpackItems[j]
-							for k = 1, #targetBoxes do
-								if item.Name == targetBoxes[k] then
-									local msb = " Found Player Has : " .. item.Name .. " In Player Name By : " .. player.Name
-									print(msb)
-									lib:Notifile("", msb, 3)
-								end
-							end
-						end
-					end
-
-					local character = workspace:FindFirstChild(player.Name)
-					if character then
-						local characterItems = character:GetChildren()
-						for j = 1, #characterItems do
-							local item = characterItems[j]
-							for k = 1, #targetBoxes do
-								if item.Name == targetBoxes[k] then
-									local msb = " Found Player Has :" .. item.Name .. " In Player By : " .. player.Name
-									print(msg)
-									lib:Notifile("", msb, 3)
-								end
-							end
-						end
-					end
-				end
-			end)
-		end
-	end
-end)
 		
 local tab7 = lib.tabs:Taps("Misc")
-tab7:Label("Function Server")
-tab7:Button("Rejoin Server", function()
-create:Notifile("", "รอ 3 วิ เพื่อรีจอย " .. game.Players.LocalPlayer.Name .. " Pls Wait", 3)
-wait(3)
-		   game.Players.LocalPlayer:Kick()
-game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId)
-end)
-
-tab7:Label("Function Anti")
-tab7:Button("กันแลค", function()
-create:Notifile("", "โปรดรอ 2 วิ เพื่อเปิดใช้งานกันแลค & โชว์ FPS", 3)
-wait(2)
-
-local ToDisable = {
- Textures = true,
- VisualEffects = true,
- Parts = true,
- Particles = true,
- Sky = true
-}
- 
-local ToEnable = {
- FullBright = false
-}
- 
-local Stuff = {}
- 
-for _, v in next, game:GetDescendants() do
- if ToDisable.Parts then
-  if v:IsA("Part") or v:IsA("Union") or v:IsA("BasePart") then
-   v.Material = Enum.Material.SmoothPlastic
-   table.insert(Stuff, 1, v)
-  end
- end
- 
- if ToDisable.Particles then
-  if v:IsA("ParticleEmitter") or v:IsA("Smoke") or v:IsA("Explosion") or v:IsA("Sparkles") or v:IsA("Fire") then
-   v.Enabled = false
-   table.insert(Stuff, 1, v)
-  end
- end
- 
- if ToDisable.VisualEffects then
-  if v:IsA("BloomEffect") or v:IsA("BlurEffect") or v:IsA("DepthOfFieldEffect") or v:IsA("SunRaysEffect") then
-   v.Enabled = false
-   table.insert(Stuff, 1, v)
-  end
- end
- 
- if ToDisable.Textures then
-  if v:IsA("Decal") or v:IsA("Texture") then
-   v.Texture = ""
-   table.insert(Stuff, 1, v)
-  end
- end
- 
- if ToDisable.Sky then
-  if v:IsA("Sky") then
-   v.Parent = nil
-   table.insert(Stuff, 1, v)
-  end
- end
-end
- 
-game:GetService("TestService"):Message("Effects Disabler Script : Successfully disabled "..#Stuff.." assets / effects. Settings :")
- 
-for i, v in next, ToDisable do
- print(tostring(i)..": "..tostring(v))
-end
- 
-if ToEnable.FullBright then
-    local Lighting = game:GetService("Lighting")
- 
-    Lighting.FogColor = Color3.fromRGB(255, 255, 255)
-    Lighting.FogEnd = math.huge
-    Lighting.FogStart = math.huge
-    Lighting.Ambient = Color3.fromRGB(255, 255, 255)
-    Lighting.Brightness = 5
-    Lighting.ColorShift_Bottom = Color3.fromRGB(255, 255, 255)
-    Lighting.ColorShift_Top = Color3.fromRGB(255, 255, 255)
-    Lighting.OutdoorAmbient = Color3.fromRGB(255, 255, 255)
-    Lighting.Outlines = true
-				end
--- FPS Counter Script (LocalScript)
-local RunService = game:GetService("RunService")
-local Players = game:GetService("Players")
-
--- เธชเธฃเนเธฒเธ GUI
-local player = Players.LocalPlayer
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "FPSCounter"
-screenGui.ResetOnSpawn = false
-screenGui.Parent = player:WaitForChild("PlayerGui")
-
--- เธชเธฃเนเธฒเธ TextLabel เนเธชเธ”เธ FPS
-local fpsLabel = Instance.new("TextLabel")
-fpsLabel.Size = UDim2.new(0, 120, 0, 35)                      -- เธเธเธฒเธ”เนเธซเธเนเธเธถเนเธเธเธดเธ”เธซเธเนเธญเธข
-fpsLabel.Position = UDim2.new(1, -130, 0, 10)                 -- เธกเธธเธกเธเธงเธฒเธเธ
-fpsLabel.AnchorPoint = Vector2.new(0, 0)
-fpsLabel.BackgroundTransparency = 1                           -- เนเธกเนเธกเธตเธเธทเนเธเธซเธฅเธฑเธ
-fpsLabel.BorderSizePixel = 0
-fpsLabel.TextColor3 = Color3.fromRGB(0, 255, 0)               -- เธชเธตเน€เธเธตเธขเธง
-fpsLabel.TextStrokeTransparency = 0.5                         -- เธเธญเธเธ•เธฑเธงเธญเธฑเธเธฉเธฃ
-fpsLabel.Font = Enum.Font.SourceSansBold
-fpsLabel.TextSize = 22                                        -- เธ•เธฑเธงเธญเธฑเธเธฉเธฃเนเธซเธเนเธเธถเนเธ
-fpsLabel.Text = "FPS: 0"
-fpsLabel.TextXAlignment = Enum.TextXAlignment.Right          -- เธเธดเธ”เธเธงเธฒ
-fpsLabel.Parent = screenGui
-
--- เธญเธฑเธเน€เธ”เธ• FPS เธ—เธธเธเธงเธดเธเธฒเธ—เธต
-local lastUpdate = tick()
-local frameCount = 0
-
-RunService.RenderStepped:Connect(function()
-	frameCount += 1
-	local currentTime = tick()
-	if currentTime - lastUpdate >= 1 then
-		local fps = math.floor(frameCount / (currentTime - lastUpdate))
-		fpsLabel.Text = "FPS: " .. fps
-		lastUpdate = currentTime
-		frameCount = 0
-	end
-end)
-end)
 
 local afkConnection
 
 tab7:Toggle("Anti AFK", false, function(state)
 
     if state then
-	create:Notifile("", "ปกป้อง โดนเตะ " .. game.Players.LocalPlayer.Name .. " Can AFK Now :)", 3)
+	lib:Notifile("", "ปกป้อง โดนเตะ " .. game.Players.LocalPlayer.Name .. " Can AFK Now :)", 3)
         local vu = game:GetService("VirtualUser")
         afkConnection = game:GetService("Players").LocalPlayer.Idled:Connect(function()
             vu:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
@@ -726,41 +348,4 @@ tab7:Toggle("Anti AFK", false, function(state)
             afkConnection = nil
         end
     end
-end)
-
-tab7:Toggle("Walk On Water", false, function(walk)
-    if walk then
-        create:Notifile("", "เดินบนน้ำได้แล้ว! :)", 3)
-
-        seaPart = Instance.new("Part")
-        seaPart.Name = "InvisibleSea"
-        seaPart.Anchored = true
-        seaPart.CanCollide = true
-        seaPart.Transparency = 1
-        seaPart.Size = Vector3.new(50, 1, 50)
-        seaPart.Parent = workspace
-
-        followConnection = RunService.RenderStepped:Connect(function()
-            local char = plr.Character or plr.CharacterAdded:Wait()
-            local root = char:FindFirstChild("HumanoidRootPart")
-            if root and seaPart then
-                local goalPos = Vector3.new(root.Position.X, 211, root.Position.Z)
-                seaPart.Position = seaPart.Position:Lerp(goalPos, 0.5)
-            end
-        end)
-
-    else
-        create:Notifile("", "Off walk on water now! :(", 3)
-
-        if followConnection then
-            followConnection:Disconnect()
-            followConnection = nil
-        end
-        if seaPart then
-            seaPart:Destroy()
-            seaPart = nil
-        end
-    end
-end)
-
 end)
