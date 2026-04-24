@@ -20,63 +20,6 @@ local rareFruits = {
     "Snow Fruit", "Gravity Fruit", "Plasma Fruit", "Blood Fruit"
 		}
 
-local SafeZoneOuterSpace = Instance.new("Part",game.Workspace)
-    SafeZoneOuterSpace.Name = "SafeZoneOuterSpacePart"
-    SafeZoneOuterSpace.Size = Vector3.new(200,3,200)
-    SafeZoneOuterSpace.Position = Vector3.new((math.random(-1000000, 1000000)), (math.random(10000, 50000)), (math.random(-1000000, 1000000)))
-    SafeZoneOuterSpace.Anchored = true
-
-local SafeZoneUnderSea = Instance.new("Part",game.Workspace)
-    SafeZoneUnderSea.Name = "SafeZoneUnderSeaPart"
-    SafeZoneUnderSea.Size = Vector3.new(200,3,200)
-    SafeZoneUnderSea.Position = Vector3.new((math.random(-5000, 5000)), -491, (math.random(-5000, 5000)))
-    SafeZoneUnderSea.Anchored = true
-
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local Camera = workspace.CurrentCamera
-
-spawn(function() -- autofarm velocity
-    while wait(0) do
-        pcall(function()
-            if AutoFish or AutoPack or _G.behindFarm or _G.bombsteal or _G.killbomb then
-                if not game:GetService("Players").LocalPlayer.Character.HumanoidRootPart:FindFirstChild("BodyClip") then
-                    local Noclip = Instance.new("BodyVelocity")
-                    Noclip.Name = "BodyClip"
-                    Noclip.Parent = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
-                    Noclip.MaxForce = Vector3.new(100000,100000,100000)
-                    Noclip.Velocity = Vector3.new(0,0,0)
-                end
-                game.Players.LocalPlayer.Character.Humanoid.JumpPower = 0
-            elseif  AutoFish == false or AutoPack == false or _G.behindFarm == false or _G.bombsteal == false or _G.killbomb == false then
-                --if game:GetService("Players").LocalPlayer.Character.HumanoidRootPart:FindFirstChild("BodyClip") then
-                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart:FindFirstChild("BodyClip"):Destroy()
-                wait(1)
-                --end
-                game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
-            end
-        end)
-    end
-end)
-
-spawn(function()
-    while wait(0) do
-        pcall(function()
-            if _G.behindfarm or _G.lightfarm or quakefarm then
-                if not game.Players.LocalPlayer.PlayerGui.HealthBar.Frame.Status:FindFirstChild("BusoHaki") then
-                    wait(0.5)
-                    game.workspace.UserData["User_" .. game.Players.LocalPlayer.UserId].UpdateHaki:FireServer()
-                end
-                if game.Players.LocalPlayer.PlayerGui.HealthBar.Frame.Status:FindFirstChild("BusoHaki") then
-                    wait(0.5)
-                    game.workspace.UserData["User_" .. game.Players.LocalPlayer.UserId].UpdateHaki:FireServer()
-                end
-
-            end
-        end)
-    end
-end)
-
 -- ดึงชื่อผู้เล่นทุกคน (ยกเว้นตัวเอง)
 local function getPlayerNames()
 	local names = {}
@@ -95,7 +38,7 @@ end
 
 local tab = lib.tabs:Taps("Autos")
 tab:Label("Function Autos")
---[
+--[[
 tab:Toggle("Auto Fishing Super Rod", false, function(fshg)
         _G.AutoFishing = fshg
 end)
@@ -213,7 +156,7 @@ spawn(function()
         end
     end
 end)
-		]--
+		]]--
 local tab3 = lib.tabs:Taps("Players")
 tab3:Label("Function Players")
 local playerNames = {}
