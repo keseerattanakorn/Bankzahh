@@ -141,7 +141,7 @@ spawn(function()
                 fishing:FireServer("Start", "Medium")
                 task.wait(1)
 						
-                for i = 1, 8 do
+                for i = 1, 10 do
                     fishing:FireServer("Running", "Default")
                     task.wait(0.2)
                 end
