@@ -169,9 +169,53 @@ end)
 local tab3 = lib.tabs:Taps("Players")
 tab3:Label("Function Check Chance % Rare and Ultra Rare With Expertise")
 
-tab3:Dropdown("Calculate Chance % :", {"Common Box : ", "Uncommon Box : ", "Rare Box : ", "Ultra Rare Box : ",}, function(chbx)
-    chanceBox = chbx
+tab3:Dropdown("Calculate Chance % :", 
+{
+    "Common Box",
+    "Uncommon Box",
+    "Rare Box",
+    "Ultra Rare Box"
+}, 
+function(chbx)
+
+    local multi, lvl = getExpertiseMultiplier()
+
+    local base = {
+        ["Common Box"] = 76.9,
+        ["Uncommon Box"] = 20,
+        ["Rare Box"] = 2.975,
+        ["Ultra Rare Box"] = 0.125
+    }
+
+    local result = base[chbx] * multi
+
+    print("Expertise Lv:", lvl)
+    print(chbx .. " = " .. string.format("%.3f", result) .. "%")
 end)
+
+local Players = game:GetService("Players")
+local lp = Players.LocalPlayer
+
+local function getExpertiseMultiplier()
+    local userData = workspace:FindFirstChild("UserData")
+    if not userData then return 1 end
+
+    local dataFolder = userData:FindFirstChild("User_" .. lp.UserId)
+    if not dataFolder then return 1 end
+
+    local data = dataFolder:FindFirstChild("Data")
+    if not data then return 1 end
+
+    local lvlValue = data:FindFirstChild("ExpertiseLvl")
+    if not lvlValue then return 1 end
+
+    local lvl = lvlValue.Value or 0
+
+    local multi = 1 + (lvl * 0.01)
+    if multi > 2 then multi = 2 end
+
+    return multi, lvl
+end
 
 tab3:Label("Function Players")
 local playerNames = {}
