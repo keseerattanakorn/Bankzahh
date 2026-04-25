@@ -2,7 +2,7 @@ local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/keseeratt
 local win = lib:Win("ReaperX Hub | For Map: One Piece: Divine")
 
 -- Notifile แจ้งเตือนมุมขวาล่าง
-lib:Notifile("Alert Test", "Script Opd!", 3)
+lib:Notifile("Alert", "Script Opd!", 3)
 		
 local Cache = { DevConfig = {} };
 
@@ -42,7 +42,7 @@ end
 
 local tab = lib.tabs:Taps("Fishings")
 tab:Label("Function Auto Fishings [ Waitting Fix ] ")
---[[
+
 tab:Toggle("Auto Fishing Super Rod", false, function(fshg)
         _G.AutoFishing = fshg
 end)
@@ -160,8 +160,14 @@ spawn(function()
         end
     end
 end)
-		]]--
+
 local tab3 = lib.tabs:Taps("Players")
+tab3:Label("Function Check Chance % Rare and Ultra Rare With Expertise")
+
+tab3:Dropdown("Calculate Chance % :", {"Common Box : ", "Uncommon Box : ", "Rare Box : ", "Ultra Rare Box : ",}, function(chbx)
+    chanceBox = chbx
+end)
+
 tab3:Label("Function Players")
 local playerNames = {}
 
@@ -274,7 +280,9 @@ tab3:Toggle("View Player", false, function(state)
 		end
 	end
 end)
-		
+
+tab3:Label("Function Check Backpack Players")
+
 local tab7 = lib.tabs:Taps("Misc")
 
 local afkConnection
