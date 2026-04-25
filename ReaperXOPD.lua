@@ -190,7 +190,7 @@ spawn(function()
 
                 fishing:FireServer("Stop", "Default")
 
-                task.wait(16)
+                task.wait(50)
             end)
         end
     end
