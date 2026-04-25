@@ -24,6 +24,7 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local Camera = workspace.CurrentCamera
 
+
 -- ดึงชื่อผู้เล่นทุกคน (ยกเว้นตัวเอง)
 local function getPlayerNames()
 	local names = {}
@@ -160,11 +161,6 @@ spawn(function()
     end
 end)
 
-tab:Label("Function Auto Skip Anim Fishings")
-tab:Toggle("Auto Skip 7/10 Fishing (เล่นมินิเกมเอาเอง)", false, function(skp)
-        skipfish = skp
-end)
-
 local tab3 = lib.tabs:Taps("Players")
 local Players = game:GetService("Players")
 local lp = Players.LocalPlayer
@@ -218,8 +214,67 @@ for _, player in ipairs(game.Players:GetPlayers()) do
     table.insert(playerNames, player.Name)
 end
 
+local function getItemList(player)
+    if not player then return {"ไม่พบผู้เล่น"} end
+
+    local items = {
+        ["Common Box"] = 0,
+        ["Uncommon Box"] = 0,
+        ["Rare Box"] = 0,
+        ["Ultra Rare Box"] = 0,
+        ["Compass"] = 0,
+        ["Silver Compass"] = 0
+    }
+
+    -- Backpack
+    local backpack = player:FindFirstChild("Backpack")
+    if backpack then
+        for _, v in ipairs(backpack:GetChildren()) do
+            if items[v.Name] ~= nil then
+                items[v.Name] += 1
+            end
+        end
+    end
+
+    -- Character (ของที่ถือ)
+    local char = player.Character
+    if char then
+        for _, v in ipairs(char:GetChildren()) do
+            if items[v.Name] ~= nil then
+                items[v.Name] += 1
+            end
+        end
+    end
+
+    -- แปลงเป็น list สำหรับ dropdown
+    local result = {}
+
+    for name, count in pairs(items) do
+        if count > 0 then
+            if count > 1 then
+                table.insert(result, name .. " ( " .. count .. " )")
+            else
+                table.insert(result, name)
+            end
+        end
+    end
+
+    if #result == 0 then
+        table.insert(result, "ไม่พบของ")
+    end
+
+    return result
+end
+
+selectedPlayer = nil
+
 tab3:Dropdown("Select Player :", playerNames, function(name)
     selectedPlayer = name
+end)
+
+local itemDropdown = nil
+
+itemDropdown = tab3:Dropdown("Backpack Player :", {}, function(v)
 end)
 
 tab3:Button("Reflash Name Player", function()
@@ -228,6 +283,27 @@ tab3:Button("Reflash Name Player", function()
         table.insert(playerNames, player.Name)
 				end
 			end)
+
+tab3:Button("Refresh Items", function()
+    if not selectedPlayer then
+        warn("เลือกผู้เล่นก่อน")
+        return
+    end
+
+    local player = game.Players:FindFirstChild(selectedPlayer)
+    if not player then return end
+
+    local newItems = getItemList(player)
+
+    -- อัปเดต dropdown
+    if itemDropdown.Refresh then
+        itemDropdown:Refresh(newItems)
+    else
+        -- ถ้า lib ไม่มี Refresh → สร้างใหม่
+        itemDropdown = tab3:Dropdown("Backpack Player :", newItems, function(v)
+        end)
+    end
+end)
 
 tab3:Button("check Data Player & Storage 1-12", function()
 local selectedName = selectedPlayer
