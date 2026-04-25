@@ -206,8 +206,17 @@ for _, player in ipairs(game.Players:GetPlayers()) do
     table.insert(playerNames, player.Name)
 end
 
+-- =========================
+-- 🔹 ตัวแปรหลัก
+-- =========================
+local selectedPlayer = nil
+local playerNames = {}
+local itemList = {}
+
+-- =========================
+-- 🧠 ฟังก์ชันนับของ
+-- =========================
 local function getItemList(player)
-    if not player then return {"ไม่พบผู้เล่น"} end
 
     local items = {
         ["Common Box"] = 0,
@@ -218,27 +227,31 @@ local function getItemList(player)
         ["Silver Compass"] = 0
     }
 
+    if not player then
+        return {"ไม่พบผู้เล่น"}
+    end
+
     -- Backpack
     local backpack = player:FindFirstChild("Backpack")
     if backpack then
         for _, v in ipairs(backpack:GetChildren()) do
-            if items[v.Name] ~= nil then
+            if items[v.Name] then
                 items[v.Name] += 1
             end
         end
     end
 
-    -- Character (ของที่ถือ)
+    -- Character
     local char = player.Character
     if char then
         for _, v in ipairs(char:GetChildren()) do
-            if items[v.Name] ~= nil then
+            if items[v.Name] then
                 items[v.Name] += 1
             end
         end
     end
 
-    -- แปลงเป็น list สำหรับ dropdown
+    -- แปลงเป็น list
     local result = {}
 
     for name, count in pairs(items) do
@@ -258,41 +271,58 @@ local function getItemList(player)
     return result
 end
 
-selectedPlayer = nil
-
-tab3:Dropdown("Select Player :", playerNames, function(name)
-    selectedPlayer = name
-end)
-
-local itemDropdown = nil
-
-itemDropdown = tab3:Dropdown("Backpack Player :", itemList, function(v)
-end)
-
-tab3:Button("Reflash Name Player", function()
+-- =========================
+-- 🔄 ฟังก์ชันรีเฟรชรายชื่อผู้เล่น
+-- =========================
+local function refreshPlayers()
     table.clear(playerNames)
-    for _, player in ipairs(game.Players:GetPlayers()) do
-        table.insert(playerNames, player.Name)
-				end
-			end)
 
-tab3:Button("Refresh Items", function()
-    if not selectedPlayer then
-        warn("เลือกผู้เล่นก่อน")
-        return
+    for _, plr in ipairs(Players:GetPlayers()) do
+        table.insert(playerNames, plr.Name)
     end
+end
 
-    local player = game.Players:FindFirstChild(selectedPlayer)
-    if not player then return end
+-- =========================
+-- 🔄 ฟังก์ชันรีเฟรชของ
+-- =========================
+local function refreshItems()
+    if not selectedPlayer then return end
 
+    local player = Players:FindFirstChild(selectedPlayer)
     local newItems = getItemList(player)
 
-    -- 🔥 ล้างแล้วใส่ใหม่
     table.clear(itemList)
 
     for _, v in ipairs(newItems) do
         table.insert(itemList, v)
     end
+end
+
+-- =========================
+-- 🔹 สร้าง dropdown
+-- =========================
+refreshPlayers()
+
+tab3:Dropdown("Select Player :", playerNames, function(name)
+    selectedPlayer = name
+end)
+
+tab3:Dropdown("Backpack Player :", itemList, function(v)
+end)
+
+-- =========================
+-- 🔘 ปุ่มรีเฟรชทั้งหมด
+-- =========================
+tab3:Button("Refresh All", function()
+    refreshPlayers()
+    refreshItems()
+end)
+
+-- =========================
+-- 🔘 ปุ่มรีเฟรชเฉพาะของ
+-- =========================
+tab3:Button("Refresh Items", function()
+    refreshItems()
 end)
 
 tab3:Button("check Data Player & Storage 1-12", function()
