@@ -190,21 +190,26 @@ end
 local multi, lvl = getExpertiseMultiplier()
 
 local base = {
-    ["Common Box"] = 76.9,
-    ["Uncommon Box"] = 20,
-    ["Rare Box"] = 2.975,
-    ["Ultra Rare Box"] = 0.125
+    uncommon = 20,
+    rare = 2.975,
+    ultra = 0.125
 }
 
-local list = {}
+local uncommon = base.uncommon * multi
+local rare = base.rare * multi
+local ultra = base.ultra * multi
 
-for name, value in pairs(base) do
-    local result = value * multi
-    table.insert(list, name .. " : " .. string.format("%.3f", result) .. "%")
-end
+local common = 100 - (uncommon + rare + ultra)
 
-tab3:Dropdown("Calculate Chance Box (Expertise Lv."..lvl..")", list, function(selected)
-    print(selected)
+local list = {
+    "Common Box : "..string.format("%.3f", common).."%",
+    "Uncommon Box : "..string.format("%.3f", uncommon).."%",
+    "Rare Box : "..string.format("%.3f", rare).."%",
+    "Ultra Rare Box : "..string.format("%.3f", ultra).."%"
+}
+
+tab3:Dropdown("Calculate Chance % (Lv."..lvl..")", list, function(v)
+    print(v)
 end)
 
 tab3:Label("Function Players")
