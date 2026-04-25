@@ -203,7 +203,7 @@ for name, value in pairs(base) do
     table.insert(list, name .. " : " .. string.format("%.3f", result) .. "%")
 end
 
-tab3:Dropdown("Calculate Chance % (Lv."..lvl..")", list, function(selected)
+tab3:Dropdown("Calculate Chance Box (Expertise Lv."..lvl..")", list, function(selected)
     print(selected)
 end)
 
