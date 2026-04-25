@@ -310,12 +310,21 @@ end)
 tab3:Dropdown("Backpack Player :", itemList, function(v)
 end)
 
--- =========================
--- 🔘 ปุ่มรีเฟรชทั้งหมด
--- =========================
-tab3:Button("Refresh All", function()
+tab3:Toggle("View Player", false, function(state)
+	if selectedPlayer then
+		local target = Players:FindFirstChild(selectedPlayer)
+		if target and target.Character and target.Character:FindFirstChild("Humanoid") then
+			if state then
+				Camera.CameraSubject = target.Character.Humanoid
+			else
+				Camera.CameraSubject = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid")
+			end
+		end
+	end
+end)
+
+tab3:Button("Refresh Players", function()
     refreshPlayers()
-    refreshItems()
 end)
 
 -- =========================
@@ -406,40 +415,9 @@ print("-- =================================== --")
    lib:Notifile("", "Send /console or F9 in chat!!! ", 6)
 end)
 
-
-tab3:Toggle("View Player", false, function(state)
-	if selectedPlayer then
-		local target = Players:FindFirstChild(selectedPlayer)
-		if target and target.Character and target.Character:FindFirstChild("Humanoid") then
-			if state then
-				Camera.CameraSubject = target.Character.Humanoid
-			else
-				Camera.CameraSubject = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid")
-			end
-		end
-	end
-end)
-
 tab3:Label("Function Check Backpack Players")
 
 local tab7 = lib.tabs:Taps("Misc")
+tab7:Label("Check All Sword Secret [ Soon . . . ]")
 
-local afkConnection
-
-tab7:Toggle("Anti AFK", false, function(state)
-
-    if state then
-	lib:Notifile("", "ปกป้อง โดนเตะ " .. game.Players.LocalPlayer.Name .. " Can AFK Now :)", 3)
-        local vu = game:GetService("VirtualUser")
-        afkConnection = game:GetService("Players").LocalPlayer.Idled:Connect(function()
-            vu:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
-            wait(1)
-            vu:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
-        end)
-    else
-        if afkConnection then
-            afkConnection:Disconnect()
-            afkConnection = nil
-        end
-    end
-end)
+tab7:Label("Check Raid [ Soon . . . ]")
