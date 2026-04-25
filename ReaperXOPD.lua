@@ -140,13 +140,10 @@ spawn(function()
                 -- เริ่ม Fishing
                 fishing:FireServer("Start", "Medium")
                 task.wait(1)
-
-                -- จำลองกดวง
-				local process = math.random(7,10)
 						
-                for i = 1, process do
+                for i = 1, 8 do
                     fishing:FireServer("Running", "Default")
-                    task.wait(0.5)
+                    task.wait(0.2)
                 end
 
                 -- เสร็จ
