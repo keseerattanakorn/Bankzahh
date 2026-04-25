@@ -161,6 +161,72 @@ spawn(function()
     end
 end)
 
+tab:Label("Function Auto Skip Anim Fishings")
+
+local skipfish = false
+
+tab:Toggle("Skip 7/10 Fishing", false, function(skp)
+    skipfish = skp
+end)
+
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local backpack = player:WaitForChild("Backpack")
+
+local fishing = workspace:WaitForChild("Fishing")
+local active = fishing:WaitForChild("Active")
+
+local gui = fishing:WaitForChild("Frame")
+local countLabel = gui:WaitForChild("Count")
+
+local validRods = {
+    ["Wood Rod"] = true,
+    ["Sturdy Rod"] = true,
+    ["Super Rod"] = true
+}
+
+local VirtualInputManager = game:GetService("VirtualInputManager")
+
+local function getEquippedRod()
+    for _, tool in pairs(character:GetChildren()) do
+        if tool:IsA("Tool") and validRods[tool.Name] then
+            return tool
+        end
+    end
+end
+
+spawn(function()
+    while true do
+        task.wait(0.1)
+
+        if not skipfish then
+            continue
+        end
+
+        if not active.Value then
+            continue
+        end
+
+        if countLabel.Text == "7/10" then
+            local tool = getEquippedRod()
+            if tool then
+                -- Unequip
+                tool.Parent = backpack
+                task.wait(0.05)
+
+                -- Equip ใหม่
+                tool.Parent = character
+                task.wait(0.05)
+
+                -- คลิก 1 ครั้ง
+                VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 0)
+                task.wait()
+                VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 0)
+            end
+        end
+    end
+end)
+
 local tab3 = lib.tabs:Taps("Players")
 tab3:Label("Function Check Chance % Rare and Ultra Rare With Expertise")
 
