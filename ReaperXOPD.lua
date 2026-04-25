@@ -102,7 +102,7 @@ spawn(function()
     end
 end)
 
-tab:Toggle("Auto Fishing Wood Rod [ Fix ]", false, function(fsd)
+tab:Toggle("Auto Fishing Wood Rod [ แก้แล้ว ]", false, function(fsd)
         _G.AutoWoodRod = fsd
 end)
 		
@@ -111,42 +111,8 @@ spawn(function()
     local fishing = game:GetService("ReplicatedStorage"):WaitForChild("Fishing")
     local vu = game:GetService("VirtualUser")
 
-    -- อ่าน Difficulty (ไม่ไปยุ่ง timing เดิม)
-    local function getDifficulty()
-        local gui = player.PlayerGui:FindFirstChild("Fishing")
-        if gui and gui:FindFirstChild("Frame") then
-            local f = gui.Frame:FindFirstChild("Fishing")
-            if f and f:FindFirstChild("Difficulty") then
-                return f.Difficulty.Text
-            end
-        end
-    end
-
-    -- สุ่มจำนวนกดตามที่คุณสั่ง
-    local function getPressCount(diff)
-        if diff and string.find(diff, "Easy") then
-            return 10
-
-        elseif diff and string.find(diff, "Medium") then
-            return math.random(8,10)
-
-        elseif diff and string.find(diff, "Hard") then
-            return math.random(7,9)
-
-        elseif diff and string.find(diff, "Impossible") then
-            local r = math.random(1,100)
-            if r <= 70 then
-                return math.random(8,9) -- ส่วนใหญ่ 8-9
-            else
-                return 10 -- มี 10 บ้าง
-            end
-        end
-
-        return 10 -- fallback
-    end
-
     while task.wait(0.1) do
-        if _G.AutoFishing then
+        if _G.AutoWoodRod then
             pcall(function()
                 local char = player.Character
                 local hrp = char and char:FindFirstChild("HumanoidRootPart")
@@ -164,33 +130,34 @@ spawn(function()
 
                 task.wait(0.5)
 
-                -- คลิกเหมือนเดิม
+                -- 🔥 คลิกเมาส์ก่อน Start
                 vu:Button1Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
                 task.wait(0.1)
                 vu:Button1Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
 
                 task.wait(1)
 
-                -- Start เหมือนเดิม
+                -- เริ่ม Fishing
                 fishing:FireServer("Start", "Medium")
                 task.wait(1)
 
-                -- 🔥 อ่าน Difficulty ตอนนี้ (จังหวะเดียวกับของเดิม)
-                local diff = getDifficulty()
-                local pressCount = getPressCount(diff)
-
-                -- 🔥 กดเหมือนเดิมทุกอย่าง แค่เปลี่ยนจำนวนรอบ
-                for i = 1, pressCount do
+                -- จำลองกดวง
+				local process = math.random(7,10)
+						
+                for i = 1, process do
                     fishing:FireServer("Running", "Default")
-                    task.wait(0.2)
+                    task.wait(0.5)
                 end
 
-                fishing:FireServer("Finish", pressCount)
+                -- เสร็จ
+                fishing:FireServer("Finish", 10)
                 task.wait(0.5)
 
                 fishing:FireServer("Stop", "Default")
 
+                -- ⏳ รอ 16 วิ แล้ววนใหม่
                 task.wait(50)
+
             end)
         end
     end
