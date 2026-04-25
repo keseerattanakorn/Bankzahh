@@ -3,14 +3,6 @@ local win = lib:Win("ReaperX Hub | For Map: One Piece: Divine")
 
 -- Notifile แจ้งเตือนมุมขวาล่าง
 lib:Notifile("Alert", "Script Opd!", 3)
-		
-local Cache = { DevConfig = {} };
-
-Cache.DevConfig["ListOfBox1"] = {"Common Box"};
-Cache.DevConfig["ListOfBox2"] = {"Uncommon Box"};
-Cache.DevConfig["ListOfDrink"] = {"Cider+", "Lemonade+", "Juice+", "Smoothie+"};
-Cache.DevConfig["ListOfDropCompass"] = {"Compass"};
-Cache.DevConfig["ListOfBox3"] = {"Rare Box", "Ultra Rare Box"};
 
 local rareFruits = {
     "Vampire Fruit", "Quake Fruit", "Phoenix Fruit", "Dark Fruit",
@@ -274,7 +266,7 @@ end)
 
 local itemDropdown = nil
 
-itemDropdown = tab3:Dropdown("Backpack Player :", {}, function(v)
+itemDropdown = tab3:Dropdown("Backpack Player :", itemList, function(v)
 end)
 
 tab3:Button("Reflash Name Player", function()
@@ -295,13 +287,11 @@ tab3:Button("Refresh Items", function()
 
     local newItems = getItemList(player)
 
-    -- อัปเดต dropdown
-    if itemDropdown.Refresh then
-        itemDropdown:Refresh(newItems)
-    else
-        -- ถ้า lib ไม่มี Refresh → สร้างใหม่
-        itemDropdown = tab3:Dropdown("Backpack Player :", newItems, function(v)
-        end)
+    -- 🔥 ล้างแล้วใส่ใหม่
+    table.clear(itemList)
+
+    for _, v in ipairs(newItems) do
+        table.insert(itemList, v)
     end
 end)
 
