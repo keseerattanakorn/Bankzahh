@@ -53,7 +53,7 @@ spawn(function()
     local vu = game:GetService("VirtualUser")
 
     while task.wait(0.1) do
-        if _G.AutoWoodRod then
+        if _G.AutoFishing then
             pcall(function()
                 local char = player.Character
                 local hrp = char and char:FindFirstChild("HumanoidRootPart")
