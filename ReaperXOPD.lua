@@ -52,16 +52,76 @@ spawn(function()
     local fishing = game:GetService("ReplicatedStorage"):WaitForChild("Fishing")
     local vu = game:GetService("VirtualUser")
 
+    -- หา UI
+    local function getUI()
+        local gui = player.PlayerGui:FindFirstChild("Fishing")
+        if not gui then return end
+
+        local frame = gui:FindFirstChild("Frame")
+        if not frame then return end
+
+        local fishingFrame = frame:FindFirstChild("Fishing")
+        if not fishingFrame then return end
+
+        return fishingFrame
+    end
+
+    -- รอ Active = true
+    local function waitForActive()
+    while true do
+        local ui = getUI()
+
+        if ui and ui:FindFirstChild("Active") then
+            if ui.Active.Value == true then
+                return ui -- ออกจากลูปเมื่อเจอ
+            end
+        end
+
+        task.wait(0.1)
+    end
+end
+
+    -- อ่าน Difficulty
+    local function getDifficulty(ui)
+        if ui and ui:FindFirstChild("Difficulty") then
+            return ui.Difficulty.Text
+        end
+        return nil
+    end
+
+    -- logic จำนวนกด
+    local function getPressCount(diffText)
+        if not diffText then return 8 end
+
+        if string.find(diffText, "Easy") then
+            return 10
+
+        elseif string.find(diffText, "Medium") then
+            return math.random(8,10)
+
+        elseif string.find(diffText, "Hard") then
+            return math.random(7,9)
+
+        elseif string.find(diffText, "Impossible") then
+            local r = math.random(1,100)
+            if r <= 70 then
+                return math.random(8,9)
+            else
+                return 10
+            end
+        end
+
+        return 8
+    end
+
     while task.wait(0.1) do
         if _G.AutoFishing then
             pcall(function()
                 local char = player.Character
-                local hrp = char and char:FindFirstChild("HumanoidRootPart")
                 local hum = char and char:FindFirstChild("Humanoid")
+                if not char or not hum then return end
 
-                if not char or not hrp or not hum then return end
-
-                -- หา Rod แล้วใส่
+                -- ใส่ Rod
                 for _, tool in pairs(player.Backpack:GetChildren()) do
                     if tool:IsA("Tool") and string.find(tool.Name, "Rod") then
                         hum:EquipTool(tool)
@@ -71,32 +131,36 @@ spawn(function()
 
                 task.wait(0.5)
 
-                -- 🔥 คลิกเมาส์ก่อน Start
+                -- คลิก
                 vu:Button1Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
                 task.wait(0.1)
                 vu:Button1Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
 
                 task.wait(1)
 
-                -- เริ่ม Fishing
+                -- Start
                 fishing:FireServer("Start", "Medium")
-                task.wait(1)
 
-                -- จำลองกดวง
-                for i = 1,10 do
+                -- 🔥 รอ Active = true ก่อน
+                local ui = waitForActive()
+                if not ui then return end
+
+                -- 🔥 ตอน Running เริ่ม -> อ่าน Difficulty
+                local diffText = getDifficulty(ui)
+                local pressCount = getPressCount(diffText)
+
+                -- Running
+                for i = 1, pressCount do
                     fishing:FireServer("Running", "Default")
                     task.wait(0.2)
                 end
 
-                -- เสร็จ
-                fishing:FireServer("Finish", 10)
+                fishing:FireServer("Finish", pressCount)
                 task.wait(0.5)
 
                 fishing:FireServer("Stop", "Default")
 
-                -- ⏳ รอ 16 วิ แล้ววนใหม่
                 task.wait(16)
-
             end)
         end
     end
