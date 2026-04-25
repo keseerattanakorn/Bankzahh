@@ -102,7 +102,7 @@ spawn(function()
     end
 end)
 
-tab:Toggle("Auto Fishing Wood Rod [ แก้แล้ว ]", false, function(fsd)
+tab:Toggle("Auto Fishing Wood Rod", false, function(fsd)
         _G.AutoWoodRod = fsd
 end)
 		
