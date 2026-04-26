@@ -432,8 +432,88 @@ print("-- =================================== --")
    lib:Notifile("", "Send /console or F9 in chat!!! ", 6)
 end)
 
-tab3:Label("Function Check Backpack Players")
+tab3:Label("Function Check Rare Fruits")
 
+-- เปิด/ปิดจาก Toggle ของคุณ
+checkfruits = false
+
+-- กันแจ้งซ้ำ
+local notified = {}
+
+-- รวม fruit
+local allFruits = {}
+
+for _, v in ipairs(rareFruits) do
+    table.insert(allFruits, v)
+end
+
+for _, v in ipairs(ultrarareFruits) do
+    table.insert(allFruits, v)
+end
+
+-- ฟังก์ชันเช็คว่ามี fruit ไหม
+local function hasRareFruit(player)
+    if not player then return false end
+
+    -- Backpack
+    local backpack = player:FindFirstChild("Backpack")
+    if backpack then
+        for _, item in ipairs(backpack:GetChildren()) do
+            for _, fruit in ipairs(allFruits) do
+                if item.Name == fruit then
+                    return true
+                end
+            end
+        end
+    end
+
+    -- Character (ของที่ถือ)
+    local chara = player.Character
+    if chara then
+        for _, item in ipairs(chara:GetChildren()) do
+            for _, fruit in ipairs(allFruits) do
+                if item.Name == fruit then
+                    return true
+                end
+            end
+        end
+    end
+
+    return false
+end
+
+tab3:Toggle("Check Rare in Server", false, function(chkur)
+	checkfruits = chkur
+end)
+
+task.spawn(function()
+    while task.wait(2) do -- เช็คทุก 2 วิ (ปรับได้)
+
+        if not checkfruits then continue end
+
+        for _, player in ipairs(Players:GetPlayers()) do
+
+            -- ข้ามตัวเอง (ถ้าไม่อยากเช็คตัวเอง)
+            if player == Players.LocalPlayer then continue end
+
+            local hasFruit = hasRareFruit(player)
+
+            if hasFruit and not notified[player.Name] then
+                notified[player.Name] = true
+
+                lib:Notify("", player.Name .. " มีผลแรร์!!!", 3)
+
+                task.wait(1) -- กันแจ้งติดกันเร็วเกิน
+            end
+
+            -- ถ้าอยากให้มัน “รีเช็คใหม่ได้” เมื่อเขาไม่มีแล้ว
+            if not hasFruit then
+                notified[player.Name] = nil
+            end
+
+        end
+    end
+end)
 local tab7 = lib.tabs:Taps("Misc")
 tab7:Label("Check All Sword Secret [ Soon . . . ]")
 
