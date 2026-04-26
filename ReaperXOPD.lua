@@ -482,7 +482,7 @@ local function hasRareFruit(player)
     return false
 end
 
-tab3:Toggle("Check Rare in Server", false, function(chkur)
+tab3:Toggle("Check Rare in Server [ ใช้แล้วกระตุกช่วงๆ เดะแก้ทีหลัง ]", false, function(chkur)
 	checkfruits = chkur
 end)
 
