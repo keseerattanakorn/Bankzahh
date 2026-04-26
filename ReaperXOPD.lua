@@ -5,11 +5,20 @@ local win = lib:Win("ReaperX Hub | For Map: One Piece: Divine")
 lib:Notifile("Alert", "Script Opd!", 3)
 
 local rareFruits = {
-    "Vampire Fruit", "Quake Fruit", "Phoenix Fruit", "Dark Fruit",
-    "Ope Fruit", "Venom Fruit", "Candy Fruit", "Hollow Fruit",
-    "Chilly Fruit", "Gas Fruit", "Flare Fruit", "Light Fruit",
-    "Slash Fruit", "Sand Fruit", "Rumble Fruit", "Magma Fruit",
-    "Snow Fruit", "Gravity Fruit", "Plasma Fruit", "Blood Fruit"
+    "Ope Fruit", "Venom Fruit", "Candy Fruit",
+	"Hollow Fruit", "Chilly Fruit", "Gas Fruit",
+	"Flare Fruit", "Light Fruit", "Sand Fruit",
+	"Rumble Fruit", "Magma Fruit", "Snow Fruit",
+	"Gravity Fruit", "Plasma Fruit", "Blood Fruit",
+	"Luck Fruit", "String Fruit"
+		}
+local ultrarareFruits = {
+    "Vampire Fruit",
+	"Quake Fruit",
+	"Phoenix Fruit",
+	"Dark Fruit",
+	"Slash Fruit",
+	"Alice Fruit"
 		}
 
 local Players = game:GetService("Players")
@@ -154,7 +163,7 @@ spawn(function()
 end)
 
 local tab3 = lib.tabs:Taps("Players")
-local Players = game:GetService("Players")
+tab3:Label("Chance Your Compass | On Legendary Mode ")
 local lp = Players.LocalPlayer
 
 local function getExpertiseMultiplier()
@@ -227,6 +236,14 @@ local function getItemList(player)
         ["Silver Compass"] = 0
     }
 
+	for _, name in pair(rareFruits) do
+		item[name] = 0
+	end
+
+	for _, name in pair(ultrarareFruits) do
+		item[name] = 0
+	end
+	
     if not player then
         return {"ไม่พบผู้เล่น"}
     end
