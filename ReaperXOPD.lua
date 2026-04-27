@@ -162,110 +162,89 @@ spawn(function()
     end
 end)
 
---[[local tab1 = lib.tabs:Taps("Autos")
+local tab1 = lib.tabs:Taps("Autos")
 tab1:Label("Function Skill Keyboard [ กำลังทำเพิ่ม ] ")
-tab1:Dropdown("Select Keys :", {"Z", "X", "C", "V", "B", "N"}, function(keyz)
-    selectedKeyZ = keyz
-end)
+local VIM = game:GetService("VirtualInputManager")
 
-tab1:Textbox("Hold Key :", "ใส่เลข", function(sndz)
-    selectedTimeZ = sndz
-end)
+local function runAuto(stateFunc, keyFunc, timeFunc)
+    task.spawn(function()
+        while true do
+            if stateFunc() and keyFunc() then
+                local key = keyFunc()
+                local hold = tonumber(timeFunc())
 
-local lastStateZ = nil
+                if hold == nil then
+                    -- ไม่ใส่ = 1.5 วิ
+                    VIM:SendKeyEvent(true, Enum.KeyCode[key], false, game)
+                    task.wait(0.05)
+                    VIM:SendKeyEvent(false, Enum.KeyCode[key], false, game)
+                    task.wait(1.5)
 
-tab1:Toggle("Auto Key", false, function(autoz)
-    if autoz ~= lastStateZ then
-        lastStateZ = autoz
-        lib:Notifile("Alert", "ฟีเจอร์นี้ยังไม่พร้อมใช้งาน", 3)
-    end
-end)
+                elseif hold == 0 then
+                    -- 0 = 1 วิ
+                    VIM:SendKeyEvent(true, Enum.KeyCode[key], false, game)
+                    task.wait(0.05)
+                    VIM:SendKeyEvent(false, Enum.KeyCode[key], false, game)
+                    task.wait(1)
 
-tab1:Dropdown("Select Keys :", {"Z", "X", "C", "V", "B", "N"}, function(keyx)
-    selectedKeyX = keyx
-end)
+                else
+                    -- กดค้าง
+                    VIM:SendKeyEvent(true, Enum.KeyCode[key], false, game)
+                    task.wait(hold)
+                    VIM:SendKeyEvent(false, Enum.KeyCode[key], false, game)
+                    task.wait(0.1)
+                end
+            else
+                task.wait()
+            end
+        end
+    end)
+end
 
-tab1:Textbox("Hold Key :", "ใส่เลข", function(sndx)
-    selectedTimeX = sndx
-end)
+local keys = {"Z","X","C","V","B","N","F","G","H","J","K"}
 
-local lastStateX = nil
+-- Z
+local selectedKeyZ, selectedTimeZ, stateZ
+tab1:Dropdown("Select Keys :", keys, function(v) selectedKeyZ = v end)
+tab1:Textbox("Hold Key :", "ใส่เลข", function(v) selectedTimeZ = v end)
+tab1:Toggle("Auto Key", false, function(v) stateZ = v end)
+runAuto(function() return stateZ end, function() return selectedKeyZ end, function() return selectedTimeZ end)
 
-tab1:Toggle("Auto Key", false, function(autox)
-    if autox ~= lastStateX then
-        lastStateX = autox
-        lib:Notifile("Alert", "ฟีเจอร์นี้ยังไม่พร้อมใช้งาน", 3)
-    end
-end)
+-- X
+local selectedKeyX, selectedTimeX, stateX
+tab1:Dropdown("Select Keys :", keys, function(v) selectedKeyX = v end)
+tab1:Textbox("Hold Key :", "ใส่เลข", function(v) selectedTimeX = v end)
+tab1:Toggle("Auto Key", false, function(v) stateX = v end)
+runAuto(function() return stateX end, function() return selectedKeyX end, function() return selectedTimeX end)
 
-tab1:Dropdown("Select Keys :", {"Z", "X", "C", "V", "B", "N"}, function(keyc)
-    selectedKeyC = keyc
-end)
+-- C
+local selectedKeyC, selectedTimeC, stateC
+tab1:Dropdown("Select Keys :", keys, function(v) selectedKeyC = v end)
+tab1:Textbox("Hold Key :", "ใส่เลข", function(v) selectedTimeC = v end)
+tab1:Toggle("Auto Key", false, function(v) stateC = v end)
+runAuto(function() return stateC end, function() return selectedKeyC end, function() return selectedTimeC end)
 
-tab1:Textbox("Hold Key :", "ใส่เลข", function(sndc)
-    selectedTimeC = sndc
-end)
+-- V
+local selectedKeyV, selectedTimeV, stateV
+tab1:Dropdown("Select Keys :", keys, function(v) selectedKeyV = v end)
+tab1:Textbox("Hold Key :", "ใส่เลข", function(v) selectedTimeV = v end)
+tab1:Toggle("Auto Key", false, function(v) stateV = v end)
+runAuto(function() return stateV end, function() return selectedKeyV end, function() return selectedTimeV end)
 
-local lastStateC = nil
+-- B
+local selectedKeyB, selectedTimeB, stateB
+tab1:Dropdown("Select Keys :", keys, function(v) selectedKeyB = v end)
+tab1:Textbox("Hold Key :", "ใส่เลข", function(v) selectedTimeB = v end)
+tab1:Toggle("Auto Key", false, function(v) stateB = v end)
+runAuto(function() return stateB end, function() return selectedKeyB end, function() return selectedTimeB end)
 
-tab1:Toggle("Auto Key", false, function(autoc)
-    if autoc ~= lastStateC then
-        lastStateC = autoc
-        lib:Notifile("Alert", "ฟีเจอร์นี้ยังไม่พร้อมใช้งาน", 3)
-    end
-end)
+-- N
+local selectedKeyN, selectedTimeN, stateN
+tab1:Dropdown("Select Keys :", keys, function(v) selectedKeyN = v end)
+tab1:Textbox("Hold Key :", "ใส่เลข", function(v) selectedTimeN = v end)
+tab1:Toggle("Auto Key", false, function(v) stateN = v end)
+runAuto(function() return stateN end, function() return selectedKeyN end, function() return selectedTimeN end)
 
-tab1:Dropdown("Select Keys :", {"Z", "X", "C", "V", "B", "N"}, function(keyv)
-    selectedKeyV = keyv
-end)
-
-tab1:Textbox("Hold Key :", "ใส่เลข", function(sndv)
-    selectedTimeV = sndv
-end)
-
-local lastStateV = nil
-
-tab1:Toggle("Auto Key", false, function(autov)
-    if autov ~= lastStateV then
-        lastStateV = autov
-        lib:Notifile("Alert", "ฟีเจอร์นี้ยังไม่พร้อมใช้งาน", 3)
-    end
-end)
-
-tab1:Dropdown("Select Keys :", {"Z", "X", "C", "V", "B", "N"}, function(keyb)
-    selectedKeyB = keyb
-end)
-
-tab1:Textbox("Hold Key :", "ใส่เลข", function(sndb)
-    selectedTimeB = sndb
-end)
-
-local lastStateB = nil
-
-tab1:Toggle("Auto Key", false, function(autob)
-    if autob ~= lastStateB then
-        lastStateB = autob
-        lib:Notifile("Alert", "ฟีเจอร์นี้ยังไม่พร้อมใช้งาน", 3)
-    end
-end)
-
-tab1:Dropdown("Select Keys :", {"Z", "X", "C", "V", "B", "N"}, function(keyn)
-    selectedKeyN = keyn
-end)
-
-tab1:Textbox("Hold Key :", "ใส่เลข", function(sndn)
-    selectedTimeN = sndn
-end)
-
-local lastStateN = nil
-
-tab1:Toggle("Auto Key", false, function(auton)
-    if auton ~= lastStateN then
-        lastStateN = auton
-        lib:Notifile("Alert", "ฟีเจอร์นี้ยังไม่พร้อมใช้งาน", 3)
-    end
-end)
-]]--
 local tab3 = lib.tabs:Taps("Players")
 tab3:Label("Chance Your Compass | On Legendary Mode ")
 local lp = Players.LocalPlayer
