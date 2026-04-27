@@ -464,12 +464,12 @@ tab7:Label("Check All Sword Secret [ Soon . . . ]")
 
 tab7:Label("Check Raid [ Soon . . . ]")
 
-tab7:Toggle("ESP Health Players", false, function(chkur)
-    checkfruits = chkur
+tab7:Toggle("ESP Health Players [ Fix ]", false, function(chkhtl)
+    checkhealth = chkhtl
 
-    if checkfruits then
+    if checkhealth then
         task.spawn(function()
-            while checkfruits do
+            while checkhealth do
                 for _, p in pairs(Players:GetPlayers()) do
                     if p ~= Players.LocalPlayer and p.Character then
                         local char = p.Character
