@@ -162,7 +162,7 @@ spawn(function()
     end
 end)
 
-local tab1 = lib.tabs:Taps("Autos")
+--[[local tab1 = lib.tabs:Taps("Autos")
 tab1:Label("Function Skill Keyboard [ กำลังทำเพิ่ม ] ")
 tab1:Dropdown("Select Keys :", {"Z", "X", "C", "V", "B", "N"}, function(keyz)
     selectedKeyZ = keyz
@@ -265,7 +265,7 @@ tab1:Toggle("Auto Key", false, function(auton)
         lib:Notifile("Alert", "ฟีเจอร์นี้ยังไม่พร้อมใช้งาน", 3)
     end
 end)
-
+]]--
 local tab3 = lib.tabs:Taps("Players")
 tab3:Label("Chance Your Compass | On Legendary Mode ")
 local lp = Players.LocalPlayer
