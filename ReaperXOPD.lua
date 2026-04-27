@@ -464,23 +464,18 @@ tab7:Label("Check All Sword Secret [ Soon . . . ]")
 
 tab7:Label("Check Raid [ Soon . . . ]")
 
-tab7:Toggle("ESP Health Players", false, function(chkhtl)
-    checkhealth = chkhtl
+tab7:Toggle("ESP Health Players", false, function(chkur)
+    checkfruits = chkur
 
-    local Players = game:GetService("Players")
-
-    if checkhealth then
+    if checkfruits then
         task.spawn(function()
-            while checkhealth do
+            while checkfruits do
                 for _, p in pairs(Players:GetPlayers()) do
                     if p ~= Players.LocalPlayer and p.Character then
                         local char = p.Character
-
-                        if not char:FindFirstChild("Head") then continue end
-                        local head = char.Head
-
-                        -- กันซ้ำ
-                        if head:FindFirstChild("NameTag") then continue end
+                        local head = char:FindFirstChild("Head")
+                        local hrp = char:FindFirstChild("HumanoidRootPart")
+                        if not head or not hrp then continue end
 
                         local trait = char:FindFirstChild("CharacterTrait")
                         if not trait then continue end
@@ -489,39 +484,46 @@ tab7:Toggle("ESP Health Players", false, function(chkhtl)
                         local max = trait:FindFirstChild("HealthMax")
                         if not hp or not max then continue end
 
-                        local gui = Instance.new("BillboardGui", head)
-                        gui.Name = "NameTag"
-                        gui.Size = UDim2.new(0,220,0,40)
-                        gui.StudsOffset = Vector3.new(0,3,0)
-                        gui.AlwaysOnTop = true
+                        local gui = head:FindFirstChild("NameTag")
+                        if not gui then
+                            gui = Instance.new("BillboardGui", head)
+                            gui.Name = "NameTag"
+                            gui.AlwaysOnTop = true
 
-                        local txt = Instance.new("TextLabel", gui)
-                        txt.Size = UDim2.new(1,0,1,0)
-                        txt.BackgroundTransparency = 1
-                        txt.TextScaled = true
-                        txt.TextStrokeTransparency = 0
-                        txt.TextColor3 = Color3.fromRGB(255,255,255)
-
-                        local function update()
-                            txt.Text = "Name: "..p.Name.." | Health: "
-                                ..math.floor(hp.Value).."/"..math.floor(max.Value)
+                            local txt = Instance.new("TextLabel", gui)
+                            txt.Name = "Text"
+                            txt.Size = UDim2.new(1,0,1,0)
+                            txt.BackgroundTransparency = 1
+                            txt.TextScaled = true
+                            txt.TextStrokeTransparency = 0
+                            txt.TextColor3 = Color3.fromRGB(255,255,255)
                         end
 
-                        update()
-                        hp.Changed:Connect(update)
-                        max.Changed:Connect(update)
+                        local txt = gui.Text
+
+                        -- 📏 คำนวณระยะ
+                        local dist = (Camera.CFrame.Position - hrp.Position).Magnitude
+
+                        -- 📉 ปรับขนาดตามระยะ
+                        local scale = math.clamp(1 / (dist / 20), 0.5, 1.5)
+                        gui.Size = UDim2.new(0, 200 * scale, 0, 40 * scale)
+
+                        -- 🙈 ซ่อนถ้าไกลเกิน
+                        gui.Enabled = dist < 300
+
+                        -- 📝 อัปเดตข้อความ
+                        txt.Text = "Name: "..p.Name.." | Health: "
+                            ..math.floor(hp.Value).."/"..math.floor(max.Value)
                     end
                 end
-                task.wait(1)
+                task.wait(0.1)
             end
 
-            -- ปิดแล้วลบทั้งหมด
+            -- ปิดแล้วลบ
             for _, p in pairs(Players:GetPlayers()) do
                 if p.Character and p.Character:FindFirstChild("Head") then
                     local tag = p.Character.Head:FindFirstChild("NameTag")
-                    if tag then
-                        tag:Destroy()
-                    end
+                    if tag then tag:Destroy() end
                 end
             end
         end)
