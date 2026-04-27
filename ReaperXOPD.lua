@@ -168,6 +168,10 @@ tab1:Dropdown("Select Keys :", {"Z", "X", "C", "V", "B", "N"}, function(keyz)
     selectedKeyZ = keyz
 end)
 
+tab1:Textbox("Hold Key :", "ใส่เลข", function(sndz)
+    selectedTimeZ = sndz
+end)
+
 local lastStateZ = nil
 
 tab1:Toggle("Auto Key", false, function(autoz)
@@ -179,6 +183,10 @@ end)
 
 tab1:Dropdown("Select Keys :", {"Z", "X", "C", "V", "B", "N"}, function(keyx)
     selectedKeyX = keyx
+end)
+
+tab1:Textbox("Hold Key :", "ใส่เลข", function(sndx)
+    selectedTimeX = sndx
 end)
 
 local lastStateX = nil
@@ -194,6 +202,10 @@ tab1:Dropdown("Select Keys :", {"Z", "X", "C", "V", "B", "N"}, function(keyc)
     selectedKeyC = keyc
 end)
 
+tab1:Textbox("Hold Key :", "ใส่เลข", function(sndc)
+    selectedTimeC = sndc
+end)
+
 local lastStateC = nil
 
 tab1:Toggle("Auto Key", false, function(autoc)
@@ -205,6 +217,10 @@ end)
 
 tab1:Dropdown("Select Keys :", {"Z", "X", "C", "V", "B", "N"}, function(keyv)
     selectedKeyV = keyv
+end)
+
+tab1:Textbox("Hold Key :", "ใส่เลข", function(sndv)
+    selectedTimeV = sndv
 end)
 
 local lastStateV = nil
@@ -220,6 +236,10 @@ tab1:Dropdown("Select Keys :", {"Z", "X", "C", "V", "B", "N"}, function(keyb)
     selectedKeyB = keyb
 end)
 
+tab1:Textbox("Hold Key :", "ใส่เลข", function(sndb)
+    selectedTimeB = sndb
+end)
+
 local lastStateB = nil
 
 tab1:Toggle("Auto Key", false, function(autob)
@@ -231,6 +251,10 @@ end)
 
 tab1:Dropdown("Select Keys :", {"Z", "X", "C", "V", "B", "N"}, function(keyn)
     selectedKeyN = keyn
+end)
+
+tab1:Textbox("Hold Key :", "ใส่เลข", function(sndn)
+    selectedTimeN = sndn
 end)
 
 local lastStateN = nil
