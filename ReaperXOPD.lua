@@ -507,7 +507,7 @@ print("-- =================================== --")
    lib:Notifile("", "Send /console or F9 in chat!!! ", 6)
 end)
 
-tab3:Label("Function Check Rare Fruits")
+tab3:Label("Function Notigile Check Rare Fruits [แก้ไขอยู่]")
 
 --[[ tab3:Toggle("Check Rare in Server [ ใช้แล้วกระตุกช่วงๆ เดะแก้ทีหลัง ]", false, function(chkur)
 	checkfruits = chkur
