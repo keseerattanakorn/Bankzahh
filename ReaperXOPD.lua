@@ -235,14 +235,6 @@ local function getItemList(player)
         ["Compass"] = 0,
         ["Silver Compass"] = 0
     }
-
-	for _, name in pair(rareFruits) do
-		item[name] = 0
-	end
-
-	for _, name in pair(ultrarareFruits) do
-		item[name] = 0
-	end
 	
     if not player then
         return {"ไม่พบผู้เล่น"}
@@ -434,55 +426,7 @@ end)
 
 tab3:Label("Function Check Rare Fruits")
 
--- เปิด/ปิดจาก Toggle ของคุณ
-checkfruits = false
-
--- กันแจ้งซ้ำ
-local notified = {}
-
--- รวม fruit
-local allFruits = {}
-
-for _, v in ipairs(rareFruits) do
-    table.insert(allFruits, v)
-end
-
-for _, v in ipairs(ultrarareFruits) do
-    table.insert(allFruits, v)
-end
-
--- ฟังก์ชันเช็คว่ามี fruit ไหม
-local function hasRareFruit(player)
-    if not player then return false end
-
-    -- Backpack
-    local backpack = player:FindFirstChild("Backpack")
-    if backpack then
-        for _, item in ipairs(backpack:GetChildren()) do
-            for _, fruit in ipairs(allFruits) do
-                if item.Name == fruit then
-                    return true
-                end
-            end
-        end
-    end
-
-    -- Character (ของที่ถือ)
-    local chara = player.Character
-    if chara then
-        for _, item in ipairs(chara:GetChildren()) do
-            for _, fruit in ipairs(allFruits) do
-                if item.Name == fruit then
-                    return true
-                end
-            end
-        end
-    end
-
-    return false
-end
-
-tab3:Toggle("Check Rare in Server [ ใช้แล้วกระตุกช่วงๆ เดะแก้ทีหลัง ]", false, function(chkur)
+--[[ tab3:Toggle("Check Rare in Server [ ใช้แล้วกระตุกช่วงๆ เดะแก้ทีหลัง ]", false, function(chkur)
 	checkfruits = chkur
 end)
 
@@ -513,8 +457,73 @@ task.spawn(function()
 
         end
     end
-end)
+end)]]--
+
 local tab7 = lib.tabs:Taps("Misc")
 tab7:Label("Check All Sword Secret [ Soon . . . ]")
 
 tab7:Label("Check Raid [ Soon . . . ]")
+
+tab7:Toggle("ESP Health Players", false, function(chkhtl)
+    checkhealth = chkhtl
+
+    local Players = game:GetService("Players")
+
+    if checkhealth then
+        task.spawn(function()
+            while checkhealth do
+                for _, p in pairs(Players:GetPlayers()) do
+                    if p ~= Players.LocalPlayer and p.Character then
+                        local char = p.Character
+
+                        if not char:FindFirstChild("Head") then continue end
+                        local head = char.Head
+
+                        -- กันซ้ำ
+                        if head:FindFirstChild("NameTag") then continue end
+
+                        local trait = char:FindFirstChild("CharacterTrait")
+                        if not trait then continue end
+
+                        local hp = trait:FindFirstChild("Health")
+                        local max = trait:FindFirstChild("HealthMax")
+                        if not hp or not max then continue end
+
+                        local gui = Instance.new("BillboardGui", head)
+                        gui.Name = "NameTag"
+                        gui.Size = UDim2.new(0,220,0,40)
+                        gui.StudsOffset = Vector3.new(0,3,0)
+                        gui.AlwaysOnTop = true
+
+                        local txt = Instance.new("TextLabel", gui)
+                        txt.Size = UDim2.new(1,0,1,0)
+                        txt.BackgroundTransparency = 1
+                        txt.TextScaled = true
+                        txt.TextStrokeTransparency = 0
+                        txt.TextColor3 = Color3.fromRGB(255,255,255)
+
+                        local function update()
+                            txt.Text = "Name: "..p.Name.." | Health: "
+                                ..math.floor(hp.Value).."/"..math.floor(max.Value)
+                        end
+
+                        update()
+                        hp.Changed:Connect(update)
+                        max.Changed:Connect(update)
+                    end
+                end
+                task.wait(1)
+            end
+
+            -- ปิดแล้วลบทั้งหมด
+            for _, p in pairs(Players:GetPlayers()) do
+                if p.Character and p.Character:FindFirstChild("Head") then
+                    local tag = p.Character.Head:FindFirstChild("NameTag")
+                    if tag then
+                        tag:Destroy()
+                    end
+                end
+            end
+        end)
+    end
+end)
