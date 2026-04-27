@@ -593,7 +593,7 @@ tab7:Toggle("ESP Health Players", false, function(state)
                         gui.Size = UDim2.new(0, 200 * scale, 0, 40 * scale)
 
                         -- ข้อความ
-                        txt.Text = "Name: "..plr.Name.." | Health: "
+                        txt.Text = ""..plr.Name.." | Health: "
                             ..math.floor(hpVal.Value).."/"..math.floor(maxVal.Value)
                     end
                 end
