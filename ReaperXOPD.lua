@@ -162,6 +162,86 @@ spawn(function()
     end
 end)
 
+local tab1 = lib.tabs:Taps("Autos")
+tab1:Label("Function Skill Keyboard [ กำลังทำเพิ่ม ] ")
+tab1:Dropdown("Select Keys :", {"Z", "X", "C", "V", "B", "N"}, function(keyz)
+    selectedKeyZ = keyz
+end)
+
+local lastStateZ = nil
+
+tab1:Toggle("Auto Key", false, function(autoz)
+    if autoz ~= lastStateZ then
+        lastStateZ = autoz
+        lib:Notifile("Alert", "ฟีเจอร์นี้ยังไม่พร้อมใช้งาน", 3)
+    end
+end)
+
+tab1:Dropdown("Select Keys :", {"Z", "X", "C", "V", "B", "N"}, function(keyx)
+    selectedKeyX = keyx
+end)
+
+local lastStateX = nil
+
+tab1:Toggle("Auto Key", false, function(autox)
+    if autox ~= lastStateX then
+        lastStateX = autox
+        lib:Notifile("Alert", "ฟีเจอร์นี้ยังไม่พร้อมใช้งาน", 3)
+    end
+end)
+
+tab1:Dropdown("Select Keys :", {"Z", "X", "C", "V", "B", "N"}, function(keyc)
+    selectedKeyC = keyc
+end)
+
+local lastStateC = nil
+
+tab1:Toggle("Auto Key", false, function(autoc)
+    if autoc ~= lastStateC then
+        lastStateC = autoc
+        lib:Notifile("Alert", "ฟีเจอร์นี้ยังไม่พร้อมใช้งาน", 3)
+    end
+end)
+
+tab1:Dropdown("Select Keys :", {"Z", "X", "C", "V", "B", "N"}, function(keyv)
+    selectedKeyV = keyv
+end)
+
+local lastStateV = nil
+
+tab1:Toggle("Auto Key", false, function(autov)
+    if autov ~= lastStateV then
+        lastStateV = autov
+        lib:Notifile("Alert", "ฟีเจอร์นี้ยังไม่พร้อมใช้งาน", 3)
+    end
+end)
+
+tab1:Dropdown("Select Keys :", {"Z", "X", "C", "V", "B", "N"}, function(keyb)
+    selectedKeyB = keyb
+end)
+
+local lastStateB = nil
+
+tab1:Toggle("Auto Key", false, function(autob)
+    if autob ~= lastStateB then
+        lastStateB = autob
+        lib:Notifile("Alert", "ฟีเจอร์นี้ยังไม่พร้อมใช้งาน", 3)
+    end
+end)
+
+tab1:Dropdown("Select Keys :", {"Z", "X", "C", "V", "B", "N"}, function(keyn)
+    selectedKeyN = keyn
+end)
+
+local lastStateN = nil
+
+tab1:Toggle("Auto Key", false, function(auton)
+    if auton ~= lastStateN then
+        lastStateN = auton
+        lib:Notifile("Alert", "ฟีเจอร์นี้ยังไม่พร้อมใช้งาน", 3)
+    end
+end)
+
 local tab3 = lib.tabs:Taps("Players")
 tab3:Label("Chance Your Compass | On Legendary Mode ")
 local lp = Players.LocalPlayer
