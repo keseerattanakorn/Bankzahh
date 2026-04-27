@@ -547,31 +547,32 @@ tab7:Label("Check All Sword Secret [ Soon . . . ]")
 
 tab7:Label("Check Raid [ Soon . . . ]")
 
-tab7:Toggle("ESP Health Players [ Fix ]", false, function(chkhtl)
-    checkhealth = chkhtl
+tab7:Toggle("ESP Health Players", false, function(state)
+    checkhealth = state
 
     if checkhealth then
         task.spawn(function()
             while checkhealth do
-                for _, p in pairs(Players:GetPlayers()) do
-                    if p ~= Players.LocalPlayer and p.Character then
-                        local char = p.Character
-                        local head = char:FindFirstChild("Head")
-                        local hrp = char:FindFirstChild("HumanoidRootPart")
-                        if not head or not hrp then continue end
+                for _, plr in pairs(Players:GetPlayers()) do
+                    if plr ~= Players.LocalPlayer and plr.Character then
+                        local chr = plr.Character
+                        local head = chr:FindFirstChild("Head")
+                        local root = chr:FindFirstChild("HumanoidRootPart")
+                        if not head or not root then continue end
 
-                        local trait = char:FindFirstChild("CharacterTrait")
+                        local trait = chr:FindFirstChild("CharacterTrait")
                         if not trait then continue end
 
-                        local hp = trait:FindFirstChild("Health")
-                        local max = trait:FindFirstChild("HealthMax")
-                        if not hp or not max then continue end
+                        local hpVal = trait:FindFirstChild("Health")
+                        local maxVal = trait:FindFirstChild("HealthMax")
+                        if not hpVal or not maxVal then continue end
 
                         local gui = head:FindFirstChild("NameTag")
                         if not gui then
                             gui = Instance.new("BillboardGui", head)
                             gui.Name = "NameTag"
                             gui.AlwaysOnTop = true
+                            gui.StudsOffset = Vector3.new(0, 3, 0) -- 👈 ลอยเหนือหัว
 
                             local txt = Instance.new("TextLabel", gui)
                             txt.Name = "Text"
@@ -584,28 +585,25 @@ tab7:Toggle("ESP Health Players [ Fix ]", false, function(chkhtl)
 
                         local txt = gui.Text
 
-                        -- 📏 คำนวณระยะ
-                        local dist = (Camera.CFrame.Position - hrp.Position).Magnitude
+                        -- ระยะ
+                        local dist = (Camera.CFrame.Position - root.Position).Magnitude
 
-                        -- 📉 ปรับขนาดตามระยะ
-                        local scale = math.clamp(1 / (dist / 20), 0.5, 1.5)
+                        -- ไกล = เล็ก
+                        local scale = math.clamp(1 / (dist / 25), 0.3, 1.5)
                         gui.Size = UDim2.new(0, 200 * scale, 0, 40 * scale)
 
-                        -- 🙈 ซ่อนถ้าไกลเกิน
-                        gui.Enabled = dist < 300
-
-                        -- 📝 อัปเดตข้อความ
-                        txt.Text = "Name: "..p.Name.." | Health: "
-                            ..math.floor(hp.Value).."/"..math.floor(max.Value)
+                        -- ข้อความ
+                        txt.Text = "Name: "..plr.Name.." | Health: "
+                            ..math.floor(hpVal.Value).."/"..math.floor(maxVal.Value)
                     end
                 end
                 task.wait(0.1)
             end
 
             -- ปิดแล้วลบ
-            for _, p in pairs(Players:GetPlayers()) do
-                if p.Character and p.Character:FindFirstChild("Head") then
-                    local tag = p.Character.Head:FindFirstChild("NameTag")
+            for _, plr in pairs(Players:GetPlayers()) do
+                if plr.Character and plr.Character:FindFirstChild("Head") then
+                    local tag = plr.Character.Head:FindFirstChild("NameTag")
                     if tag then tag:Destroy() end
                 end
             end
