@@ -163,7 +163,7 @@ spawn(function()
 end)
 
 local tab1 = lib.tabs:Taps("Autos")
-tab1:Label("Function Skill Keyboard [ กำลังทำเพิ่ม ] ")
+tab1:Label("Function Skill Keyboard [ ใส่เลข 0 เพื่อหยุดกดคีย์ค้าง ] ")
 local VIM = game:GetService("VirtualInputManager")
 
 local function runAuto(stateFunc, keyFunc, timeFunc)
