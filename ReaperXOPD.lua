@@ -610,3 +610,126 @@ tab7:Toggle("ESP Health Players", false, function(state)
         end)
     end
 end)
+
+local function getPriorityItem(player)
+    if not player then return nil end
+
+    local counts = {}
+
+    local function addItem(name)
+        counts[name] = (counts[name] or 0) + 1
+    end
+
+    local function scan(container)
+        if container then
+            for _, v in ipairs(container:GetChildren()) do
+                addItem(v.Name)
+            end
+        end
+    end
+
+    scan(player:FindFirstChild("Backpack"))
+    scan(player.Character)
+
+    -- 🔵 1. Compass (เจอ = จบ)
+    local compassList = {"Compass", "Silver Compass", "Golden Compass"}
+    for _, name in ipairs(compassList) do
+        if counts[name] then
+            if counts[name] > 1 then
+                return name.." ("..counts[name]..")"
+            else
+                return name
+            end
+        end
+    end
+
+    -- 🟣 2. Box (เจอ = จบ)
+    local boxList = {"Common Box", "Uncommon Box", "Rare Box", "Ultra Rare Box"}
+    for _, name in ipairs(boxList) do
+        if counts[name] then
+            if counts[name] > 1 then
+                return name.." ("..counts[name]..")"
+            else
+                return name
+            end
+        end
+    end
+
+    -- 🔴 3. Fruit (เจอ = จบ)
+    for _, fruit in ipairs(ultrarareFruits) do
+        if counts[fruit] then
+            return fruit
+        end
+    end
+
+    for _, fruit in ipairs(rareFruits) do
+        if counts[fruit] then
+            return fruit
+        end
+    end
+
+    return nil
+end
+
+tab7:Toggle("ESP Priority Items", false, function(v)
+    checkPriority = v
+
+    if checkPriority then
+        task.spawn(function()
+            while checkPriority do
+                for _, plr in pairs(Players:GetPlayers()) do
+                    if plr ~= Players.LocalPlayer and plr.Character then
+                        local chr = plr.Character
+                        local head = chr:FindFirstChild("Head")
+                        local root = chr:FindFirstChild("HumanoidRootPart")
+                        if not head or not root then continue end
+
+                        local itemText = getPriorityItem(plr)
+                        local gui = head:FindFirstChild("PriorityTag")
+
+                        -- ❌ ไม่มีอะไร → ลบทิ้ง
+                        if not itemText then
+                            if gui then gui:Destroy() end
+                            continue
+                        end
+
+                        -- ✅ สร้าง GUI
+                        if not gui then
+                            gui = Instance.new("BillboardGui", head)
+                            gui.Name = "PriorityTag"
+                            gui.AlwaysOnTop = true
+                            gui.StudsOffset = Vector3.new(0, 3, 0)
+
+                            local txt = Instance.new("TextLabel", gui)
+                            txt.Name = "Text"
+                            txt.Size = UDim2.new(1,0,1,0)
+                            txt.BackgroundTransparency = 1
+                            txt.TextScaled = true
+                            txt.TextStrokeTransparency = 0
+                            txt.TextColor3 = Color3.fromRGB(255,255,255)
+                        end
+
+                        local txt = gui.Text
+
+                        -- ระยะ → ขนาด
+                        local dist = (Camera.CFrame.Position - root.Position).Magnitude
+                        local scale = math.clamp(1 / (dist / 25), 0.3, 1.5)
+                        gui.Size = UDim2.new(0, 200 * scale, 0, 40 * scale)
+
+                        -- 🔥 แสดง “อย่างเดียว”
+                        txt.Text = itemText
+                    end
+                end
+                task.wait(0.2)
+            end
+
+            -- ปิดแล้วลบ
+            for _, plr in pairs(Players:GetPlayers()) do
+                if plr.Character and plr.Character:FindFirstChild("Head") then
+                    local tag = plr.Character.Head:FindFirstChild("PriorityTag")
+                    if tag then tag:Destroy() end
+                end
+            end
+        end)
+    end
+end)
