@@ -733,3 +733,55 @@ tab7:Toggle("ESP Priority Items", false, function(v)
         end)
     end
 end)
+
+local Workspace = game:GetService("Workspace")
+
+-- 🔹 รายชื่อผลไม้
+local fruitList = {
+    "Flare","Magma","Ope","Quake","Phoenix","Dark","Rumble","Sand",
+    "Spin","Spring","Slip","Venom","Gas","Luck","Barrier","Bomb",
+    "Diamond","Hot","Smelt","Chilly","Candy","Plasma","Swim"
+}
+
+-- 🔹 ตัวแปรใหม่
+local foundItems = {}
+local selectedItem = nil
+
+-- 🔹 สแกนของใน workspace
+local function refreshItems()
+    table.clear(foundItems)
+
+    for _, obj in ipairs(Workspace:GetDescendants()) do
+        for _, fruit in ipairs(fruitList) do
+            if string.find(obj.Name, fruit) then
+                table.insert(foundItems, obj)
+                break
+            end
+        end
+    end
+end
+
+-- 🔹 Dropdown เลือกของ
+tab7:Dropdown("Select :", foundItems, function(v)
+    selectedItem = v
+end)
+
+-- 🔹 Toggle มองของ
+tab7:Toggle("View Item", false, function(state)
+    if selectedItem and selectedItem:IsA("BasePart") then
+        if state then
+            Camera.CameraSubject = selectedItem
+        else
+            local lp = game.Players.LocalPlayer
+            if lp.Character and lp.Character:FindFirstChild("Humanoid") then
+                Camera.CameraSubject = lp.Character.Humanoid
+            end
+        end
+    end
+end)
+
+-- 🔹 ปุ่มรีเฟรช
+tab7:Button("Refresh Items", function()
+    refreshItems()
+    lib:Notifile("Alert", "รีเฟรชของในแมพแล้ว", 3)
+end)
