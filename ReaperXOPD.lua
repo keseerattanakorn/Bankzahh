@@ -736,41 +736,43 @@ end)
 
 local Workspace = game:GetService("Workspace")
 
--- 🔹 รายชื่อผลไม้
 local fruitList = {
     "Flare","Magma","Ope","Quake","Phoenix","Dark","Rumble","Sand",
     "Spin","Spring","Slip","Venom","Gas","Luck","Barrier","Bomb",
     "Diamond","Hot","Smelt","Chilly","Candy","Plasma","Swim"
 }
 
--- 🔹 ตัวแปรใหม่
 local foundItems = {}
 local selectedItem = nil
 
--- 🔹 สแกนของใน workspace
+-- 🔹 สแกนเฉพาะลูกใน workspace (ไม่ไล่ทั้งแมพ)
 local function refreshItems()
     table.clear(foundItems)
 
-    for _, obj in ipairs(Workspace:GetDescendants()) do
-        for _, fruit in ipairs(fruitList) do
-            if string.find(obj.Name, fruit) then
-                table.insert(foundItems, obj)
-                break
+    for _, obj in ipairs(Workspace:GetChildren()) do
+        if obj:IsA("Tool") then
+            for _, fruit in ipairs(fruitList) do
+                if string.find(obj.Name, fruit) then
+                    table.insert(foundItems, obj)
+                    break
+                end
             end
         end
     end
 end
 
--- 🔹 Dropdown เลือกของ
-tab7:Dropdown("Select :", foundItems, function(v)
+-- 🔹 Dropdown
+tab3:Dropdown("Select Item :", foundItems, function(v)
     selectedItem = v
 end)
 
--- 🔹 Toggle มองของ
-tab7:Toggle("View Item", false, function(state)
-    if selectedItem and selectedItem:IsA("BasePart") then
-        if state then
-            Camera.CameraSubject = selectedItem
+-- 🔹 View ของ (Tool ใช้ Handle)
+tab3:Toggle("View Item", false, function(state)
+    if selectedItem then
+        local handle = selectedItem:FindFirstChild("Handle")
+
+        if state and handle then
+            Camera.CameraSubject = handle
         else
             local lp = game.Players.LocalPlayer
             if lp.Character and lp.Character:FindFirstChild("Humanoid") then
@@ -780,8 +782,8 @@ tab7:Toggle("View Item", false, function(state)
     end
 end)
 
--- 🔹 ปุ่มรีเฟรช
-tab7:Button("Refresh Items", function()
+-- 🔹 รีเฟรช
+tab3:Button("Refresh Items", function()
     refreshItems()
-    lib:Notifile("Alert", "รีเฟรชของในแมพแล้ว", 3)
+    lib:Notifile("Alert", "รีเฟรชผลไม้แล้ว", 3)
 end)
