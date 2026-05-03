@@ -611,10 +611,6 @@ tab7:Toggle("ESP Health Players", false, function(state)
     end
 end)
 
---// Services
-local Players = game:GetService("Players")
-local Camera = workspace.CurrentCamera
-
 --// 🔹 ฟังก์ชันสแกน Tool (รองรับ Character + Backpack)
 local function scan(container, compassCount, boxCount, fruitList)
     for _, v in pairs(container:GetChildren()) do
@@ -695,8 +691,8 @@ end
 --// 🔘 Toggle (เปิด = โชว์ / ปิด = ลบ)
 local Checkfruitfind = false
 
-tab7:Toggle("View Item", false, function(state)
-    Checkfruitfind = state
+tab7:Toggle("Show Item On Head Players | Compass, Box And Fruit", false, function(chkfrt)
+    Checkfruitfind = chkfrt
 
     if Checkfruitfind then
         task.spawn(function()
