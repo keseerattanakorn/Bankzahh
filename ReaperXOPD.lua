@@ -611,83 +611,106 @@ tab7:Toggle("ESP Health Players", false, function(state)
     end
 end)
 
-local function getPriorityItem(player)
-    if not player then return nil end
+--// Services
+local Players = game:GetService("Players")
+local Camera = workspace.CurrentCamera
 
-    local counts = {}
+--// 🔹 ฟังก์ชันสแกน Tool (รองรับ Character + Backpack)
+local function scan(container, compassCount, boxCount, fruitList)
+    for _, v in pairs(container:GetChildren()) do
+        if v:IsA("Tool") then
+            local name = v.Name
 
-    local function addItem(name)
-        counts[name] = (counts[name] or 0) + 1
-    end
+            -- Compass
+            if name == "Compass" or name == "Silver Compass" or name == "Golden Compass" then
+                compassCount[name] = (compassCount[name] or 0) + 1
+            end
 
-    local function scan(container)
-        if container then
-            for _, v in ipairs(container:GetChildren()) do
-                addItem(v.Name)
+            -- Box
+            if name == "Common Box" or name == "Uncommon Box" or name == "Rare Box" or name == "Ultra Rare Box" then
+                boxCount[name] = (boxCount[name] or 0) + 1
+            end
+
+            -- Fruit
+            if string.find(name, "Fruit") then
+                table.insert(fruitList, name)
             end
         end
     end
-
-    scan(player:FindFirstChild("Backpack"))
-    scan(player.Character)
-
-    -- 🔵 1. Compass (เจอ = จบ)
-    local compassList = {"Compass", "Silver Compass", "Golden Compass"}
-    for _, name in ipairs(compassList) do
-        if counts[name] then
-            if counts[name] > 1 then
-                return name.." ("..counts[name]..")"
-            else
-                return name
-            end
-        end
-    end
-
-    -- 🟣 2. Box (เจอ = จบ)
-    local boxList = {"Common Box", "Uncommon Box", "Rare Box", "Ultra Rare Box"}
-    for _, name in ipairs(boxList) do
-        if counts[name] then
-            if counts[name] > 1 then
-                return name.." ("..counts[name]..")"
-            else
-                return name
-            end
-        end
-    end
-
-    -- 🔴 3. Fruit (เจอ = จบ)
-    for _, fruit in ipairs(ultrarareFruits) do
-        if counts[fruit] then
-            return fruit
-        end
-    end
-
-    for _, fruit in ipairs(rareFruits) do
-        if counts[fruit] then
-            return fruit
-        end
-    end
-
-    return nil
 end
 
-tab7:Toggle("ESP Priority Items", false, function(v)
-    checkPriority = v
+--// 🔥 ฟังก์ชันหลัก (รวมข้อความ)
+local function getPriorityItem(plr)
+    if not plr then return nil end
 
-    if checkPriority then
+    local compassCount = {}
+    local boxCount = {}
+    local fruitList = {}
+
+    -- Character
+    if plr.Character then
+        scan(plr.Character, compassCount, boxCount, fruitList)
+    end
+
+    -- Backpack
+    if plr:FindFirstChild("Backpack") then
+        scan(plr.Backpack, compassCount, boxCount, fruitList)
+    end
+
+    local result = {}
+
+    -- 🥇 Compass
+    local compassText = {}
+    for _, name in ipairs({"Compass","Silver Compass","Golden Compass"}) do
+        if compassCount[name] then
+            local c = compassCount[name]
+            table.insert(compassText, c > 1 and (name.." ("..c..")") or name)
+        end
+    end
+    if #compassText > 0 then
+        table.insert(result, table.concat(compassText, " | "))
+    end
+
+    -- 🥈 Box
+    local boxText = {}
+    for _, name in ipairs({"Common Box","Uncommon Box","Rare Box","Ultra Rare Box"}) do
+        if boxCount[name] then
+            local c = boxCount[name]
+            table.insert(boxText, c > 1 and (name.." ("..c..")") or name)
+        end
+    end
+    if #boxText > 0 then
+        table.insert(result, table.concat(boxText, " | "))
+    end
+
+    -- 🥉 Fruit
+    if #fruitList > 0 then
+        table.insert(result, table.concat(fruitList, " | "))
+    end
+
+    if #result == 0 then return nil end
+    return table.concat(result, "\n")
+end
+
+--// 🔘 Toggle (เปิด = โชว์ / ปิด = ลบ)
+local Checkfruitfind = false
+
+tab7:Toggle("View Item", false, function(state)
+    Checkfruitfind = state
+
+    if Checkfruitfind then
         task.spawn(function()
-            while checkPriority do
+            while Checkfruitfind do
                 for _, plr in pairs(Players:GetPlayers()) do
                     if plr ~= Players.LocalPlayer and plr.Character then
-                        local chr = plr.Character
-                        local head = chr:FindFirstChild("Head")
-                        local root = chr:FindFirstChild("HumanoidRootPart")
+                        local head = plr.Character:FindFirstChild("Head")
+                        local root = plr.Character:FindFirstChild("HumanoidRootPart")
                         if not head or not root then continue end
 
                         local itemText = getPriorityItem(plr)
-                        local gui = head:FindFirstChild("PriorityTag")
+                        local gui = head:FindFirstChild("ItemTag")
 
-                        -- ❌ ไม่มีอะไร → ลบทิ้ง
+                        -- ❌ ไม่มีของ → ลบ
                         if not itemText then
                             if gui then gui:Destroy() end
                             continue
@@ -695,13 +718,15 @@ tab7:Toggle("ESP Priority Items", false, function(v)
 
                         -- ✅ สร้าง GUI
                         if not gui then
-                            gui = Instance.new("BillboardGui", head)
-                            gui.Name = "PriorityTag"
+                            gui = Instance.new("BillboardGui")
+                            gui.Name = "ItemTag"
+                            gui.Parent = head
                             gui.AlwaysOnTop = true
                             gui.StudsOffset = Vector3.new(0, 3, 0)
 
-                            local txt = Instance.new("TextLabel", gui)
+                            local txt = Instance.new("TextLabel")
                             txt.Name = "Text"
+                            txt.Parent = gui
                             txt.Size = UDim2.new(1,0,1,0)
                             txt.BackgroundTransparency = 1
                             txt.TextScaled = true
@@ -709,24 +734,21 @@ tab7:Toggle("ESP Priority Items", false, function(v)
                             txt.TextColor3 = Color3.fromRGB(255,255,255)
                         end
 
-                        local txt = gui.Text
-
-                        -- ระยะ → ขนาด
+                        -- 🔹 ปรับขนาดตามระยะ (ลื่น ไม่ใหญ่เกิน)
                         local dist = (Camera.CFrame.Position - root.Position).Magnitude
                         local scale = math.clamp(1 / (dist / 25), 0.3, 1.5)
-                        gui.Size = UDim2.new(0, 200 * scale, 0, 40 * scale)
+                        gui.Size = UDim2.new(0, 200 * scale, 0, 50 * scale)
 
-                        -- 🔥 แสดง “อย่างเดียว”
-                        txt.Text = itemText
+                        gui.Text.Text = itemText
                     end
                 end
                 task.wait(0.2)
             end
 
-            -- ปิดแล้วลบ
+            -- 🔥 ปิดแล้วลบทั้งหมด
             for _, plr in pairs(Players:GetPlayers()) do
                 if plr.Character and plr.Character:FindFirstChild("Head") then
-                    local tag = plr.Character.Head:FindFirstChild("PriorityTag")
+                    local tag = plr.Character.Head:FindFirstChild("ItemTag")
                     if tag then tag:Destroy() end
                 end
             end
@@ -744,32 +766,32 @@ local foundItems = {}
 local selectedItemName = nil
 local dropdownItems
 
--- 🔹 สแกน Tool ที่มีคำว่า Fruit
+-- 🔹 สแกนเฉพาะลูกตรง ๆ ของ Workspace (ลื่นสุด)
 local function refreshItems()
     table.clear(foundItems)
 
-    for _, obj in ipairs(Workspace:GetDescendants()) do
+    for _, obj in ipairs(Workspace:GetChildren()) do
         if obj:IsA("Tool") and string.find(obj.Name, "Fruit") then
             table.insert(foundItems, obj.Name)
         end
     end
 end
 
--- 🔹 หา object จากชื่อ
+-- 🔹 หา object (ไม่ไล่ลึก)
 local function getItemByName(name)
-    for _, obj in ipairs(Workspace:GetDescendants()) do
+    for _, obj in ipairs(Workspace:GetChildren()) do
         if obj:IsA("Tool") and obj.Name == name then
             return obj
         end
     end
 end
 
--- 🔹 Dropdown (tab7)
+-- 🔹 Dropdown
 dropdownItems = tab7:Dropdown("Select Item :", foundItems, function(v)
     selectedItemName = v
 end)
 
--- 🔹 ปุ่มรีเฟรช (tab7)
+-- 🔹 รีเฟรช
 tab7:Button("Refresh Items", function()
     refreshItems()
 
@@ -780,7 +802,7 @@ tab7:Button("Refresh Items", function()
     lib:Notifile("Alert", "รีเฟรชแล้ว", 3)
 end)
 
--- 🔹 View ของ (tab7)
+-- 🔹 View
 tab7:Toggle("View Item", false, function(state)
     if not selectedItemName then return end
 
