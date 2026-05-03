@@ -737,9 +737,9 @@ end)
 local Workspace = game:GetService("Workspace")
 
 local fruitList = {
-    "Flare","Magma","Ope","Quake","Phoenix","Dark","Rumble","Sand",
-    "Spin","Spring","Slip","Venom","Gas","Luck","Barrier","Bomb",
-    "Diamond","Hot","Smelt","Chilly","Candy","Plasma","Swim"
+    "Flare Fruit","Magma Fruit","Ope Fruit","Quake Fruit","Phoenix Fruit","Dark Fruit","Rumble Fruit","Sand Fruit",
+    "Spin Fruit","Spring Fruit","Slip Fruit","Venom Fruit","Gas Fruit","Luck Fruit","Barrier Fruit","Bomb Fruit",
+    "Diamond Fruit","Hot Fruit","Smelt Fruit","Chilly Fruit","Candy Fruit","Plasma Fruit","Swim Fruit"
 }
 
 local foundItems = {}
@@ -762,12 +762,12 @@ local function refreshItems()
 end
 
 -- 🔹 Dropdown
-tab3:Dropdown("Select Item :", foundItems, function(v)
+tab7:Dropdown("Select Item :", foundItems, function(v)
     selectedItem = v
 end)
 
 -- 🔹 View ของ (Tool ใช้ Handle)
-tab3:Toggle("View Item", false, function(state)
+tab7:Toggle("View Item", false, function(state)
     if selectedItem then
         local handle = selectedItem:FindFirstChild("Handle")
 
@@ -783,7 +783,7 @@ tab3:Toggle("View Item", false, function(state)
 end)
 
 -- 🔹 รีเฟรช
-tab3:Button("Refresh Items", function()
+tab7:Button("Refresh Items", function()
     refreshItems()
     lib:Notifile("Alert", "รีเฟรชผลไม้แล้ว", 3)
 end)
