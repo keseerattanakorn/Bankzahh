@@ -734,56 +734,66 @@ tab7:Toggle("ESP Priority Items", false, function(v)
     end
 end)
 
+tab7:Label("Check Fruit Spawn On Tree | [ Beta ] One Piece: Ascended")
+
 local Workspace = game:GetService("Workspace")
 
-local fruitList = {
-    "Flare Fruit","Magma Fruit","Ope Fruit","Quake Fruit","Phoenix Fruit","Dark Fruit","Rumble Fruit","Sand Fruit",
-    "Spin Fruit","Spring Fruit","Slip Fruit","Venom Fruit","Gas Fruit","Luck Fruit","Barrier Fruit","Bomb Fruit",
-    "Diamond Fruit","Hot Fruit","Smelt Fruit","Chilly Fruit","Candy Fruit","Plasma Fruit","Swim Fruit"
-}
+local LocalPlayer = Players.LocalPlayer
 
 local foundItems = {}
-local selectedItem = nil
+local selectedItemName = nil
+local dropdownItems
 
--- 🔹 สแกนเฉพาะลูกใน workspace (ไม่ไล่ทั้งแมพ)
+-- 🔹 สแกน Tool ที่มีคำว่า Fruit
 local function refreshItems()
     table.clear(foundItems)
 
-    for _, obj in ipairs(Workspace:GetChildren()) do
-        if obj:IsA("Tool") then
-            for _, fruit in ipairs(fruitList) do
-                if string.find(obj.Name, fruit) then
-                    table.insert(foundItems, obj)
-                    break
-                end
-            end
+    for _, obj in ipairs(Workspace:GetDescendants()) do
+        if obj:IsA("Tool") and string.find(obj.Name, "Fruit") then
+            table.insert(foundItems, obj.Name)
         end
     end
 end
 
--- 🔹 Dropdown
-tab7:Dropdown("Select Item :", foundItems, function(v)
-    selectedItem = v
-end)
-
--- 🔹 View ของ (Tool ใช้ Handle)
-tab7:Toggle("View Item", false, function(state)
-    if selectedItem then
-        local handle = selectedItem:FindFirstChild("Handle")
-
-        if state and handle then
-            Camera.CameraSubject = handle
-        else
-            local lp = game.Players.LocalPlayer
-            if lp.Character and lp.Character:FindFirstChild("Humanoid") then
-                Camera.CameraSubject = lp.Character.Humanoid
-            end
+-- 🔹 หา object จากชื่อ
+local function getItemByName(name)
+    for _, obj in ipairs(Workspace:GetDescendants()) do
+        if obj:IsA("Tool") and obj.Name == name then
+            return obj
         end
     end
+end
+
+-- 🔹 Dropdown (tab7)
+dropdownItems = tab7:Dropdown("Select Item :", foundItems, function(v)
+    selectedItemName = v
 end)
 
--- 🔹 รีเฟรช
+-- 🔹 ปุ่มรีเฟรช (tab7)
 tab7:Button("Refresh Items", function()
     refreshItems()
-    lib:Notifile("Alert", "รีเฟรชผลไม้แล้ว", 3)
+
+    if dropdownItems and dropdownItems.Refresh then
+        dropdownItems:Refresh(foundItems)
+    end
+
+    lib:Notifile("Alert", "รีเฟรชแล้ว", 3)
+end)
+
+-- 🔹 View ของ (tab7)
+tab7:Toggle("View Item", false, function(state)
+    if not selectedItemName then return end
+
+    local item = getItemByName(selectedItemName)
+    if not item then return end
+
+    local handle = item:FindFirstChild("Handle")
+
+    if state and handle then
+        Camera.CameraSubject = handle
+    else
+        if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+            Camera.CameraSubject = LocalPlayer.Character.Humanoid
+        end
+    end
 end)
