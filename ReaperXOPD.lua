@@ -201,7 +201,7 @@ local function runAuto(stateFunc, keyFunc, timeFunc)
     end)
 end
 
-local keys = {"Z","X","C","V","B","N","F","G","H","J","K"}
+local keys = {"Z","X","C","V","B","N","F","G","H","J","K","R","Q"}
 
 -- Z
 local selectedKeyZ, selectedTimeZ, stateZ
