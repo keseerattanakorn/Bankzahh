@@ -505,26 +505,41 @@ for i, storage in ipairs(storageValues) do
     end
 end
 
+local boundValues = {}
+
 for i = 1, 3 do
-local foundb = bounds:FindFirstChild("BoundFruit" .. i)
-table.insert(boundValues, found)
+    local foundb = bounds:FindFirstChild("BoundFruit" .. i)
+    table.insert(boundValues, foundb)
 end
+
 print("-- ========== [Devil Fruit Bound Storage Player] ========== --")
 
 for i, bound in ipairs(boundValues) do
-    local value = bound and bound.Value or "N/A"
-    
-    if typeof(value) == "string" and value:find("Fruit") then
-        local partb = string.split(value, ",")
-        local fruitNameb = partb[1]
-        local aura = partb[6] == "1" and " [ Aura ]" or ""
 
-        print(" BoundFruit " .. i .. ": " .. fruitNameb .. aura)
+    local value = bound and bound.Value or "N/A"
+
+    if typeof(value) == "string" and value ~= "None" then
+
+        local parts = string.split(value, ",")
+
+        local fruitName = parts[1] or "Unknown"
+
+        local melee = parts[2] or "0"
+        local sniper = parts[3] or "0"
+        local defense = parts[4] or "0"
+        local sword = parts[5] or "0"
+
+        print(" BoundFruit " .. i .. ": " .. fruitName)
+        print("  Affinities Melee: " .. melee)
+        print("  Affinities Sniper: " .. sniper)
+        print("  Affinities Defense: " .. defense)
+        print("  Affinities Sword: " .. sword)
+
     else
         print(" BoundFruit " .. i .. ": None")
     end
-		end
-
+end
+		
 print("-- =================================== --")
 
    lib:Notifile("", "Send /console or F9 in chat!!! ", 6)
@@ -588,6 +603,25 @@ tab7:Toggle("ESP Health Players", false, function(state)
 
                         local hpVal = trait:FindFirstChild("Health")
                         local maxVal = trait:FindFirstChild("HealthMax")
+						local hakiPercent = "N/A"
+
+local userData = workspace:FindFirstChild("UserData")
+if userData then
+    local userFolder = userData:FindFirstChild("User_" .. plr.UserId)
+
+    if userFolder then
+        local data = userFolder:FindFirstChild("Data")
+
+        if data then
+            local hakiBar = data:FindFirstChild("HakiBar")
+
+            if hakiBar then
+                hakiPercent = math.floor(hakiBar.Value) .. "%"
+            end
+        end
+    end
+	end
+								
                         if not hpVal or not maxVal then continue end
 
                         local gui = head:FindFirstChild("NameTag")
@@ -616,8 +650,8 @@ tab7:Toggle("ESP Health Players", false, function(state)
                         gui.Size = UDim2.new(0, 200 * scale, 0, 40 * scale)
 
                         -- ข้อความ
-                        txt.Text = ""..plr.Name.." | Health: "
-                            ..math.floor(hpVal.Value).."/"..math.floor(maxVal.Value)
+                        txt.Text = plr.Name .. " | Health: " .. math.floor(hpVal.Value) .. "/" .. math.floor(maxVal.Value) .. 
+						" | Haki: " .. hakiPercent
                     end
                 end
                 task.wait(0.1)
