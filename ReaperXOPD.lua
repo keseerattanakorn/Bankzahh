@@ -445,8 +445,8 @@ if not data then return end
 local bosses = data:FindFirstChild("Bosses")
 
 local ace = bosses:FindFirstChild("FireBossKills")
-local endless = bosses:FindFirstChild("MarineRaidsComplated")
-local marine = bosses:FindFirstChild("EndlessRaidsComplated")
+local endless = bosses:FindFirstChild("MarineRaidsCompleted")
+local marine = bosses:FindFirstChild("EndlessRaidsCompleted")
 
 local beris = data:FindFirstChild("Beri")
 local gems = data:FindFirstChild("Gems")
