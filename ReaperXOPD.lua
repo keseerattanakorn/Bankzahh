@@ -590,46 +590,84 @@ tab7:Toggle("ESP Health Players", false, function(state)
 
     if checkhealth then
         task.spawn(function()
+
             while checkhealth do
+
                 for _, plr in pairs(Players:GetPlayers()) do
+
                     if plr ~= Players.LocalPlayer and plr.Character then
+
                         local chr = plr.Character
                         local head = chr:FindFirstChild("Head")
                         local root = chr:FindFirstChild("HumanoidRootPart")
-                        if not head or not root then continue end
+
+                        if not head or not root then
+                            continue
+                        end
 
                         local trait = chr:FindFirstChild("CharacterTrait")
-                        if not trait then continue end
+                        if not trait then
+                            continue
+                        end
 
                         local hpVal = trait:FindFirstChild("Health")
                         local maxVal = trait:FindFirstChild("HealthMax")
-						local hakiPercent = "N/A"
 
-local userFolder = workspace:FindFirstChild("UserData")
-    and workspace.UserData:FindFirstChild("User_" .. tostring(plr.UserId))
+                        if not hpVal or not maxVal then
+                            continue
+                        end
 
-if userFolder then
+                        -- =========================
+                        -- HAKI
+                        -- =========================
 
-    local hakiBar =
-        userFolder:FindFirstChild("HakiBar")
-        or (userFolder:FindFirstChild("Data") and userFolder.Data:FindFirstChild("HakiBar"))
+                        local hakiPercent = "N/A"
 
-    if hakiBar and tonumber(hakiBar.Value) then
-        hakiPercent = math.floor(hakiBar.Value) .. "%"
-    end
-end
-								
-                        if not hpVal or not maxVal then continue end
+                        local userFolder =
+                            workspace:FindFirstChild("UserData")
+                            and workspace.UserData:FindFirstChild("User_" .. tostring(plr.UserId))
+
+                        if userFolder then
+
+                            local hakiBar =
+                                userFolder:FindFirstChild("HakiBar")
+                                or (
+                                    userFolder:FindFirstChild("Data")
+                                    and userFolder.Data:FindFirstChild("HakiBar")
+                                )
+
+                            if hakiBar and tonumber(hakiBar.Value) then
+
+                                local hakiValue =
+                                    math.clamp(
+                                        math.floor(hakiBar.Value),
+                                        0,
+                                        100
+                                    )
+
+                                hakiPercent = hakiValue .. "%"
+                            end
+                        end
+
+                        -- =========================
+                        -- GUI
+                        -- =========================
 
                         local gui = head:FindFirstChild("NameTag")
-                        if not gui then
-                            gui = Instance.new("BillboardGui", head)
-                            gui.Name = "NameTag"
-                            gui.AlwaysOnTop = true
-                            gui.StudsOffset = Vector3.new(0, 3, 0) -- 👈 ลอยเหนือหัว
 
-                            local txt = Instance.new("TextLabel", gui)
+                        if not gui then
+
+                            gui = Instance.new("BillboardGui")
+                            gui.Name = "NameTag"
+                            gui.Parent = head
+
+                            gui.AlwaysOnTop = true
+                            gui.StudsOffset = Vector3.new(0, 3, 0)
+
+                            local txt = Instance.new("TextLabel")
                             txt.Name = "Text"
+                            txt.Parent = gui
+
                             txt.Size = UDim2.new(1,0,1,0)
                             txt.BackgroundTransparency = 1
                             txt.TextScaled = true
@@ -637,28 +675,58 @@ end
                             txt.TextColor3 = Color3.fromRGB(255,255,255)
                         end
 
-                        local txt = gui.Text
+                        local txt = gui:FindFirstChild("Text")
 
-                        -- ระยะ
-                        local dist = (Camera.CFrame.Position - root.Position).Magnitude
+                        -- =========================
+                        -- DISTANCE SCALE
+                        -- =========================
 
-                        -- ไกล = เล็ก
-                        local scale = math.clamp(1 / (dist / 25), 0.3, 1.5)
-                        gui.Size = UDim2.new(0, 200 * scale, 0, 40 * scale)
+                        local dist =
+                            (Camera.CFrame.Position - root.Position).Magnitude
 
-                        -- ข้อความ
-                        txt.Text = plr.Name .. " | Health: " .. math.floor(hpVal.Value) .. "/" .. math.floor(maxVal.Value) .. 
-						" | Haki: " .. hakiPercent
+                        local scale =
+                            math.clamp(1 / (dist / 25), 0.3, 1.5)
+
+                        gui.Size =
+                            UDim2.new(
+                                0,
+                                200 * scale,
+                                0,
+                                40 * scale
+                            )
+
+                        -- =========================
+                        -- TEXT
+                        -- =========================
+
+                        txt.Text =
+                            plr.Name ..
+                            " | Health: " ..
+                            math.floor(hpVal.Value) ..
+                            "/" ..
+                            math.floor(maxVal.Value) ..
+                            " | Haki: " ..
+                            hakiPercent
                     end
                 end
+
                 task.wait(0.1)
             end
 
-            -- ปิดแล้วลบ
+            -- =========================
+            -- REMOVE TAGS
+            -- =========================
+
             for _, plr in pairs(Players:GetPlayers()) do
+
                 if plr.Character and plr.Character:FindFirstChild("Head") then
-                    local tag = plr.Character.Head:FindFirstChild("NameTag")
-                    if tag then tag:Destroy() end
+
+                    local tag =
+                        plr.Character.Head:FindFirstChild("NameTag")
+
+                    if tag then
+                        tag:Destroy()
+                    end
                 end
             end
         end)
