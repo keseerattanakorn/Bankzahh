@@ -450,7 +450,7 @@ local marine = bosses:FindFirstChild("EndlessRaidsCompleted")
 
 local beris = data:FindFirstChild("Beri")
 local gems = data:FindFirstChild("Gems")
-local Kills = data:FindFirstChild("Kills")
+local kills = data:FindFirstChild("Kills")
 
 local fruit1 = data:FindFirstChild("DevilFruit")  
 local fruit2 = data:FindFirstChild("DevilFruit2")  
