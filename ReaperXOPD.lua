@@ -429,7 +429,7 @@ tab3:Button("Refresh Items", function()
     refreshItems()
 end)
 
-tab3:Button("check Data Player & Storage 1-12", function()
+tab3:Button("check All Data Player", function()
 local selectedName = selectedPlayer
 local player = game.Players:FindFirstChild(selectedName)
 if not player then return end
