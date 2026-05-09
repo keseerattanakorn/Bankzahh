@@ -442,6 +442,16 @@ local data = userFolder:FindFirstChild("Data")
 local affinities = data:FindFirstChild("Affinities")
 if not data then return end  
 
+local bosses = data:FindFirstChild("Bosses")
+
+local ace = bosses:FindFirstChild("FireBossKills")
+local endless = bosses:FindFirstChild("MarineRaidsComplated")
+local marine = bosses:FindFirstChild("EndlessRaidsComplated")
+
+local beris = data:FindFirstChild("Beri")
+local gems = data:FindFirstChild("Gems")
+local Kills = data:FindFirstChild("Kills")
+
 local fruit1 = data:FindFirstChild("DevilFruit")  
 local fruit2 = data:FindFirstChild("DevilFruit2")  
 
@@ -463,16 +473,24 @@ local dft2sword = affinities:FindFirstChild("DFT2Sword")
 local storages = data:FindFirstChild("Storages") 
 local bounds = data:FindFirstChild("Bounds")
 
-print("-- ========== [User] ========== --")  
+print("-- ========== [Raid] ========== --")
+print(" FireBossKills: " .. (ace and ace.Value))  
+print(" MarineComplated: " .. (marine and marine.Value))
+print(" EndlessComplated: " .. (endless and endless.Value))
+print("-- ========== [User] ========== --")
 print("Check User: " .. selectedName .. " Data All")  
 print(" Devil Fruit 1: " .. (fruit1 and fruit1.Value))  
-print(" Devil Fruit 2: " .. (fruit2 and fruit2.Value))  
+print(" Devil Fruit 2: " .. (fruit2 and fruit2.Value))
 print("-- ========== [Status] ========== --")  
 print(" Defence Lvl: " .. (defense and defense.Value or "N/A"))  
 print(" Melee Lvl: " .. (melee and melee.Value or "N/A"))  
 print(" Sniper Lvl: " .. (sniper and sniper.Value or "N/A"))  
 print(" Sword Lvl: " .. (sword and sword.Value or "N/A"))
 print(" Haki Lvl: " .. (haki and haki.Value or "N/A"))
+print("-- ========== [Status of Spending And Kills Amounts] ========== --")
+print(" Gems: " .. (gems and gems.Value))  
+print(" Beri: " .. (beris and beris.Value))
+print(" Kills: " .. (kills and kills.Value))
 print("-- ========== [Affinities Fruit 1] ========== --")  
 print(" Affinities 1 Defence: " .. (dft1defense and dft1defense.Value or "N/A"))  
 print(" Affinities 1 Melee: " .. (dft1melee and dft1melee.Value or "N/A"))  
@@ -630,9 +648,29 @@ if checkhealth then
                     local scale = math.clamp(1 / (dist / 25), 0.3, 1.5)  
                     gui.Size = UDim2.new(0, 200 * scale, 0, 40 * scale)  
 
-                    -- ข้อความ  
-                    txt.Text = ""..plr.Name.." | Health: "  
-                        ..math.floor(hpVal.Value).."/"..math.floor(maxVal.Value)  
+                    -- ข้อความ
+local hakiText = ""
+
+local userFolder = workspace:FindFirstChild("UserData")
+    and workspace.UserData:FindFirstChild("User_" .. tostring(plr.UserId))
+
+if userFolder then
+
+    local usingHaki =
+        userFolder:FindFirstChild("UsingHaki")
+        or (
+            userFolder:FindFirstChild("Data")
+            and userFolder.Data:FindFirstChild("UsingHaki")
+        )
+
+    if usingHaki and usingHaki.Value == true then
+        hakiText = " | ใช้ฮาคิสังเกตุอยู่"
+    end
+end
+
+txt.Text = ""..plr.Name.." | Health: "
+    ..math.floor(hpVal.Value).."/"..math.floor(maxVal.Value)
+    ..hakiText  
                 end  
             end  
             task.wait(0.1)  
