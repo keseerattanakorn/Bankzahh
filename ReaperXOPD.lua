@@ -624,7 +624,7 @@ tab7:Toggle("ESP Health Players", false, function(state)
                         end
 
                         -- =========================
-                        -- HAKI
+                        -- REALTIME HAKI
                         -- =========================
 
                         local hakiPercent = "0%"
@@ -637,21 +637,33 @@ tab7:Toggle("ESP Health Players", false, function(state)
 
                         if userFolder then
 
-                            local hakiBar =
-                                userFolder:FindFirstChild("HakiBar")
-                                or (
-                                    userFolder:FindFirstChild("Data")
-                                    and userFolder.Data:FindFirstChild("HakiBar")
-                                )
+                            local hakiValue = nil
 
-                            if hakiBar and tonumber(hakiBar.Value) then
+                            -- ค้นหาค่าที่เกี่ยวกับ Haki แบบ realtime
+                            for _, v in pairs(userFolder:GetDescendants()) do
 
-                                local raw = tonumber(hakiBar.Value)
+                                if string.find(v.Name:lower(), "haki") then
 
-                                -- ปรับสูตรตรงนี้ได้ตามเกม
-                                -- ตัวอย่าง:
+                                    pcall(function()
+
+                                        if tonumber(v.Value) then
+                                            hakiValue = tonumber(v.Value)
+                                        end
+
+                                    end)
+                                end
+                            end
+
+                            -- ถ้าเจอค่า
+                            if hakiValue then
+
+                                -- ปรับตามระบบเกม
                                 -- 1000 = 100%
-                                local percent = math.floor(raw / 10)
+                                local percent =
+                                    string.format(
+                                        "%.1f",
+                                        hakiValue / 10
+                                    )
 
                                 hakiPercent = percent .. "%"
                             end
@@ -721,10 +733,11 @@ tab7:Toggle("ESP Health Players", false, function(state)
                     end
                 end
 
-                task.wait(0.15)
+                -- realtime update
+                task.wait(0.03)
             end
 
-            -- REMOVE
+            -- REMOVE TAGS
 
             for _, plr in pairs(Players:GetPlayers()) do
 
