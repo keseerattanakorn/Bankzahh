@@ -612,10 +612,14 @@ tab7:Label("Check All Sword Secret [ Soon . . . ]")
 tab7:Label("Check Raid [ Soon . . . ]")
 
 tab7:Toggle("ESP Health Players", false, function(state)
+
     checkhealth = state
 
     if checkhealth then
+
         task.spawn(function()
+
+            local cache = {}
 
             while checkhealth do
 
@@ -625,13 +629,13 @@ tab7:Toggle("ESP Health Players", false, function(state)
 
                         local chr = plr.Character
                         local head = chr:FindFirstChild("Head")
-                        local root = chr:FindFirstChild("HumanoidRootPart")
 
-                        if not head or not root then
+                        if not head then
                             continue
                         end
 
                         local trait = chr:FindFirstChild("CharacterTrait")
+
                         if not trait then
                             continue
                         end
@@ -644,16 +648,25 @@ tab7:Toggle("ESP Health Players", false, function(state)
                         end
 
                         -- =========================
-                        -- HAKI BAR REALTIME
+                        -- CACHE USERFOLDER
+                        -- =========================
+
+                        if not cache[plr] then
+
+                            cache[plr] =
+                                workspace:FindFirstChild("UserData")
+                                and workspace.UserData:FindFirstChild(
+                                    "User_" .. tostring(plr.UserId)
+                                )
+                        end
+
+                        local userFolder = cache[plr]
+
+                        -- =========================
+                        -- HAKI
                         -- =========================
 
                         local hakiText = ""
-
-                        local userFolder =
-                            workspace:FindFirstChild("UserData")
-                            and workspace.UserData:FindFirstChild(
-                                "User_" .. tostring(plr.UserId)
-                            )
 
                         if userFolder then
 
@@ -680,13 +693,18 @@ tab7:Toggle("ESP Health Players", false, function(state)
 
                         if not gui then
 
-                            gui = Instance.new("BillboardGui", head)
+                            gui = Instance.new("BillboardGui")
                             gui.Name = "NameTag"
+                            gui.Parent = head
+
                             gui.AlwaysOnTop = true
+                            gui.Size = UDim2.new(0, 200, 0, 40)
                             gui.StudsOffset = Vector3.new(0, 3, 0)
 
-                            local txt = Instance.new("TextLabel", gui)
+                            local txt = Instance.new("TextLabel")
                             txt.Name = "Text"
+                            txt.Parent = gui
+
                             txt.Size = UDim2.new(1,0,1,0)
                             txt.BackgroundTransparency = 1
                             txt.TextScaled = true
@@ -694,33 +712,9 @@ tab7:Toggle("ESP Health Players", false, function(state)
                             txt.TextColor3 = Color3.fromRGB(255,255,255)
                         end
 
-                        local txt = gui.Text
-
-                        -- =========================
-                        -- DISTANCE SCALE
-                        -- =========================
-
-                        local dist =
-                            (Camera.CFrame.Position - root.Position).Magnitude
-
-                        local scale =
-                            math.clamp(1 / (dist / 25), 0.3, 1.5)
-
-                        gui.Size =
-                            UDim2.new(
-                                0,
-                                200 * scale,
-                                0,
-                                40 * scale
-                            )
-
-                        -- =========================
-                        -- TEXT
-                        -- =========================
-
-                        txt.Text =
-                            "" .. plr.Name ..
-                            " | Health: " ..
+                        gui.Text.Text =
+                            plr.Name ..
+                            " | HP: " ..
                             math.floor(hpVal.Value) ..
                             "/" ..
                             math.floor(maxVal.Value) ..
@@ -728,14 +722,15 @@ tab7:Toggle("ESP Health Players", false, function(state)
                     end
                 end
 
-                task.wait(0.03)
+                -- มือถือควร 0.2 - 0.5
+                task.wait(0.2)
             end
 
-            -- =========================
-            -- REMOVE TAGS
-            -- =========================
+            -- REMOVE
 
             for _, plr in pairs(Players:GetPlayers()) do
+
+                cache[plr] = nil
 
                 if plr.Character and plr.Character:FindFirstChild("Head") then
 
