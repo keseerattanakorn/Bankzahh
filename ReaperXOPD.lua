@@ -664,25 +664,21 @@ local userFolder = workspace:FindFirstChild("UserData")
 
 if userFolder then
 
-    local usingHaki =
-        userFolder:FindFirstChild("UsingHaki")
+    local hakiBar =
+        userFolder:FindFirstChild("HakiBar")
         or (
             userFolder:FindFirstChild("Data")
-            and userFolder.Data:FindFirstChild("UsingHaki")
+            and userFolder.Data:FindFirstChild("HakiBar")
         )
 
-    if usingHaki and usingHaki.Value == true then
-        hakiText = " | ใช้ฮาคิสังเกตุอยู่"
+    if hakiBar and tonumber(hakiBar.Value) then
+        hakiText = " | Haki: " .. math.floor(hakiBar.Value)
     end
 end
 
 txt.Text = ""..plr.Name.." | Health: "
     ..math.floor(hpVal.Value).."/"..math.floor(maxVal.Value)
-    ..hakiText  
-                end  
-            end  
-            task.wait(0.1)  
-        end  
+    ..hakiText
 
         -- ปิดแล้วลบ  
         for _, plr in pairs(Players:GetPlayers()) do  
