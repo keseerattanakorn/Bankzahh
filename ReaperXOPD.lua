@@ -605,22 +605,19 @@ tab7:Toggle("ESP Health Players", false, function(state)
                         local maxVal = trait:FindFirstChild("HealthMax")
 						local hakiPercent = "N/A"
 
-local userData = workspace:FindFirstChild("UserData")
-if userData then
-    local userFolder = userData:FindFirstChild("User_" .. plr.UserId)
+local userFolder = workspace:FindFirstChild("UserData")
+    and workspace.UserData:FindFirstChild("User_" .. tostring(plr.UserId))
 
-    if userFolder then
-        local data = userFolder:FindFirstChild("Data")
+if userFolder then
 
-        if data then
-            local hakiBar = data:FindFirstChild("HakiBar")
+    local hakiBar =
+        userFolder:FindFirstChild("HakiBar")
+        or (userFolder:FindFirstChild("Data") and userFolder.Data:FindFirstChild("HakiBar"))
 
-            if hakiBar then
-                hakiPercent = math.floor(hakiBar.Value) .. "%"
-            end
-        end
+    if hakiBar and tonumber(hakiBar.Value) then
+        hakiPercent = math.floor(hakiBar.Value) .. "%"
     end
-	end
+end
 								
                         if not hpVal or not maxVal then continue end
 
