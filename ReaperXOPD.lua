@@ -457,7 +457,9 @@ local kills = data:FindFirstChild("Kills")
 
 local fruit1 = data:FindFirstChild("DevilFruit")  
 local fruit2 = data:FindFirstChild("DevilFruit2")  
-
+local aurafruit1 = data:FindFirstChild("DevilFruit_Color")  
+local aurafruit2 = data:FindFirstChild("DevilFruit2_Color")  
+		
 local defense = data:FindFirstChild("DefenseLvl")  
 local melee = data:FindFirstChild("MeleeLvl")  
 local sniper = data:FindFirstChild("SniperLvl")  
@@ -482,8 +484,11 @@ print(" MarineComplated: " .. (marine and marine.Value))
 print(" EndlessComplated: " .. (endless and endless.Value))
 print("-- ========== [User] ========== --")
 print("Check User: " .. selectedName .. " Data All")  
-print(" Devil Fruit 1: " .. (fruit1 and fruit1.Value))  
-print(" Devil Fruit 2: " .. (fruit2 and fruit2.Value))
+local fruit1Aura = (aurafruit1 and aurafruit1.Value ~= "None") and " [ Aura ]" or ""
+local fruit2Aura = (aurafruit2 and aurafruit2.Value ~= "None") and " [ Aura ]" or ""
+
+print(" Devil Fruit 1: " .. (fruit1 and fruit1.Value or "None") .. fruit1Aura)  
+print(" Devil Fruit 2: " .. (fruit2 and fruit2.Value or "None") .. fruit2Aura)
 print("-- ========== [Status] ========== --")  
 print(" Defence Lvl: " .. (defense and defense.Value or "N/A"))  
 print(" Melee Lvl: " .. (melee and melee.Value or "N/A"))  
