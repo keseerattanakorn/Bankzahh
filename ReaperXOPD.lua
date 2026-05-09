@@ -586,9 +586,11 @@ tab7:Label("Check All Sword Secret [ Soon . . . ]")
 tab7:Label("Check Raid [ Soon . . . ]")
 
 tab7:Toggle("ESP Health Players", false, function(state)
+
     checkhealth = state
 
     if checkhealth then
+
         task.spawn(function()
 
             while checkhealth do
@@ -604,6 +606,10 @@ tab7:Toggle("ESP Health Players", false, function(state)
                         if not head or not root then
                             continue
                         end
+
+                        -- =========================
+                        -- HEALTH
+                        -- =========================
 
                         local trait = chr:FindFirstChild("CharacterTrait")
                         if not trait then
@@ -621,11 +627,13 @@ tab7:Toggle("ESP Health Players", false, function(state)
                         -- HAKI
                         -- =========================
 
-                        local hakiPercent = "N/A"
+                        local hakiPercent = "0%"
 
                         local userFolder =
                             workspace:FindFirstChild("UserData")
-                            and workspace.UserData:FindFirstChild("User_" .. tostring(plr.UserId))
+                            and workspace.UserData:FindFirstChild(
+                                "User_" .. tostring(plr.UserId)
+                            )
 
                         if userFolder then
 
@@ -638,14 +646,14 @@ tab7:Toggle("ESP Health Players", false, function(state)
 
                             if hakiBar and tonumber(hakiBar.Value) then
 
-                                local hakiValue =
-                                    math.clamp(
-                                        math.floor(hakiBar.Value),
-                                        0,
-                                        100
-                                    )
+                                local raw = tonumber(hakiBar.Value)
 
-                                hakiPercent = hakiValue .. "%"
+                                -- ปรับสูตรตรงนี้ได้ตามเกม
+                                -- ตัวอย่าง:
+                                -- 1000 = 100%
+                                local percent = math.floor(raw / 10)
+
+                                hakiPercent = percent .. "%"
                             end
                         end
 
@@ -662,6 +670,7 @@ tab7:Toggle("ESP Health Players", false, function(state)
                             gui.Parent = head
 
                             gui.AlwaysOnTop = true
+                            gui.ResetOnSpawn = false
                             gui.StudsOffset = Vector3.new(0, 3, 0)
 
                             local txt = Instance.new("TextLabel")
@@ -671,28 +680,30 @@ tab7:Toggle("ESP Health Players", false, function(state)
                             txt.Size = UDim2.new(1,0,1,0)
                             txt.BackgroundTransparency = 1
                             txt.TextScaled = true
+                            txt.Font = Enum.Font.SourceSansBold
                             txt.TextStrokeTransparency = 0
+                            txt.TextStrokeColor3 = Color3.new(0,0,0)
                             txt.TextColor3 = Color3.fromRGB(255,255,255)
                         end
 
                         local txt = gui:FindFirstChild("Text")
 
                         -- =========================
-                        -- DISTANCE SCALE
+                        -- SCALE
                         -- =========================
 
                         local dist =
                             (Camera.CFrame.Position - root.Position).Magnitude
 
                         local scale =
-                            math.clamp(1 / (dist / 25), 0.3, 1.5)
+                            math.clamp(1 / (dist / 25), 0.6, 1.5)
 
                         gui.Size =
                             UDim2.new(
                                 0,
-                                200 * scale,
+                                260 * scale,
                                 0,
-                                40 * scale
+                                45 * scale
                             )
 
                         -- =========================
@@ -701,7 +712,7 @@ tab7:Toggle("ESP Health Players", false, function(state)
 
                         txt.Text =
                             plr.Name ..
-                            " | Health: " ..
+                            " | HP: " ..
                             math.floor(hpVal.Value) ..
                             "/" ..
                             math.floor(maxVal.Value) ..
@@ -710,12 +721,10 @@ tab7:Toggle("ESP Health Players", false, function(state)
                     end
                 end
 
-                task.wait(0.1)
+                task.wait(0.15)
             end
 
-            -- =========================
-            -- REMOVE TAGS
-            -- =========================
+            -- REMOVE
 
             for _, plr in pairs(Players:GetPlayers()) do
 
