@@ -448,7 +448,8 @@ local fruit2 = data:FindFirstChild("DevilFruit2")
 local defense = data:FindFirstChild("DefenseLvl")  
 local melee = data:FindFirstChild("MeleeLvl")  
 local sniper = data:FindFirstChild("SniperLvl")  
-local sword = data:FindFirstChild("SwordLvl")  
+local sword = data:FindFirstChild("SwordLvl")
+local haki = data:FindFirstChild("HakiLvl")
 
 local dft1defense = affinities:FindFirstChild("DFT1Defense")  
 local dft1melee = affinities:FindFirstChild("DFT1Melee")  
@@ -460,6 +461,7 @@ local dft2melee = affinities:FindFirstChild("DFT2Melee")
 local dft2sniper = affinities:FindFirstChild("DFT2Sniper")  
 local dft2sword = affinities:FindFirstChild("DFT2Sword") 
 local storages = data:FindFirstChild("Storages") 
+local bounds = data:FindFirstChild("Bounds")
 
 print("-- ========== [User] ========== --")  
 print("Check User: " .. selectedName .. " Data All")  
@@ -469,7 +471,8 @@ print("-- ========== [Status] ========== --")
 print(" Defence Lvl: " .. (defense and defense.Value or "N/A"))  
 print(" Melee Lvl: " .. (melee and melee.Value or "N/A"))  
 print(" Sniper Lvl: " .. (sniper and sniper.Value or "N/A"))  
-print(" Sword Lvl: " .. (sword and sword.Value or "N/A"))  
+print(" Sword Lvl: " .. (sword and sword.Value or "N/A"))
+print(" Haki Lvl: " .. (haki and haki.Value or "N/A"))
 print("-- ========== [Affinities Fruit 1] ========== --")  
 print(" Affinities 1 Defence: " .. (dft1defense and dft1defense.Value or "N/A"))  
 print(" Affinities 1 Melee: " .. (dft1melee and dft1melee.Value or "N/A"))  
@@ -501,6 +504,26 @@ for i, storage in ipairs(storageValues) do
         print(" Storage " .. i .. ": None")
     end
 end
+
+for i = 1, 3 do
+local foundb = bounds:FindFirstChild("BoundFruit" .. i)
+table.insert(boundValues, found)
+end
+print("-- ========== [Devil Fruit Bound Storage Player] ========== --")
+
+for i, bound in ipairs(boundValues) do
+    local value = bound and bound.Value or "N/A"
+    
+    if typeof(value) == "string" and value:find("Fruit") then
+        local partb = string.split(value, ",")
+        local fruitNameb = partb[1]
+        local aura = partb[6] == "1" and " [ Aura ]" or ""
+
+        print(" BoundFruit " .. i .. ": " .. fruitNameb .. aura)
+    else
+        print(" BoundFruit " .. i .. ": None")
+    end
+		end
 
 print("-- =================================== --")
 
