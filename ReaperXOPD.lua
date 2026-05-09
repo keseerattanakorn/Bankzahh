@@ -25,6 +25,9 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local Camera = workspace.CurrentCamera
 
+local function formatNumber(num)
+    return tostring(num):reverse():gsub("(%d%d%d)", "%1,"):reverse():gsub("^,", "")
+end
 
 -- ดึงชื่อผู้เล่นทุกคน (ยกเว้นตัวเอง)
 local function getPlayerNames()
@@ -488,9 +491,9 @@ print(" Sniper Lvl: " .. (sniper and sniper.Value or "N/A"))
 print(" Sword Lvl: " .. (sword and sword.Value or "N/A"))
 print(" Haki Lvl: " .. (haki and haki.Value or "N/A"))
 print("-- ========== [Status of Spending And Kills Amounts] ========== --")
-print(" Gems: " .. (gems and gems.Value))  
-print(" Beri: " .. (beris and beris.Value))
-print(" Kills: " .. (kills and kills.Value))
+print(" Gems: " .. (gems and formatNumber(gems.Value) or "N/A"))
+print(" Beri: " .. (beris and formatNumber(beris.Value) or "N/A"))
+print(" Kills: " .. (kills and formatNumber(kills.Value) or "N/A"))
 print("-- ========== [Affinities Fruit 1] ========== --")  
 print(" Affinities 1 Defence: " .. (dft1defense and dft1defense.Value or "N/A"))  
 print(" Affinities 1 Melee: " .. (dft1melee and dft1melee.Value or "N/A"))  
