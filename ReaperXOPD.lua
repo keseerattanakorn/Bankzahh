@@ -954,9 +954,11 @@ end)
 local tab8 = lib.tabs:Taps("Settings")
 tab8:Label("Change Ui Language [ Soon . . . ]")
 tab8:Button("Thai Language", function()
-    
+loadstring(game:HttpGet("https://raw.githubusercontent.com/keseerattanakorn/Bankzahh/refs/heads/main/ReaperXOPD_Th.lua"))() 
 end)
 
-tab8:Button("English Language", function()
-    
+tab8:Button("ภาษาอังกฤษ", function()
+lib:Notifile("Alert", "Changing to English Language", 2)
+wait(2)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/keseerattanakorn/Bankzahh/refs/heads/main/ReaperXOPD.lua"))()
 end)
