@@ -2,7 +2,7 @@ local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/keseeratt
 local win = lib:Win("ReaperX Hub | For Map: One Piece: Divine")
 
 -- Notifile แจ้งเตือนมุมขวาล่าง
-lib:Notifile("Alert", "Script Opd!", 3)
+lib:Notifile("Alert", "ยินดีต้อนรับสู่แมพแอดมินหมาๆนี่!", 3)
 
 local rareFruits = {
     "Ope Fruit", "Venom Fruit", "Candy Fruit",
@@ -45,7 +45,7 @@ for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) 
     end
 end
 
-local tab = lib.tabs:Taps("Fishings")
+local tab = lib.tabs:Taps("ตกปลา")
 tab:Label("ฝั่งชั่น ออโต้ตกปลา [ รอการแก้ไข ] ")
 
 tab:Toggle("ออโต้ ตกปลาด้วยซุปเปอร์เบ็ด", false, function(fshg)
@@ -606,7 +606,7 @@ task.spawn(function()
     end
 end)]]--
 
-local tab7 = lib.tabs:Taps("Misc")
+local tab7 = lib.tabs:Taps("อื่นๆ")
 tab7:Label("Check All Sword Secret [ รอก่อน . . . ]")
 
 tab7:Toggle("โชว์จำนวนเลือดและฮาคิ ผู้เล่น", false, function(state)
@@ -949,7 +949,7 @@ tab7:Toggle("ดูมุมมอง ผลไม้ปีศาจ", false, fu
     end
 end)
 
-local tab8 = lib.tabs:Taps("Settings")
+local tab8 = lib.tabs:Taps("ตั้งค่า")
 tab8:Label("เปลี่ยนเมนูภาษา [ ปิดทุกฝั่งชั่นก่อนเปลี่ยนภาษา ]")
 tab8:Button("ภาษาไทย", function()
 lib:Notifile("Alert", "กำลังเปลี่ยนเป็น ภาษาไทย", 2)
