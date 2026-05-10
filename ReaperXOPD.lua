@@ -950,3 +950,13 @@ tab7:Toggle("View Item", false, function(state)
         end
     end
 end)
+
+local tab8 = lib.tabs:Taps("Settings")
+tab8:Label("Change Ui Language [ Soon . . . ]")
+tab8:Button("Thai Language", function()
+    
+end)
+
+tab8:Button("English Language", function()
+    
+end)
