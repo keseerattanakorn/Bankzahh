@@ -571,7 +571,7 @@ print("-- =================================== --")
    lib:Notifile("", "Send /console or F9 in chat!!! ", 6)
 end)
 
-tab3:Label("Function Notigile Check Rare Fruits [แก้ไขอยู่]")
+tab3:Label("ฝั่งชั่น แจ้งเตือนผลไม้แรร์ในตัวผู้เล่นคนอื่น [แก้ไขอยู่]")
 
 --[[ tab3:Toggle("Check Rare in Server [ ใช้แล้วกระตุกช่วงๆ เดะแก้ทีหลัง ]", false, function(chkur)
 	checkfruits = chkur
@@ -611,7 +611,7 @@ tab7:Label("Check All Sword Secret [ Soon . . . ]")
 
 tab7:Label("Check Raid [ Soon . . . ]")
 
-tab7:Toggle("ESP Health Players", false, function(state)
+tab7:Toggle("โชว์จำนวนเลือดและฮาคิ ผู้เล่น", false, function(state)
 
     checkhealth = state
 
@@ -826,7 +826,7 @@ end
 --// 🔘 Toggle (เปิด = โชว์ / ปิด = ลบ)
 local Checkfruitfind = false
 
-tab7:Toggle("Show Item On Head Players | Compass, Box And Fruit", false, function(chkfrt)
+tab7:Toggle("โชว์ไอเทมบนหัวผู้เล่น | เข็มทิศ, กล่อง, ผลไม้", false, function(chkfrt)
     Checkfruitfind = chkfrt
 
     if Checkfruitfind then
@@ -887,7 +887,7 @@ tab7:Toggle("Show Item On Head Players | Compass, Box And Fruit", false, functio
     end
 end)
 
-tab7:Label("Check Fruit Spawn On Tree | [ Beta ] One Piece: Ascended")
+tab7:Label("เช็คจุดเกิดผลไม้ใต้ต้นไม้ | [ Beta ] One Piece: Ascended")
 
 local Workspace = game:GetService("Workspace")
 
@@ -918,12 +918,12 @@ local function getItemByName(name)
 end
 
 -- 🔹 Dropdown
-dropdownItems = tab7:Dropdown("Select Item :", foundItems, function(v)
+dropdownItems = tab7:Dropdown("เลือก ผลไม้ :", foundItems, function(v)
     selectedItemName = v
 end)
 
 -- 🔹 รีเฟรช
-tab7:Button("Refresh Items", function()
+tab7:Button("รีเฟรชไอเทม", function()
     refreshItems()
 
     if dropdownItems and dropdownItems.Refresh then
@@ -934,7 +934,7 @@ tab7:Button("Refresh Items", function()
 end)
 
 -- 🔹 View
-tab7:Toggle("View Item", false, function(state)
+tab7:Toggle("ดูมุมมอง ผลไม้ปีศาจ", false, function(state)
     if not selectedItemName then return end
 
     local item = getItemByName(selectedItemName)
@@ -952,14 +952,14 @@ tab7:Toggle("View Item", false, function(state)
 end)
 
 local tab8 = lib.tabs:Taps("Settings")
-tab8:Label("Change Ui Language [ Soon . . . ]")
-tab8:Button("Thai Language", function()
+tab8:Label("เปลี่ยนเมนูภาษา [ ปิดทุกฝั่งชั่นก่อนเปลี่ยนภาษา ]")
+tab8:Button("ภาษาไทย", function()
 lib:Notifile("Alert", "กำลังเปลี่ยนเป็น ภาษาไทย", 2)
 wait(2)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/keseerattanakorn/Bankzahh/refs/heads/main/ReaperXOPD_th.lua"))() 
 end)
 
-tab8:Button("English Language", function()
+tab8:Button("ภาษาอังกฤษ", function()
 lib:Notifile("Alert", "Changing to English Language", 2)
 wait(2)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/keseerattanakorn/Bankzahh/refs/heads/main/ReaperXOPD.lua"))()
