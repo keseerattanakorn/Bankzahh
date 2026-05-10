@@ -609,8 +609,8 @@ end)]]--
 local tab7 = lib.tabs:Taps("อื่นๆ")
 tab7:Label("เช็คดาบลับทั้งหมด [ รอก่อน . . . ]")
 
-tab7:Toggle("เช็คเลือดและฮาคิ ผู้เล่น", false, function(state)
-checkhealth = state
+tab7:Toggle("เช็คเลือดและฮาคิ ผู้เล่น", false, function(plrck)
+checkhealth = plrck
 
 if checkhealth then
 task.spawn(function()
@@ -697,9 +697,9 @@ end
 
 end)
 
-tab7:Toggle("ESP ผู้เล่นเรืองแสง", false, function(state)
+tab7:Toggle("ไฮไลท์ผู้เล่น", false, function(esphl)
 
-    espHighlight = state
+    espHighlight = esphl
 
     if espHighlight then
 
@@ -713,37 +713,40 @@ tab7:Toggle("ESP ผู้เล่นเรืองแสง", false, function
 
                         local chr = plr.Character
 
-                        local torso =
-                            chr:FindFirstChild("UpperTorso")
-                            or chr:FindFirstChild("Torso")
-                            or chr:FindFirstChild("HumanoidRootPart")
+                        local humanoid =
+                            chr:FindFirstChildOfClass("Humanoid")
 
-                        if torso
-                        and not torso:FindFirstChild("PlayerHighlight") then
+                        if humanoid then
 
-                            local highlight = Instance.new("Highlight")
+                            local highlight =
+                                chr:FindFirstChild("PlayerHighlight")
 
-                            highlight.Name = "PlayerHighlight"
-                            highlight.Parent = torso
-                            highlight.Adornee = torso
+                            if not highlight then
 
-                            highlight.FillColor =
-                                Color3.fromRGB(255,255,255)
+                                highlight = Instance.new("Highlight")
 
-                            highlight.OutlineColor =
-                                Color3.fromRGB(255,255,255)
+                                highlight.Name = "PlayerHighlight"
+                                highlight.Parent = chr
+                                highlight.Adornee = chr
 
-                            highlight.FillTransparency = 0.7
-                            highlight.OutlineTransparency = 0
+                                highlight.FillColor =
+                                    Color3.fromRGB(255,255,255)
 
-                            highlight.DepthMode =
-                                Enum.HighlightDepthMode.AlwaysOnTop
+                                highlight.OutlineColor =
+                                    Color3.fromRGB(255,255,255)
+
+                                highlight.FillTransparency = 0.7
+                                highlight.OutlineTransparency = 0
+
+                                highlight.DepthMode =
+                                    Enum.HighlightDepthMode.AlwaysOnTop
+                            end
                         end
                     end
                 end
 
-                -- เช็คช้า ๆ ลดแลค
-                task.wait(2)
+                -- เช็คเรื่อย ๆ กันตายเกิดใหม่
+                task.wait(1)
             end
 
             -- ลบตอนปิด
@@ -751,11 +754,13 @@ tab7:Toggle("ESP ผู้เล่นเรืองแสง", false, function
 
                 if plr.Character then
 
-                    for _, v in pairs(plr.Character:GetDescendants()) do
+                    local hl =
+                        plr.Character:FindFirstChild(
+                            "PlayerHighlight"
+                        )
 
-                        if v.Name == "PlayerHighlight" then
-                            v:Destroy()
-                        end
+                    if hl then
+                        hl:Destroy()
                     end
                 end
             end
