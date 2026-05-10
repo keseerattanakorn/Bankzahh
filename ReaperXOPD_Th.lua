@@ -607,9 +607,9 @@ task.spawn(function()
 end)]]--
 
 local tab7 = lib.tabs:Taps("อื่นๆ")
-tab7:Label("Check All Sword Secret [ รอก่อน . . . ]")
+tab7:Label("เช็คดาบลับทั้งหมด [ รอก่อน . . . ]")
 
-tab7:Toggle("เช็คเลือดและฮาคิ ผู้เล่น [ แก้ไขอยุ่ ]", false, function(state)
+tab7:Toggle("เช็คเลือดและฮาคิ ผู้เล่น", false, function(state)
 checkhealth = state
 
 if checkhealth then
@@ -671,11 +671,11 @@ if userFolder then
         )
 
     if hakiBar and tonumber(hakiBar.Value) then
-        hakiText = " | Haki: " .. math.floor(hakiBar.Value)
+        hakiText = " | ฮาคิ: " .. math.floor(hakiBar.Value)
     end
 end
 
-txt.Text = ""..plr.Name.." | Health: "
+txt.Text = ""..plr.Name.." | เลือด: "
     ..math.floor(hpVal.Value).."/"..math.floor(maxVal.Value)
     ..hakiText      
         end      
@@ -695,6 +695,72 @@ end)
 
 end
 
+end)
+
+tab7:Toggle("ESP ผู้เล่นเรืองแสง", false, function(state)
+
+    espHighlight = state
+
+    if espHighlight then
+
+        task.spawn(function()
+
+            while espHighlight do
+
+                for _, plr in pairs(Players:GetPlayers()) do
+
+                    if plr ~= Players.LocalPlayer and plr.Character then
+
+                        local chr = plr.Character
+
+                        local torso =
+                            chr:FindFirstChild("UpperTorso")
+                            or chr:FindFirstChild("Torso")
+                            or chr:FindFirstChild("HumanoidRootPart")
+
+                        if torso
+                        and not torso:FindFirstChild("PlayerHighlight") then
+
+                            local highlight = Instance.new("Highlight")
+
+                            highlight.Name = "PlayerHighlight"
+                            highlight.Parent = torso
+                            highlight.Adornee = torso
+
+                            highlight.FillColor =
+                                Color3.fromRGB(255,255,255)
+
+                            highlight.OutlineColor =
+                                Color3.fromRGB(255,255,255)
+
+                            highlight.FillTransparency = 0.7
+                            highlight.OutlineTransparency = 0
+
+                            highlight.DepthMode =
+                                Enum.HighlightDepthMode.AlwaysOnTop
+                        end
+                    end
+                end
+
+                -- เช็คช้า ๆ ลดแลค
+                task.wait(2)
+            end
+
+            -- ลบตอนปิด
+            for _, plr in pairs(Players:GetPlayers()) do
+
+                if plr.Character then
+
+                    for _, v in pairs(plr.Character:GetDescendants()) do
+
+                        if v.Name == "PlayerHighlight" then
+                            v:Destroy()
+                        end
+                    end
+                end
+            end
+        end)
+    end
 end)
 
 --// 🔹 ฟังก์ชันสแกน Tool (รองรับ Character + Backpack)
