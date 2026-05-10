@@ -609,7 +609,7 @@ end)]]--
 local tab7 = lib.tabs:Taps("อื่นๆ")
 tab7:Label("Check All Sword Secret [ รอก่อน . . . ]")
 
-tab7:Toggle("ESP Health Players", false, function(state)
+tab7:Toggle("เช็คเลือดและฮาคิ ผู้เล่น [ แก้ไขอยุ่ ]", false, function(state)
 checkhealth = state
 
 if checkhealth then
