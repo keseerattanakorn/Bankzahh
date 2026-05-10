@@ -204,7 +204,7 @@ local function runAuto(stateFunc, keyFunc, timeFunc)
     end)
 end
 
-local keys = {"| ↘️Skill Sword↙️ |","Y","Z","X","C","V","B","N","F","G","H","J","K","| ↘️Haki↙️ |","R","Q"}
+local keys = {"| ↘️สกิลดาบ↙️ |","Y","| ↘️สกิลผลช่อง 1↙️ |","Z","X","C","V","B","N","| ↘️สกิลผลช่ิงที่ 2↙️ |","F","G","H","J","K","| ↘️ฮาคิ↙️ |","R","Q"}
 
 -- Z
 local selectedKeyZ, selectedTimeZ, stateZ
@@ -478,37 +478,37 @@ local dft2sword = affinities:FindFirstChild("DFT2Sword")
 local storages = data:FindFirstChild("Storages") 
 local bounds = data:FindFirstChild("Bounds")
 
-print("-- ========== [ดัน] ========== --")
+print("-- ========== [การลงดัน ของผู้เล่นคนนี้] ========== --")
 print(" ฆ่าบอสเอส ไปทั้งหมด: " .. (ace and ace.Value))  
 print(" เคลียร์ดันมารีน ไปทั้งหมด: " .. (marine and marine.Value))
 print(" เคลียร์ดันEndless ไปทั้งหมด: " .. (endless and endless.Value))
-print("-- ========== [ผู้ใช้] ========== --")
-print("เช็ค ผู้ใช้: " .. selectedName .. " ข้อมูลทั้งหมด")  
-local fruit1Aura = (aurafruit1 and aurafruit1.Value ~= "None") and " [ Aura ]" or ""
-local fruit2Aura = (aurafruit2 and aurafruit2.Value ~= "None") and " [ Aura ]" or ""
+print("-- ========== [ผู้เล่น] ========== --")
+print("เช็ค ผู้เล่น: " .. selectedName .. " ข้อมูลทั้งหมด")  
+local fruit1Aura = (aurafruit1 and aurafruit1.Value ~= "None") and " [ ออร่า ]" or ""
+local fruit2Aura = (aurafruit2 and aurafruit2.Value ~= "None") and " [ ออร่า ]" or ""
 
 print(" ผลช่อง 1: " .. (fruit1 and fruit1.Value or "None") .. fruit1Aura)  
 print(" ผลช่อง 2: " .. (fruit2 and fruit2.Value or "None") .. fruit2Aura)
 print("-- ========== [Status] ========== --")  
-print(" ค่าป้องกัน Lvl: " .. (defense and defense.Value or "N/A"))  
-print(" ค่าเมรี Lvl: " .. (melee and melee.Value or "N/A"))  
-print(" ค่าปืน Lvl: " .. (sniper and sniper.Value or "N/A"))  
-print(" ค่าดาบ Lvl: " .. (sword and sword.Value or "N/A"))
-print(" ค่าฮาคิ Lvl: " .. (haki and haki.Value or "N/A"))
+print(" ค่าป้องกัน เวล: " .. (defense and defense.Value or "N/A"))  
+print(" ค่าเมรี เวล: " .. (melee and melee.Value or "N/A"))  
+print(" ค่าปืน เวล: " .. (sniper and sniper.Value or "N/A"))  
+print(" ค่าดาบ เวล: " .. (sword and sword.Value or "N/A"))
+print(" ค่าฮาคิ เวล: " .. (haki and haki.Value or "N/A"))
 print("-- ========== [Status of Spending And Kills Amounts] ========== --")
 print(" มีเพชร จำนวน : " .. (gems and formatNumber(gems.Value) or "N/A"))
 print(" มีเบรี จำนวน : " .. (beris and formatNumber(beris.Value) or "N/A"))
 print(" มีฆ่า จำนวน: " .. (kills and formatNumber(kills.Value) or "N/A"))
-print("-- ========== [Affinities Fruit 1] ========== --")  
-print(" พีรามิดช่อง 1 ค่าป้องกัน: " .. (dft1defense and dft1defense.Value or "N/A"))  
-print(" พีรามิดช่อง 1 ค่าเมรี: " .. (dft1melee and dft1melee.Value or "N/A"))  
-print(" พีรามิดช่อง 1 ค่าปืน: " .. (dft1sniper and dft1sniper.Value or "N/A"))  
-print(" พีรามิดช่อง 1 ค่าดาบ: " .. (dft1sword and dft1sword.Value or "N/A"))  
-print("-- ========== [Affinities Fruit 2] ========== --")  
-print(" พีรามิดช่อง 2 ค่าป้องกัน: " .. (dft2defense and dft2defense.Value or "N/A"))  
-print(" พีรามิดช่อง 2 ค่าเมรี: " .. (dft2melee and dft2melee.Value or "N/A"))  
-print(" พีรามิดช่อง 2 ค่าปืน: " .. (dft2sniper and dft2sniper.Value or "N/A"))  
-print(" พีรามิดช่อง 2 ค่าดาบ: " .. (dft2sword and dft2sword.Value or "N/A"))  
+print("-- ========== [พีรามิด ผลช่อง 1] ========== --")  
+print(" พีรามิดผลช่อง 1 ค่าป้องกัน: " .. (dft1defense and dft1defense.Value or "N/A"))  
+print(" พีรามิดผลช่อง 1 ค่าเมรี: " .. (dft1melee and dft1melee.Value or "N/A"))  
+print(" พีรามิดผลช่อง 1 ค่าปืน: " .. (dft1sniper and dft1sniper.Value or "N/A"))  
+print(" พีรามิดผลช่อง 1 ค่าดาบ: " .. (dft1sword and dft1sword.Value or "N/A"))  
+print("-- ========== [พีรามิด ผลช่อง 2] ========== --")  
+print(" พีรามิดผลช่อง 2 ค่าป้องกัน: " .. (dft2defense and dft2defense.Value or "N/A"))  
+print(" พีรามิดผลช่อง 2 ค่าเมรี: " .. (dft2melee and dft2melee.Value or "N/A"))  
+print(" พีรามิดผลช่อง 2 ค่าปืน: " .. (dft2sniper and dft2sniper.Value or "N/A"))  
+print(" พีรามิดผลช่อง 2 ค่าดาบ: " .. (dft2sword and dft2sword.Value or "N/A"))  
 local storageValues = {}
 
 for i = 1, 12 do
@@ -523,11 +523,11 @@ for i, storage in ipairs(storageValues) do
     if typeof(value) == "string" and value:find("Fruit") then
         local parts = string.split(value, ",")
         local fruitName = parts[1]
-        local aura = parts[6] == "1" and " [ Aura ]" or ""
+        local aura = parts[6] == "1" and " [ ออร่า ]" or ""
 
-        print(" Storage " .. i .. ": " .. fruitName .. aura)
+        print(" ที่เก็บช่อง " .. i .. ": " .. fruitName .. aura)
     else
-        print(" Storage " .. i .. ": None")
+        print(" ที่เก็บช่อง " .. i .. ": ไม่มี")
     end
 end
 
@@ -548,21 +548,21 @@ for i, bound in ipairs(boundValues) do
 
         local parts = string.split(value, ",")
 
-        local fruitName = parts[1] or "Unknown"
+        local fruitName = parts[1] or "Unknow"
 
         local melee = parts[2] or "0"
         local sniper = parts[3] or "0"
         local defense = parts[4] or "0"
         local sword = parts[5] or "0"
 
-        print(" BoundFruit " .. i .. ": " .. fruitName)
-        print("  Affinities Melee: " .. melee)
-        print("  Affinities Sniper: " .. sniper)
-        print("  Affinities Defense: " .. defense)
-        print("  Affinities Sword: " .. sword)
+        print(" ผลไม้เป๋าม่วงช่อง " .. i .. ": " .. fruitName)
+        print("  พีรามิด ค่าเมรี: " .. melee)
+        print("  พีรามิด ค่าปืน: " .. sniper)
+        print("  พีรามิด ค่าดีเฟ้น: " .. defense)
+        print("  พีรามิด ค่าดาบ: " .. sword)
 
     else
-        print(" BoundFruit " .. i .. ": None")
+        print(" ผลไม้เป๋าม่วงช่อง " .. i .. ": ไม่มี")
     end
 end
 		
