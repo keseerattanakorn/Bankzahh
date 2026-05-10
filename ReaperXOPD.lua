@@ -46,9 +46,9 @@ for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) 
 end
 
 local tab = lib.tabs:Taps("Fishings")
-tab:Label("Function Auto Fishings [ Waitting Fix ] ")
+tab:Label("ฝั่งชั่น ออโต้ตกปลา [ รอการแก้ไข ] ")
 
-tab:Toggle("Auto Fishing Super Rod", false, function(fshg)
+tab:Toggle("ออโต้ ตกปลาด้วยซุปเปอร์เบ็ด", false, function(fshg)
         _G.AutoFishing = fshg
 end)
 
@@ -107,7 +107,7 @@ spawn(function()
     end
 end)
 
-tab:Toggle("Old Auto Fishing Wood Rod", false, function(fsd)
+tab:Toggle("ออโต้ ตกปลาด้วยเบ็ดไม้", false, function(fsd)
         _G.AutoWoodRod = fsd
 end)
 		
@@ -165,8 +165,8 @@ spawn(function()
     end
 end)
 
-local tab1 = lib.tabs:Taps("Autos")
-tab1:Label("Function Skill Keyboard [ ใส่เลข 0 เพื่อหยุดกดคีย์ค้าง ] ")
+local tab1 = lib.tabs:Taps("ออโต้")
+tab1:Label("ฝั่งชั่น ออโต้คีบอร์ด [ ใส่เลข 0 เพื่อหยุดกดคีย์ค้าง ] ")
 local VIM = game:GetService("VirtualInputManager")
 
 local function runAuto(stateFunc, keyFunc, timeFunc)
@@ -208,48 +208,48 @@ local keys = {"| ↘️Skill Sword↙️ |","Y","Z","X","C","V","B","N","F","G",
 
 -- Z
 local selectedKeyZ, selectedTimeZ, stateZ
-tab1:Dropdown("Select Keys :", keys, function(v) selectedKeyZ = v end)
-tab1:Textbox("Hold Key :", "ใส่เลข", function(v) selectedTimeZ = v end)
-tab1:Toggle("Auto Key", false, function(v) stateZ = v end)
+tab1:Dropdown("เลือก คีย์ :", keys, function(v) selectedKeyZ = v end)
+tab1:Textbox("คีย์กดค้าง :", "ใส่เลข", function(v) selectedTimeZ = v end)
+tab1:Toggle("ออโต้ คีย์", false, function(v) stateZ = v end)
 runAuto(function() return stateZ end, function() return selectedKeyZ end, function() return selectedTimeZ end)
 
 -- X
 local selectedKeyX, selectedTimeX, stateX
-tab1:Dropdown("Select Keys :", keys, function(v) selectedKeyX = v end)
-tab1:Textbox("Hold Key :", "ใส่เลข", function(v) selectedTimeX = v end)
-tab1:Toggle("Auto Key", false, function(v) stateX = v end)
+tab1:Dropdown("เลือก คีย์ :", keys, function(v) selectedKeyX = v end)
+tab1:Textbox("คีย์กดค้าง :", "ใส่เลข", function(v) selectedTimeX = v end)
+tab1:Toggle("ออโต้ คีย์", false, function(v) stateX = v end)
 runAuto(function() return stateX end, function() return selectedKeyX end, function() return selectedTimeX end)
 
 -- C
 local selectedKeyC, selectedTimeC, stateC
-tab1:Dropdown("Select Keys :", keys, function(v) selectedKeyC = v end)
-tab1:Textbox("Hold Key :", "ใส่เลข", function(v) selectedTimeC = v end)
-tab1:Toggle("Auto Key", false, function(v) stateC = v end)
+tab1:Dropdown("เลือก คีย์ :", keys, function(v) selectedKeyC = v end)
+tab1:Textbox("คีย์กดค้าง :", "ใส่เลข", function(v) selectedTimeC = v end)
+tab1:Toggle("ออโต้ คีย์", false, function(v) stateC = v end)
 runAuto(function() return stateC end, function() return selectedKeyC end, function() return selectedTimeC end)
 
 -- V
 local selectedKeyV, selectedTimeV, stateV
-tab1:Dropdown("Select Keys :", keys, function(v) selectedKeyV = v end)
-tab1:Textbox("Hold Key :", "ใส่เลข", function(v) selectedTimeV = v end)
-tab1:Toggle("Auto Key", false, function(v) stateV = v end)
+tab1:Dropdown("เลือก คีย์ :", keys, function(v) selectedKeyV = v end)
+tab1:Textbox("คีย์กดค้าง :", "ใส่เลข", function(v) selectedTimeV = v end)
+tab1:Toggle("ออโต้ คีย์", false, function(v) stateV = v end)
 runAuto(function() return stateV end, function() return selectedKeyV end, function() return selectedTimeV end)
 
 -- B
 local selectedKeyB, selectedTimeB, stateB
-tab1:Dropdown("Select Keys :", keys, function(v) selectedKeyB = v end)
-tab1:Textbox("Hold Key :", "ใส่เลข", function(v) selectedTimeB = v end)
-tab1:Toggle("Auto Key", false, function(v) stateB = v end)
+tab1:Dropdown("เลือก คีย์ :", keys, function(v) selectedKeyB = v end)
+tab1:Textbox("คีย์กดค้าง :", "ใส่เลข", function(v) selectedTimeB = v end)
+tab1:Toggle("ออโต้ คีย์", false, function(v) stateB = v end)
 runAuto(function() return stateB end, function() return selectedKeyB end, function() return selectedTimeB end)
 
 -- N
 local selectedKeyN, selectedTimeN, stateN
-tab1:Dropdown("Select Keys :", keys, function(v) selectedKeyN = v end)
-tab1:Textbox("Hold Key :", "ใส่เลข", function(v) selectedTimeN = v end)
-tab1:Toggle("Auto Key", false, function(v) stateN = v end)
+tab1:Dropdown("เลือก คีย์ :", keys, function(v) selectedKeyN = v end)
+tab1:Textbox("คีย์กดค้าง :", "ใส่เลข", function(v) selectedTimeN = v end)
+tab1:Toggle("ออโต้ คีย์", false, function(v) stateN = v end)
 runAuto(function() return stateN end, function() return selectedKeyN end, function() return selectedTimeN end)
 
-local tab3 = lib.tabs:Taps("Players")
-tab3:Label("Chance Your Compass | On Legendary Mode ")
+local tab3 = lib.tabs:Taps("ผู้เล่น")
+tab3:Label("คำนวณเรทเข็มทิศ | ของ โหมดจุติ ")
 local lp = Players.LocalPlayer
 
 local function getExpertiseMultiplier()
@@ -290,11 +290,11 @@ local list = {
     "Ultra Rare Box : "..string.format("%.3f", ultra).."%"
 }
 
-tab3:Dropdown("Calculate Chance % (Lv."..lvl..")", list, function(v)
+tab3:Dropdown("เรทเข็มทิศที่คำนวณ % (Lv."..lvl..")", list, function(v)
     print(v)
 end)
 
-tab3:Label("Function Players")
+tab3:Label("ผู้เล่น")
 local playerNames = {}
 
 for _, player in ipairs(game.Players:GetPlayers()) do
@@ -398,14 +398,14 @@ end
 -- =========================
 refreshPlayers()
 
-tab3:Dropdown("Select Player :", playerNames, function(name)
+tab3:Dropdown("เลือก ผู้เล่น :", playerNames, function(name)
     selectedPlayer = name
 end)
 
-tab3:Dropdown("Backpack Player :", itemList, function(v)
+tab3:Dropdown("กระเป๋า ผู้เล่น :", itemList, function(v)
 end)
 
-tab3:Toggle("View Player", false, function(state)
+tab3:Toggle("ดูมุมมอง ผู้เล่น", false, function(state)
 	if selectedPlayer then
 		local target = Players:FindFirstChild(selectedPlayer)
 		if target and target.Character and target.Character:FindFirstChild("Humanoid") then
@@ -418,18 +418,18 @@ tab3:Toggle("View Player", false, function(state)
 	end
 end)
 
-tab3:Button("Refresh Players", function()
+tab3:Button("รีเฟรช ชื่อผู้เล่น", function()
     refreshPlayers()
 end)
 
 -- =========================
 -- 🔘 ปุ่มรีเฟรชเฉพาะของ
 -- =========================
-tab3:Button("Refresh Items", function()
+tab3:Button("รีเฟรชไอเทม", function()
     refreshItems()
 end)
 
-tab3:Button("check All Data Player", function()
+tab3:Button("เช็คข้อมูลผู้เล่นทั้งหมด", function()
 local selectedName = selectedPlayer
 local player = game.Players:FindFirstChild(selectedName)
 if not player then return end
@@ -478,44 +478,44 @@ local dft2sword = affinities:FindFirstChild("DFT2Sword")
 local storages = data:FindFirstChild("Storages") 
 local bounds = data:FindFirstChild("Bounds")
 
-print("-- ========== [Raid] ========== --")
-print(" FireBossKills: " .. (ace and ace.Value))  
-print(" MarineComplated: " .. (marine and marine.Value))
-print(" EndlessComplated: " .. (endless and endless.Value))
-print("-- ========== [User] ========== --")
-print("Check User: " .. selectedName .. " Data All")  
+print("-- ========== [ดัน] ========== --")
+print(" ฆ่าบอสเอส ไปทั้งหมด: " .. (ace and ace.Value))  
+print(" เคลียร์ดันมารีน ไปทั้งหมด: " .. (marine and marine.Value))
+print(" เคลียร์ดันEndless ไปทั้งหมด: " .. (endless and endless.Value))
+print("-- ========== [ผู้ใช้] ========== --")
+print("เช็ค ผู้ใช้: " .. selectedName .. " ข้อมูลทั้งหมด")  
 local fruit1Aura = (aurafruit1 and aurafruit1.Value ~= "None") and " [ Aura ]" or ""
 local fruit2Aura = (aurafruit2 and aurafruit2.Value ~= "None") and " [ Aura ]" or ""
 
-print(" Devil Fruit 1: " .. (fruit1 and fruit1.Value or "None") .. fruit1Aura)  
-print(" Devil Fruit 2: " .. (fruit2 and fruit2.Value or "None") .. fruit2Aura)
+print(" ผลช่อง 1: " .. (fruit1 and fruit1.Value or "None") .. fruit1Aura)  
+print(" ผลช่อง 2: " .. (fruit2 and fruit2.Value or "None") .. fruit2Aura)
 print("-- ========== [Status] ========== --")  
-print(" Defence Lvl: " .. (defense and defense.Value or "N/A"))  
-print(" Melee Lvl: " .. (melee and melee.Value or "N/A"))  
-print(" Sniper Lvl: " .. (sniper and sniper.Value or "N/A"))  
-print(" Sword Lvl: " .. (sword and sword.Value or "N/A"))
-print(" Haki Lvl: " .. (haki and haki.Value or "N/A"))
+print(" ค่าป้องกัน Lvl: " .. (defense and defense.Value or "N/A"))  
+print(" ค่าเมรี Lvl: " .. (melee and melee.Value or "N/A"))  
+print(" ค่าปืน Lvl: " .. (sniper and sniper.Value or "N/A"))  
+print(" ค่าดาบ Lvl: " .. (sword and sword.Value or "N/A"))
+print(" ค่าฮาคิ Lvl: " .. (haki and haki.Value or "N/A"))
 print("-- ========== [Status of Spending And Kills Amounts] ========== --")
-print(" Gems: " .. (gems and formatNumber(gems.Value) or "N/A"))
-print(" Beri: " .. (beris and formatNumber(beris.Value) or "N/A"))
-print(" Kills: " .. (kills and formatNumber(kills.Value) or "N/A"))
+print(" มีเพชร จำนวน : " .. (gems and formatNumber(gems.Value) or "N/A"))
+print(" มีเบรี จำนวน : " .. (beris and formatNumber(beris.Value) or "N/A"))
+print(" มีฆ่า จำนวน: " .. (kills and formatNumber(kills.Value) or "N/A"))
 print("-- ========== [Affinities Fruit 1] ========== --")  
-print(" Affinities 1 Defence: " .. (dft1defense and dft1defense.Value or "N/A"))  
-print(" Affinities 1 Melee: " .. (dft1melee and dft1melee.Value or "N/A"))  
-print(" Affinities 1 Sniper: " .. (dft1sniper and dft1sniper.Value or "N/A"))  
-print(" Affinities 1 Sword: " .. (dft1sword and dft1sword.Value or "N/A"))  
+print(" พีรามิดช่อง 1 ค่าป้องกัน: " .. (dft1defense and dft1defense.Value or "N/A"))  
+print(" พีรามิดช่อง 1 ค่าเมรี: " .. (dft1melee and dft1melee.Value or "N/A"))  
+print(" พีรามิดช่อง 1 ค่าปืน: " .. (dft1sniper and dft1sniper.Value or "N/A"))  
+print(" พีรามิดช่อง 1 ค่าดาบ: " .. (dft1sword and dft1sword.Value or "N/A"))  
 print("-- ========== [Affinities Fruit 2] ========== --")  
-print(" Affinities 2 DEfence: " .. (dft2defense and dft2defense.Value or "N/A"))  
-print(" Affinities 2 Melee: " .. (dft2melee and dft2melee.Value or "N/A"))  
-print(" Affinities 2 Sniper: " .. (dft2sniper and dft2sniper.Value or "N/A"))  
-print(" Affinities 2 Sword: " .. (dft2sword and dft2sword.Value or "N/A"))  
+print(" พีรามิดช่อง 2 ค่าป้องกัน: " .. (dft2defense and dft2defense.Value or "N/A"))  
+print(" พีรามิดช่อง 2 ค่าเมรี: " .. (dft2melee and dft2melee.Value or "N/A"))  
+print(" พีรามิดช่อง 2 ค่าปืน: " .. (dft2sniper and dft2sniper.Value or "N/A"))  
+print(" พีรามิดช่อง 2 ค่าดาบ: " .. (dft2sword and dft2sword.Value or "N/A"))  
 local storageValues = {}
 
 for i = 1, 12 do
 local found = storages:FindFirstChild("Storage" .. i)
 table.insert(storageValues, found)
-end
-print("-- ========== [Devil Fruit Storage Player] ========== --")
+		end
+print("-- ========== [ที่เก็บผลไม้ปีศาจ ของผู้เล่นคนนี้] ========== --")
 
 for i, storage in ipairs(storageValues) do
     local value = storage and storage.Value or "N/A"
@@ -538,7 +538,7 @@ for i = 1, 3 do
     table.insert(boundValues, foundb)
 end
 
-print("-- ========== [Devil Fruit Bound Storage Player] ========== --")
+print("-- ========== [เป๋าม่วงผลไม้ปีศาจ ของผู้เล่นคนนี้] ========== --")
 
 for i, bound in ipairs(boundValues) do
 
@@ -568,7 +568,7 @@ end
 		
 print("-- =================================== --")
 
-   lib:Notifile("", "Send /console or F9 in chat!!! ", 6)
+   lib:Notifile("", "พิมในช่องแชท /console หรือ F9 ในคอม!!! ", 6)
 end)
 
 tab3:Label("ฝั่งชั่น แจ้งเตือนผลไม้แรร์ในตัวผู้เล่นคนอื่น [แก้ไขอยู่]")
@@ -607,9 +607,7 @@ task.spawn(function()
 end)]]--
 
 local tab7 = lib.tabs:Taps("Misc")
-tab7:Label("Check All Sword Secret [ Soon . . . ]")
-
-tab7:Label("Check Raid [ Soon . . . ]")
+tab7:Label("Check All Sword Secret [ รอก่อน . . . ]")
 
 tab7:Toggle("โชว์จำนวนเลือดและฮาคิ ผู้เล่น", false, function(state)
 
