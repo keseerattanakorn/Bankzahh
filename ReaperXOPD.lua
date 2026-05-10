@@ -2,7 +2,7 @@ local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/keseeratt
 local win = lib:Win("ReaperX Hub | For Map: One Piece: Divine")
 
 -- Notifile แจ้งเตือนมุมขวาล่าง
-lib:Notifile("Alert", "Script Opd!", 3)
+lib:Notifile("Alert", "Welcome to Opd!", 3)
 
 local rareFruits = {
     "Ope Fruit", "Venom Fruit", "Candy Fruit",
@@ -957,7 +957,7 @@ tab8:Button("Thai Language", function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/keseerattanakorn/Bankzahh/refs/heads/main/ReaperXOPD_Th.lua"))() 
 end)
 
-tab8:Button("ภาษาอังกฤษ", function()
+tab8:Button("English Language", function()
 lib:Notifile("Alert", "Changing to English Language", 2)
 wait(2)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/keseerattanakorn/Bankzahh/refs/heads/main/ReaperXOPD.lua"))()
