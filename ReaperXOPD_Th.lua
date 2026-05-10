@@ -696,18 +696,22 @@ tab7:Toggle("โชว์จำนวนเลือดและฮาคิ ผ
                             gui.Parent = head
 
                             gui.AlwaysOnTop = true
-                            gui.Size = UDim2.new(0, 200, 0, 40)
-                            gui.StudsOffset = Vector3.new(0, 3, 0)
+                       gui.Size = UDim2.new(0, 140, 0, 22)
+                       gui.StudsOffset = Vector3.new(0, 2.5, 0)
 
-                            local txt = Instance.new("TextLabel")
-                            txt.Name = "Text"
-                            txt.Parent = gui
+                    local txt = Instance.new("TextLabel")
+                       txt.Name = "Text"
+                       txt.Parent = gui
 
-                            txt.Size = UDim2.new(1,0,1,0)
-                            txt.BackgroundTransparency = 1
-                            txt.TextScaled = true
-                            txt.TextStrokeTransparency = 0
-                            txt.TextColor3 = Color3.fromRGB(255,255,255)
+                       txt.Size = UDim2.new(1,0,1,0)
+                       txt.BackgroundTransparency = 1
+
+                       txt.TextScaled = false
+                       txt.TextSize = 14
+                       txt.Font = Enum.Font.GothamBold
+
+                       txt.TextStrokeTransparency = 0.3
+                       txt.TextColor3 = Color3.fromRGB(255,255,255)
                         end
 
                         gui.Text.Text =
