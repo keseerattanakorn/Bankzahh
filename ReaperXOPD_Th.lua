@@ -609,143 +609,92 @@ end)]]--
 local tab7 = lib.tabs:Taps("อื่นๆ")
 tab7:Label("Check All Sword Secret [ รอก่อน . . . ]")
 
-tab7:Toggle("โชว์จำนวนเลือดและฮาคิ ผู้เล่น", false, function(state)
+tab7:Toggle("ESP Health Players", false, function(state)
+checkhealth = state
 
-    checkhealth = state
+if checkhealth then
+task.spawn(function()
+while checkhealth do
+for _, plr in pairs(Players:GetPlayers()) do
+if plr ~= Players.LocalPlayer and plr.Character then
+local chr = plr.Character
+local head = chr:FindFirstChild("Head")
+local root = chr:FindFirstChild("HumanoidRootPart")
+if not head or not root then continue end
 
-    if checkhealth then
+local trait = chr:FindFirstChild("CharacterTrait")
+if not trait then continue end
 
-        task.spawn(function()
+local hpVal = trait:FindFirstChild("Health")      
+            local maxVal = trait:FindFirstChild("HealthMax")      
+            if not hpVal or not maxVal then continue end      
 
-            local cache = {}
+            local gui = head:FindFirstChild("NameTag")      
+            if not gui then      
+                gui = Instance.new("BillboardGui", head)      
+                gui.Name = "NameTag"      
+                gui.AlwaysOnTop = true      
+                gui.StudsOffset = Vector3.new(0, 3, 0) -- 👈 ลอยเหนือหัว      
 
-            while checkhealth do
+                local txt = Instance.new("TextLabel", gui)      
+                txt.Name = "Text"      
+                txt.Size = UDim2.new(1,0,1,0)      
+                txt.BackgroundTransparency = 1      
+                txt.TextScaled = true      
+                txt.TextStrokeTransparency = 0      
+                txt.TextColor3 = Color3.fromRGB(255,255,255)      
+            end      
 
-                for _, plr in pairs(Players:GetPlayers()) do
+            local txt = gui.Text      
 
-                    if plr ~= Players.LocalPlayer and plr.Character then
+            -- ระยะ      
+            local dist = (Camera.CFrame.Position - root.Position).Magnitude      
 
-                        local chr = plr.Character
-                        local head = chr:FindFirstChild("Head")
+            -- ไกล = เล็ก      
+            local scale = math.clamp(1 / (dist / 25), 0.3, 1.5)      
+            gui.Size = UDim2.new(0, 200 * scale, 0, 40 * scale)      
 
-                        if not head then
-                            continue
-                        end
+            -- ข้อความ      
+            -- ข้อความ
+local hakiText = ""
 
-                        local trait = chr:FindFirstChild("CharacterTrait")
+local userFolder = workspace:FindFirstChild("UserData")
+    and workspace.UserData:FindFirstChild("User_" .. tostring(plr.UserId))
 
-                        if not trait then
-                            continue
-                        end
+if userFolder then
 
-                        local hpVal = trait:FindFirstChild("Health")
-                        local maxVal = trait:FindFirstChild("HealthMax")
+    local hakiBar =
+        userFolder:FindFirstChild("HakiBar")
+        or (
+            userFolder:FindFirstChild("Data")
+            and userFolder.Data:FindFirstChild("HakiBar")
+        )
 
-                        if not hpVal or not maxVal then
-                            continue
-                        end
-
-                        -- =========================
-                        -- CACHE USERFOLDER
-                        -- =========================
-
-                        if not cache[plr] then
-
-                            cache[plr] =
-                                workspace:FindFirstChild("UserData")
-                                and workspace.UserData:FindFirstChild(
-                                    "User_" .. tostring(plr.UserId)
-                                )
-                        end
-
-                        local userFolder = cache[plr]
-
-                        -- =========================
-                        -- HAKI
-                        -- =========================
-
-                        local hakiText = ""
-
-                        if userFolder then
-
-                            local hakiBar =
-                                userFolder:FindFirstChild("HakiBar")
-                                or (
-                                    userFolder:FindFirstChild("Data")
-                                    and userFolder.Data:FindFirstChild("HakiBar")
-                                )
-
-                            if hakiBar and tonumber(hakiBar.Value) then
-
-                                hakiText =
-                                    " | Haki: " ..
-                                    math.floor(hakiBar.Value)
-                            end
-                        end
-
-                        -- =========================
-                        -- GUI
-                        -- =========================
-
-                        local gui = head:FindFirstChild("NameTag")
-
-                        if not gui then
-
-                            gui = Instance.new("BillboardGui")
-                            gui.Name = "NameTag"
-                            gui.Parent = head
-
-                            gui.AlwaysOnTop = true
-                       gui.Size = UDim2.new(0, 140, 0, 22)
-                       gui.StudsOffset = Vector3.new(0, 2.5, 0)
-
-                    local txt = Instance.new("TextLabel")
-                       txt.Name = "Text"
-                       txt.Parent = gui
-
-                       txt.Size = UDim2.new(1,0,1,0)
-                       txt.BackgroundTransparency = 1
-
-                       txt.TextScaled = false
-                       txt.TextSize = 14
-                       txt.Font = Enum.Font.GothamBold
-
-                       txt.TextStrokeTransparency = 0.3
-                       txt.TextColor3 = Color3.fromRGB(255,255,255)
-                        end
-
-                        gui.Text.Text =
-                            plr.Name ..
-                            " | HP: " ..
-                            math.floor(hpVal.Value) ..
-                            "/" ..
-                            math.floor(maxVal.Value) ..
-                            hakiText
-                    end
-                end
-
-                -- มือถือควร 0.2 - 0.5
-                task.wait(0.2)
-            end
-
-            -- REMOVE
-
-            for _, plr in pairs(Players:GetPlayers()) do
-
-                cache[plr] = nil
-
-                if plr.Character and plr.Character:FindFirstChild("Head") then
-
-                    local tag =
-                        plr.Character.Head:FindFirstChild("NameTag")
-
-                    if tag then
-                        tag:Destroy()
-                    end
-                end
-            end
-        end)
+    if hakiBar and tonumber(hakiBar.Value) then
+        hakiText = " | Haki: " .. math.floor(hakiBar.Value)
     end
+end
+
+txt.Text = ""..plr.Name.." | Health: "
+    ..math.floor(hpVal.Value).."/"..math.floor(maxVal.Value)
+    ..hakiText      
+        end      
+    end      
+    task.wait(0.1)      
+end      
+
+-- ปิดแล้วลบ      
+for _, plr in pairs(Players:GetPlayers()) do      
+    if plr.Character and plr.Character:FindFirstChild("Head") then      
+        local tag = plr.Character.Head:FindFirstChild("NameTag")      
+        if tag then tag:Destroy() end      
+    end      
+end
+
+end)
+
+end
+
 end)
 
 --// 🔹 ฟังก์ชันสแกน Tool (รองรับ Character + Backpack)
