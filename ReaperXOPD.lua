@@ -360,7 +360,7 @@ local function getItemList(player)
     end
 
     if #result == 0 then
-        table.insert(result, "ไม่พบของ")
+        table.insert(result, "Not Found Item")
     end
 
     return result
@@ -954,9 +954,13 @@ end)
 local tab8 = lib.tabs:Taps("Settings")
 tab8:Label("Change Ui Language [ Soon . . . ]")
 tab8:Button("Thai Language", function()
-    
+lib:Notifile("Alert", "กำลังเปลี่ยนเป็น ภาษาไทย", 2)
+wait(2)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/keseerattanakorn/Bankzahh/refs/heads/main/ReaperXOPD_th.lua"))() 
 end)
 
 tab8:Button("English Language", function()
-    
+lib:Notifile("Alert", "Changing to English Language", 2)
+wait(2)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/keseerattanakorn/Bankzahh/refs/heads/main/ReaperXOPD.lua"))()
 end)
