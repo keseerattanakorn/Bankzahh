@@ -762,9 +762,9 @@ tab7:Toggle("ESP Player Health & Haki", false, function(ckht)
     end
 end)
 
-tab7:Toggle("ESP Highlight Players", false, function(esphl)
+tab7:Toggle("ESP Highlight Players", false, function(state)
 
-    espHighlight = esphl
+    espHighlight = state
 
     if espHighlight then
 
@@ -778,39 +778,35 @@ tab7:Toggle("ESP Highlight Players", false, function(esphl)
 
                         local chr = plr.Character
 
-                        local humanoid =
-                            chr:FindFirstChildOfClass("Humanoid")
+                        local highlight =
+                            chr:FindFirstChild("PlayerHighlight")
 
-                        if humanoid then
+                        if not highlight then
 
-                            local highlight =
-                                chr:FindFirstChild("PlayerHighlight")
+                            highlight = Instance.new("Highlight")
 
-                            if not highlight then
+                            highlight.Name = "PlayerHighlight"
+                            highlight.Parent = chr
+                            highlight.Adornee = chr
 
-                                highlight = Instance.new("Highlight")
+                            highlight.FillColor =
+                                Color3.fromRGB(255,255,255)
 
-                                highlight.Name = "PlayerHighlight"
-                                highlight.Parent = chr
-                                highlight.Adornee = chr
+                            highlight.OutlineColor =
+                                Color3.fromRGB(255,255,255)
 
-                                highlight.FillColor =
-                                    Color3.fromRGB(255,255,255)
+                            -- ไม่เติมสีข้างใน
+                            highlight.FillTransparency = 1
 
-                                highlight.OutlineColor =
-                                    Color3.fromRGB(255,255,255)
+                            -- เอาแค่เส้นรอบตัว
+                            highlight.OutlineTransparency = 0
 
-                                highlight.FillTransparency = 0.7
-                                highlight.OutlineTransparency = 0
-
-                                highlight.DepthMode =
-                                    Enum.HighlightDepthMode.AlwaysOnTop
-                            end
+                            highlight.DepthMode =
+                                Enum.HighlightDepthMode.AlwaysOnTop
                         end
                     end
                 end
 
-                -- เช็คเรื่อย ๆ กันตายเกิดใหม่
                 task.wait(1)
             end
 
