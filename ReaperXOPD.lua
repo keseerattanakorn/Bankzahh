@@ -609,10 +609,12 @@ end)]]--
 local tab7 = lib.tabs:Taps("Misc")
 tab7:Label("Check All Sword Secret [ Soon . . . ]")
 
-tab7:Toggle("ESP Health Players", false, function(state)
+tab7:Toggle("ESP Player Health & Haki", false, function(state)
+
     checkhealth = state
 
     if checkhealth then
+
         task.spawn(function()
 
             while checkhealth do
@@ -630,6 +632,7 @@ tab7:Toggle("ESP Health Players", false, function(state)
                         end
 
                         local trait = chr:FindFirstChild("CharacterTrait")
+
                         if not trait then
                             continue
                         end
@@ -639,29 +642,6 @@ tab7:Toggle("ESP Health Players", false, function(state)
 
                         if not hpVal or not maxVal then
                             continue
-                        end
-
-                        -- =========================
-                        -- HIGHLIGHT
-                        -- =========================
-
-                        local highlight =
-                            chr:FindFirstChild("PlayerHighlight")
-
-                        if not highlight then
-
-                            highlight = Instance.new("Highlight")
-                            highlight.Name = "PlayerHighlight"
-                            highlight.Parent = chr
-
-                            highlight.FillColor =
-                                Color3.fromRGB(255,255,255)
-
-                            highlight.OutlineColor =
-                                Color3.fromRGB(255,255,255)
-
-                            highlight.FillTransparency = 0.7
-                            highlight.OutlineTransparency = 0
                         end
 
                         -- =========================
@@ -683,18 +663,26 @@ tab7:Toggle("ESP Health Players", false, function(state)
                             txt.BackgroundTransparency = 1
                             txt.TextScaled = true
                             txt.TextStrokeTransparency = 0
-                            txt.TextColor3 = Color3.fromRGB(255,255,255)
+                            txt.TextColor3 =
+                                Color3.fromRGB(255,255,255)
                         end
 
                         local txt = gui.Text
 
-                        -- ระยะ
-                        local dist =
-                            (Camera.CFrame.Position - root.Position).Magnitude
+                        -- =========================
+                        -- DISTANCE
+                        -- =========================
 
-                        -- ไกล = เล็ก
+                        local dist =
+                            (Camera.CFrame.Position - root.Position)
+                            .Magnitude
+
                         local scale =
-                            math.clamp(1 / (dist / 25), 0.3, 1.5)
+                            math.clamp(
+                                1 / (dist / 25),
+                                0.3,
+                                1.5
+                            )
 
                         gui.Size =
                             UDim2.new(
@@ -705,7 +693,7 @@ tab7:Toggle("ESP Health Players", false, function(state)
                             )
 
                         -- =========================
-                        -- HAKI
+                        -- HAKI BAR
                         -- =========================
 
                         local hakiText = ""
@@ -722,19 +710,26 @@ tab7:Toggle("ESP Health Players", false, function(state)
                                 userFolder:FindFirstChild("HakiBar")
                                 or (
                                     userFolder:FindFirstChild("Data")
-                                    and userFolder.Data:FindFirstChild("HakiBar")
+                                    and userFolder.Data:FindFirstChild(
+                                        "HakiBar"
+                                    )
                                 )
 
-                            if hakiBar and tonumber(hakiBar.Value) then
+                            if hakiBar
+                            and tonumber(hakiBar.Value) then
+
                                 hakiText =
                                     " | Haki: " ..
                                     math.floor(hakiBar.Value)
                             end
                         end
 
-                        -- ข้อความ
+                        -- =========================
+                        -- TEXT
+                        -- =========================
+
                         txt.Text =
-                            "" .. plr.Name ..
+                            plr.Name ..
                             " | Health: " ..
                             math.floor(hpVal.Value) ..
                             "/" ..
@@ -746,31 +741,86 @@ tab7:Toggle("ESP Health Players", false, function(state)
                 task.wait(0.1)
             end
 
-            -- ปิดแล้วลบ
+            -- REMOVE
+
+            for _, plr in pairs(Players:GetPlayers()) do
+
+                if plr.Character
+                and plr.Character:FindFirstChild("Head") then
+
+                    local tag =
+                        plr.Character.Head:FindFirstChild(
+                            "NameTag"
+                        )
+
+                    if tag then
+                        tag:Destroy()
+                    end
+                end
+            end
+        end)
+    end
+end)
+
+tab7:Toggle("ESP Highlight Players", false, function(state)
+
+    espHighlight = state
+
+    if espHighlight then
+
+        task.spawn(function()
+
+            while espHighlight do
+
+                for _, plr in pairs(Players:GetPlayers()) do
+
+                    if plr ~= Players.LocalPlayer and plr.Character then
+
+                        local chr = plr.Character
+
+                        local torso =
+                            chr:FindFirstChild("UpperTorso")
+                            or chr:FindFirstChild("Torso")
+                            or chr:FindFirstChild("HumanoidRootPart")
+
+                        if torso
+                        and not torso:FindFirstChild("PlayerHighlight") then
+
+                            local highlight = Instance.new("Highlight")
+
+                            highlight.Name = "PlayerHighlight"
+                            highlight.Parent = torso
+                            highlight.Adornee = torso
+
+                            highlight.FillColor =
+                                Color3.fromRGB(255,255,255)
+
+                            highlight.OutlineColor =
+                                Color3.fromRGB(255,255,255)
+
+                            highlight.FillTransparency = 0.7
+                            highlight.OutlineTransparency = 0
+
+                            highlight.DepthMode =
+                                Enum.HighlightDepthMode.AlwaysOnTop
+                        end
+                    end
+                end
+
+                -- เช็คช้า ๆ ลดแลค
+                task.wait(2)
+            end
+
+            -- ลบตอนปิด
             for _, plr in pairs(Players:GetPlayers()) do
 
                 if plr.Character then
 
-                    local head =
-                        plr.Character:FindFirstChild("Head")
+                    for _, v in pairs(plr.Character:GetDescendants()) do
 
-                    if head then
-
-                        local tag =
-                            head:FindFirstChild("NameTag")
-
-                        if tag then
-                            tag:Destroy()
+                        if v.Name == "PlayerHighlight" then
+                            v:Destroy()
                         end
-                    end
-
-                    local hl =
-                        plr.Character:FindFirstChild(
-                            "PlayerHighlight"
-                        )
-
-                    if hl then
-                        hl:Destroy()
                     end
                 end
             end
