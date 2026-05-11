@@ -2,7 +2,7 @@ local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/keseeratt
 local win = lib:Win("ReaperX Hub | For Map: One Piece: Divine")
 
 -- Notifile แจ้งเตือนมุมขวาล่าง
-lib:Notifile("Alert", "Welcome to Opd!", 3)
+lib:Notifile("Alert", "ยินดีต้อนรับสู่แมพแอดมินหมาๆนี่!", 3)
 
 local rareFruits = {
     "Ope Fruit", "Venom Fruit", "Candy Fruit",
@@ -45,10 +45,11 @@ for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) 
     end
 end
 
-local tab = lib.tabs:Taps("Fishings")
-tab:Label("Function Auto Fishings [ Waitting Fix ] ")
+--[[
+local tab = lib.tabs:Taps("ตกปลา")
+tab:Label("ฝั่งชั่น ออโต้ตกปลา [ รอการแก้ไข ] ")
 
-tab:Toggle("Auto Fishing Super Rod", false, function(fshg)
+tab:Toggle("ออโต้ ตกปลาด้วยซุปเปอร์เบ็ด", false, function(fshg)
         _G.AutoFishing = fshg
 end)
 
@@ -107,7 +108,7 @@ spawn(function()
     end
 end)
 
-tab:Toggle("Old Auto Fishing Wood Rod", false, function(fsd)
+tab:Toggle("ออโต้ ตกปลาด้วยเบ็ดไม้", false, function(fsd)
         _G.AutoWoodRod = fsd
 end)
 		
@@ -164,9 +165,10 @@ spawn(function()
         end
     end
 end)
+]]--
 
-local tab1 = lib.tabs:Taps("Autos")
-tab1:Label("Function Skill Keyboard [ ใส่เลข 0 เพื่อหยุดกดคีย์ค้าง ] ")
+local tab1 = lib.tabs:Taps("มาโคร")
+tab1:Label("ฝั่งชั่นมาโคร ออโต้คีบอร์ด [ ใส่เลข 0 เพื่อหยุดกดคีย์ค้าง ] ")
 local VIM = game:GetService("VirtualInputManager")
 
 local function runAuto(stateFunc, keyFunc, timeFunc)
@@ -204,52 +206,52 @@ local function runAuto(stateFunc, keyFunc, timeFunc)
     end)
 end
 
-local keys = {"| ↘️Skill Sword↙️ |","Y","Z","X","C","V","B","N","F","G","H","J","K","| ↘️Haki↙️ |","R","Q"}
+local keys = {"| ↘️สกิลดาบ↙️ |","Y","| ↘️สกิลผลช่อง 1↙️ |","Z","X","C","V","B","N","| ↘️สกิลผลช่ิงที่ 2↙️ |","F","G","H","J","K","| ↘️ฮาคิ↙️ |","R","Q"}
 
 -- Z
 local selectedKeyZ, selectedTimeZ, stateZ
-tab1:Dropdown("Select Keys :", keys, function(v) selectedKeyZ = v end)
-tab1:Textbox("Hold Key :", "ใส่เลข", function(v) selectedTimeZ = v end)
-tab1:Toggle("Auto Key", false, function(v) stateZ = v end)
+tab1:Dropdown("เลือก คีย์ :", keys, function(v) selectedKeyZ = v end)
+tab1:Textbox("คีย์กดค้าง :", "ใส่เลข", function(v) selectedTimeZ = v end)
+tab1:Toggle("ออโต้ คีย์", false, function(v) stateZ = v end)
 runAuto(function() return stateZ end, function() return selectedKeyZ end, function() return selectedTimeZ end)
 
 -- X
 local selectedKeyX, selectedTimeX, stateX
-tab1:Dropdown("Select Keys :", keys, function(v) selectedKeyX = v end)
-tab1:Textbox("Hold Key :", "ใส่เลข", function(v) selectedTimeX = v end)
-tab1:Toggle("Auto Key", false, function(v) stateX = v end)
+tab1:Dropdown("เลือก คีย์ :", keys, function(v) selectedKeyX = v end)
+tab1:Textbox("คีย์กดค้าง :", "ใส่เลข", function(v) selectedTimeX = v end)
+tab1:Toggle("ออโต้ คีย์", false, function(v) stateX = v end)
 runAuto(function() return stateX end, function() return selectedKeyX end, function() return selectedTimeX end)
 
 -- C
 local selectedKeyC, selectedTimeC, stateC
-tab1:Dropdown("Select Keys :", keys, function(v) selectedKeyC = v end)
-tab1:Textbox("Hold Key :", "ใส่เลข", function(v) selectedTimeC = v end)
-tab1:Toggle("Auto Key", false, function(v) stateC = v end)
+tab1:Dropdown("เลือก คีย์ :", keys, function(v) selectedKeyC = v end)
+tab1:Textbox("คีย์กดค้าง :", "ใส่เลข", function(v) selectedTimeC = v end)
+tab1:Toggle("ออโต้ คีย์", false, function(v) stateC = v end)
 runAuto(function() return stateC end, function() return selectedKeyC end, function() return selectedTimeC end)
 
 -- V
 local selectedKeyV, selectedTimeV, stateV
-tab1:Dropdown("Select Keys :", keys, function(v) selectedKeyV = v end)
-tab1:Textbox("Hold Key :", "ใส่เลข", function(v) selectedTimeV = v end)
-tab1:Toggle("Auto Key", false, function(v) stateV = v end)
+tab1:Dropdown("เลือก คีย์ :", keys, function(v) selectedKeyV = v end)
+tab1:Textbox("คีย์กดค้าง :", "ใส่เลข", function(v) selectedTimeV = v end)
+tab1:Toggle("ออโต้ คีย์", false, function(v) stateV = v end)
 runAuto(function() return stateV end, function() return selectedKeyV end, function() return selectedTimeV end)
 
 -- B
 local selectedKeyB, selectedTimeB, stateB
-tab1:Dropdown("Select Keys :", keys, function(v) selectedKeyB = v end)
-tab1:Textbox("Hold Key :", "ใส่เลข", function(v) selectedTimeB = v end)
-tab1:Toggle("Auto Key", false, function(v) stateB = v end)
+tab1:Dropdown("เลือก คีย์ :", keys, function(v) selectedKeyB = v end)
+tab1:Textbox("คีย์กดค้าง :", "ใส่เลข", function(v) selectedTimeB = v end)
+tab1:Toggle("ออโต้ คีย์", false, function(v) stateB = v end)
 runAuto(function() return stateB end, function() return selectedKeyB end, function() return selectedTimeB end)
 
 -- N
 local selectedKeyN, selectedTimeN, stateN
-tab1:Dropdown("Select Keys :", keys, function(v) selectedKeyN = v end)
-tab1:Textbox("Hold Key :", "ใส่เลข", function(v) selectedTimeN = v end)
-tab1:Toggle("Auto Key", false, function(v) stateN = v end)
+tab1:Dropdown("เลือก คีย์ :", keys, function(v) selectedKeyN = v end)
+tab1:Textbox("คีย์กดค้าง :", "ใส่เลข", function(v) selectedTimeN = v end)
+tab1:Toggle("ออโต้ คีย์", false, function(v) stateN = v end)
 runAuto(function() return stateN end, function() return selectedKeyN end, function() return selectedTimeN end)
 
-local tab3 = lib.tabs:Taps("Players")
-tab3:Label("Chance Your Compass | On Legendary Mode ")
+local tab3 = lib.tabs:Taps("ผู้เล่น")
+tab3:Label("คำนวณเรทเข็มทิศ | ของ โหมดจุติ ")
 local lp = Players.LocalPlayer
 
 local function getExpertiseMultiplier()
@@ -290,11 +292,11 @@ local list = {
     "Ultra Rare Box : "..string.format("%.3f", ultra).."%"
 }
 
-tab3:Dropdown("Calculate Chance % (Lv."..lvl..")", list, function(v)
+tab3:Dropdown("เรทเข็มทิศที่คำนวณ % (Lv."..lvl..")", list, function(v)
     print(v)
 end)
 
-tab3:Label("Function Players")
+tab3:Label("ผู้เล่น")
 local playerNames = {}
 
 for _, player in ipairs(game.Players:GetPlayers()) do
@@ -319,8 +321,7 @@ local function getItemList(player)
         ["Rare Box"] = 0,
         ["Ultra Rare Box"] = 0,
         ["Compass"] = 0,
-        ["Silver Compass"] = 0,
-		["Platinum Cache"] = 0
+        ["Silver Compass"] = 0
     }
 	
     if not player then
@@ -361,7 +362,7 @@ local function getItemList(player)
     end
 
     if #result == 0 then
-        table.insert(result, "ไม่พบของ")
+        table.insert(result, "Not Found Item")
     end
 
     return result
@@ -399,14 +400,14 @@ end
 -- =========================
 refreshPlayers()
 
-tab3:Dropdown("Select Player :", playerNames, function(name)
+tab3:Dropdown("เลือก ผู้เล่น :", playerNames, function(name)
     selectedPlayer = name
 end)
 
-tab3:Dropdown("Backpack Player :", itemList, function(v)
+tab3:Dropdown("กระเป๋า ผู้เล่น :", itemList, function(v)
 end)
 
-tab3:Toggle("View Player", false, function(state)
+tab3:Toggle("ดูมุมมอง ผู้เล่น", false, function(state)
 	if selectedPlayer then
 		local target = Players:FindFirstChild(selectedPlayer)
 		if target and target.Character and target.Character:FindFirstChild("Humanoid") then
@@ -419,18 +420,18 @@ tab3:Toggle("View Player", false, function(state)
 	end
 end)
 
-tab3:Button("Refresh Players", function()
+tab3:Button("รีเฟรช ชื่อผู้เล่น", function()
     refreshPlayers()
 end)
 
 -- =========================
 -- 🔘 ปุ่มรีเฟรชเฉพาะของ
 -- =========================
-tab3:Button("Refresh Items", function()
+tab3:Button("รีเฟรชไอเทม", function()
     refreshItems()
 end)
 
-tab3:Button("check All Data Player", function()
+tab3:Button("เช็คข้อมูลผู้เล่นทั้งหมด", function()
 local selectedName = selectedPlayer
 local player = game.Players:FindFirstChild(selectedName)
 if not player then return end
@@ -479,44 +480,64 @@ local dft2sword = affinities:FindFirstChild("DFT2Sword")
 local storages = data:FindFirstChild("Storages") 
 local bounds = data:FindFirstChild("Bounds")
 
-print("-- ========== [Raid] ========== --")
-print(" FireBossKills: " .. (ace and ace.Value))  
-print(" MarineComplated: " .. (marine and marine.Value))
-print(" EndlessComplated: " .. (endless and endless.Value))
-print("-- ========== [User] ========== --")
-print("Check User: " .. selectedName .. " Data All")  
-local fruit1Aura = (aurafruit1 and aurafruit1.Value ~= "None") and " [ Aura ]" or ""
-local fruit2Aura = (aurafruit2 and aurafruit2.Value ~= "None") and " [ Aura ]" or ""
+print("-- ========== [การลงดัน ของผู้เล่นคนนี้] ========== --")
+print(" ฆ่าบอสเอส ไปทั้งหมด: " .. (ace and ace.Value))  
+print(" ลงดันมารีน ไปทั้งหมด: " .. (marine and marine.Value))
+print(" ลงดันEndless ไปทั้งหมด: " .. (endless and endless.Value))
+print("-- ========== [ผู้เล่น] ========== --")
+print("เช็ค ผู้เล่น: " .. selectedName .. " ข้อมูลทั้งหมด")  
+local fruit1Aura = (aurafruit1 and aurafruit1.Value ~= "None") and " [ ออร่า ]" or ""
+local fruit2Aura = (aurafruit2 and aurafruit2.Value ~= "None") and " [ ออร่า ]" or ""
 
-print(" Devil Fruit 1: " .. (fruit1 and fruit1.Value or "None") .. fruit1Aura)  
-print(" Devil Fruit 2: " .. (fruit2 and fruit2.Value or "None") .. fruit2Aura)
+print(" ผลช่อง 1: " .. (fruit1 and fruit1.Value or "None") .. fruit1Aura)  
+print(" ผลช่อง 2: " .. (fruit2 and fruit2.Value or "None") .. fruit2Aura)
 print("-- ========== [Status] ========== --")  
-print(" Defence Lvl: " .. (defense and defense.Value or "N/A"))  
-print(" Melee Lvl: " .. (melee and melee.Value or "N/A"))  
-print(" Sniper Lvl: " .. (sniper and sniper.Value or "N/A"))  
-print(" Sword Lvl: " .. (sword and sword.Value or "N/A"))
-print(" Haki Lvl: " .. (haki and haki.Value or "N/A"))
+print(" ป้องกัน เวล: " .. (defense and defense.Value or "N/A"))  
+print(" เมรี เวล: " .. (melee and melee.Value or "N/A"))  
+print(" ปืน เวล: " .. (sniper and sniper.Value or "N/A"))  
+print(" ดาบ เวล: " .. (sword and sword.Value or "N/A"))
+print(" ฮาคิ เวล: " .. (haki and haki.Value or "N/A"))
 print("-- ========== [Status of Spending And Kills Amounts] ========== --")
-print(" Gems: " .. (gems and formatNumber(gems.Value) or "N/A"))
-print(" Beri: " .. (beris and formatNumber(beris.Value) or "N/A"))
-print(" Kills: " .. (kills and formatNumber(kills.Value) or "N/A"))
-print("-- ========== [Affinities Fruit 1] ========== --")  
-print(" Affinities 1 Defence: " .. (dft1defense and dft1defense.Value or "N/A"))  
-print(" Affinities 1 Melee: " .. (dft1melee and dft1melee.Value or "N/A"))  
-print(" Affinities 1 Sniper: " .. (dft1sniper and dft1sniper.Value or "N/A"))  
-print(" Affinities 1 Sword: " .. (dft1sword and dft1sword.Value or "N/A"))  
-print("-- ========== [Affinities Fruit 2] ========== --")  
-print(" Affinities 2 DEfence: " .. (dft2defense and dft2defense.Value or "N/A"))  
-print(" Affinities 2 Melee: " .. (dft2melee and dft2melee.Value or "N/A"))  
-print(" Affinities 2 Sniper: " .. (dft2sniper and dft2sniper.Value or "N/A"))  
-print(" Affinities 2 Sword: " .. (dft2sword and dft2sword.Value or "N/A"))  
+print(" มีเพชร จำนวน : " .. (gems and formatNumber(gems.Value) or "N/A"))
+print(" มีเบรี จำนวน : " .. (beris and formatNumber(beris.Value) or "N/A"))
+print(" มีฆ่า จำนวน: " .. (kills and formatNumber(kills.Value) or "N/A"))
+local function convertBar(value)
+    if not value then
+        return "N/A"
+    end
+
+    local num = tonumber(value)
+    if not num then
+        return tostring(value)
+    end
+
+    -- 1.1 ถึง 2.0
+    if num >= 1.1 and num <= 2.0 then
+        local bars = math.floor((num - 1.0) * 10 + 0.5)
+        return bars .. " ขีด"
+    end
+
+    return tostring(num)
+end
+
+print("-- ========== [พีรามิด ผลช่อง 1] ========== --")
+print(" พีรามิดผลช่อง 1 ค่าป้องกัน: " .. convertBar(dft1defense and dft1defense.Value))
+print(" พีรามิดผลช่อง 1 ค่าเมรี: " .. convertBar(dft1melee and dft1melee.Value))
+print(" พีรามิดผลช่อง 1 ค่าปืน: " .. convertBar(dft1sniper and dft1sniper.Value))
+print(" พีรามิดผลช่อง 1 ค่าดาบ: " .. convertBar(dft1sword and dft1sword.Value))
+
+print("-- ========== [พีรามิด ผลช่อง 2] ========== --")
+print(" พีรามิดผลช่อง 2 ค่าป้องกัน: " .. convertBar(dft2defense and dft2defense.Value))
+print(" พีรามิดผลช่อง 2 ค่าเมรี: " .. convertBar(dft2melee and dft2melee.Value))
+print(" พีรามิดผลช่อง 2 ค่าปืน: " .. convertBar(dft2sniper and dft2sniper.Value))
+print(" พีรามิดผลช่อง 2 ค่าดาบ: " .. convertBar(dft2sword and dft2sword.Value))
 local storageValues = {}
 
 for i = 1, 12 do
 local found = storages:FindFirstChild("Storage" .. i)
 table.insert(storageValues, found)
-end
-print("-- ========== [Devil Fruit Storage Player] ========== --")
+		end
+print("-- ========== [ที่เก็บผลไม้ปีศาจ ของผู้เล่นคนนี้] ========== --")
 
 for i, storage in ipairs(storageValues) do
     local value = storage and storage.Value or "N/A"
@@ -524,11 +545,11 @@ for i, storage in ipairs(storageValues) do
     if typeof(value) == "string" and value:find("Fruit") then
         local parts = string.split(value, ",")
         local fruitName = parts[1]
-        local aura = parts[6] == "1" and " [ Aura ]" or ""
+        local aura = parts[6] == "1" and " [ ออร่า ]" or ""
 
-        print(" Storage " .. i .. ": " .. fruitName .. aura)
+        print(" ที่เก็บช่อง " .. i .. ": " .. fruitName .. aura)
     else
-        print(" Storage " .. i .. ": None")
+        print(" ที่เก็บช่อง " .. i .. ": ไม่มี")
     end
 end
 
@@ -539,7 +560,7 @@ for i = 1, 3 do
     table.insert(boundValues, foundb)
 end
 
-print("-- ========== [Devil Fruit Bound Storage Player] ========== --")
+print("-- ========== [เป๋าม่วงผลปีศาจ ของผู้เล่น] ========== --")
 
 for i, bound in ipairs(boundValues) do
 
@@ -549,30 +570,30 @@ for i, bound in ipairs(boundValues) do
 
         local parts = string.split(value, ",")
 
-        local fruitName = parts[1] or "Unknown"
+        local fruitName = parts[1] or "Unknow"
 
         local melee = parts[2] or "0"
         local sniper = parts[3] or "0"
         local defense = parts[4] or "0"
         local sword = parts[5] or "0"
 
-        print(" BoundFruit " .. i .. ": " .. fruitName)
-        print("  Affinities Melee: " .. melee)
-        print("  Affinities Sniper: " .. sniper)
-        print("  Affinities Defense: " .. defense)
-        print("  Affinities Sword: " .. sword)
+        print(" ผลไม้เป๋าม่วงช่อง " .. i .. ": " .. fruitName)
+        print("  พีรามิด ค่าเมรี: " .. melee)
+        print("  พีรามิด ค่าปืน: " .. sniper)
+        print("  พีรามิด ค่าดีเฟ้น: " .. defense)
+        print("  พีรามิด ค่าดาบ: " .. sword)
 
     else
-        print(" BoundFruit " .. i .. ": None")
+        print(" ผลไม้เป๋าม่วงช่อง " .. i .. ": ไม่มี")
     end
 end
 		
 print("-- =================================== --")
 
-   lib:Notifile("", "Send /console or F9 in chat!!! ", 6)
+   lib:Notifile("", "พิมในช่องแชท /console หรือ F9 ในคอม!!! ", 6)
 end)
 
-tab3:Label("Function Notigile Check Rare Fruits [แก้ไขอยู่]")
+tab3:Label("ฝั่งชั่น แจ้งเตือนผลไม้แรร์ในตัวผู้เล่นคนอื่น [แก้ไขอยู่]")
 
 --[[ tab3:Toggle("Check Rare in Server [ ใช้แล้วกระตุกช่วงๆ เดะแก้ทีหลัง ]", false, function(chkur)
 	checkfruits = chkur
@@ -607,165 +628,100 @@ task.spawn(function()
     end
 end)]]--
 
-local tab7 = lib.tabs:Taps("Misc")
-tab7:Label("Check All Sword Secret [ Soon . . . ]")
+local tab7 = lib.tabs:Taps("อื่นๆ")
+tab7:Label("เช็คดาบลับทั้งหมด [ รอก่อน . . . ]")
 
-tab7:Toggle("ESP Player Health & Haki", false, function(ckht)
+tab7:Toggle("เช็คเลือดและฮาคิ ผู้เล่น", false, function(plrck)
+checkhealth = plrck
 
-    checkhealth = ckht
+if checkhealth then
+task.spawn(function()
+while checkhealth do
+for _, plr in pairs(Players:GetPlayers()) do
+if plr ~= Players.LocalPlayer and plr.Character then
+local chr = plr.Character
+local head = chr:FindFirstChild("Head")
+local root = chr:FindFirstChild("HumanoidRootPart")
+if not head or not root then continue end
 
-    if checkhealth then
+local trait = chr:FindFirstChild("CharacterTrait")
+if not trait then continue end
 
-        task.spawn(function()
+local hpVal = trait:FindFirstChild("Health")      
+            local maxVal = trait:FindFirstChild("HealthMax")      
+            if not hpVal or not maxVal then continue end      
 
-            while checkhealth do
+            local gui = head:FindFirstChild("NameTag")      
+            if not gui then      
+                gui = Instance.new("BillboardGui", head)      
+                gui.Name = "NameTag"      
+                gui.AlwaysOnTop = true      
+                gui.StudsOffset = Vector3.new(0, 3, 0) -- 👈 ลอยเหนือหัว      
 
-                for _, plr in pairs(Players:GetPlayers()) do
+                local txt = Instance.new("TextLabel", gui)      
+                txt.Name = "Text"      
+                txt.Size = UDim2.new(1,0,1,0)      
+                txt.BackgroundTransparency = 1      
+                txt.TextScaled = true      
+                txt.TextStrokeTransparency = 0      
+                txt.TextColor3 = Color3.fromRGB(255,255,255)      
+            end      
 
-                    if plr ~= Players.LocalPlayer and plr.Character then
+            local txt = gui.Text      
 
-                        local chr = plr.Character
-                        local head = chr:FindFirstChild("Head")
-                        local root = chr:FindFirstChild("HumanoidRootPart")
+            -- ระยะ      
+            local dist = (Camera.CFrame.Position - root.Position).Magnitude      
 
-                        if not head or not root then
-                            continue
-                        end
+            -- ไกล = เล็ก      
+            local scale = math.clamp(1 / (dist / 25), 0.3, 1.5)      
+            gui.Size = UDim2.new(0, 200 * scale, 0, 40 * scale)      
 
-                        local trait = chr:FindFirstChild("CharacterTrait")
+            -- ข้อความ      
+            -- ข้อความ
+local hakiText = ""
 
-                        if not trait then
-                            continue
-                        end
+local userFolder = workspace:FindFirstChild("UserData")
+    and workspace.UserData:FindFirstChild("User_" .. tostring(plr.UserId))
 
-                        local hpVal = trait:FindFirstChild("Health")
-                        local maxVal = trait:FindFirstChild("HealthMax")
+if userFolder then
 
-                        if not hpVal or not maxVal then
-                            continue
-                        end
+    local hakiBar =
+        userFolder:FindFirstChild("HakiBar")
+        or (
+            userFolder:FindFirstChild("Data")
+            and userFolder.Data:FindFirstChild("HakiBar")
+        )
 
-                        -- =========================
-                        -- GUI
-                        -- =========================
-
-                        local gui = head:FindFirstChild("NameTag")
-
-                        if not gui then
-
-                            gui = Instance.new("BillboardGui", head)
-                            gui.Name = "NameTag"
-                            gui.AlwaysOnTop = true
-                            gui.StudsOffset = Vector3.new(0, 3, 0)
-
-                            local txt = Instance.new("TextLabel", gui)
-                            txt.Name = "Text"
-                            txt.Size = UDim2.new(1,0,1,0)
-                            txt.BackgroundTransparency = 1
-                            txt.TextScaled = true
-                            txt.TextStrokeTransparency = 0
-                            txt.TextColor3 =
-                                Color3.fromRGB(255,255,255)
-                        end
-
-                        local txt = gui.Text
-
-                        -- =========================
-                        -- DISTANCE
-                        -- =========================
-
-                        local dist =
-                            (Camera.CFrame.Position - root.Position)
-                            .Magnitude
-
-                        local scale =
-                            math.clamp(
-                                1 / (dist / 25),
-                                0.3,
-                                1.5
-                            )
-
-                        gui.Size =
-                            UDim2.new(
-                                0,
-                                200 * scale,
-                                0,
-                                40 * scale
-                            )
-
-                        -- =========================
-                        -- HAKI BAR
-                        -- =========================
-
-                        local hakiText = ""
-
-                        local userFolder =
-                            workspace:FindFirstChild("UserData")
-                            and workspace.UserData:FindFirstChild(
-                                "User_" .. tostring(plr.UserId)
-                            )
-
-                        if userFolder then
-
-                            local hakiBar =
-                                userFolder:FindFirstChild("HakiBar")
-                                or (
-                                    userFolder:FindFirstChild("Data")
-                                    and userFolder.Data:FindFirstChild(
-                                        "HakiBar"
-                                    )
-                                )
-
-                            if hakiBar
-                            and tonumber(hakiBar.Value) then
-
-                                hakiText =
-                                    " | Haki: " ..
-                                    math.floor(hakiBar.Value)
-                            end
-                        end
-
-                        -- =========================
-                        -- TEXT
-                        -- =========================
-
-                        txt.Text =
-                            plr.Name ..
-                            " | Health: " ..
-                            math.floor(hpVal.Value) ..
-                            "/" ..
-                            math.floor(maxVal.Value) ..
-                            hakiText
-                    end
-                end
-
-                task.wait(0.1)
-            end
-
-            -- REMOVE
-
-            for _, plr in pairs(Players:GetPlayers()) do
-
-                if plr.Character
-                and plr.Character:FindFirstChild("Head") then
-
-                    local tag =
-                        plr.Character.Head:FindFirstChild(
-                            "NameTag"
-                        )
-
-                    if tag then
-                        tag:Destroy()
-                    end
-                end
-            end
-        end)
+    if hakiBar and tonumber(hakiBar.Value) then
+        hakiText = " | ฮาคิ: " .. math.floor(hakiBar.Value)
     end
+end
+
+txt.Text = ""..plr.Name.." | เลือด: "
+    ..math.floor(hpVal.Value).."/"..math.floor(maxVal.Value)
+    ..hakiText      
+        end      
+    end      
+    task.wait(0.1)      
+end      
+
+-- ปิดแล้วลบ      
+for _, plr in pairs(Players:GetPlayers()) do      
+    if plr.Character and plr.Character:FindFirstChild("Head") then      
+        local tag = plr.Character.Head:FindFirstChild("NameTag")      
+        if tag then tag:Destroy() end      
+    end      
+end
+
 end)
 
-tab7:Toggle("ESP Highlight Players", false, function(state)
+end
 
-    espHighlight = state
+end)
+
+tab7:Toggle("ไฮไลท์ผู้เล่น", false, function(esphl)
+
+    espHighlight = esphl
 
     if espHighlight then
 
@@ -921,7 +877,7 @@ end
 --// 🔘 Toggle (เปิด = โชว์ / ปิด = ลบ)
 local Checkfruitfind = false
 
-tab7:Toggle("Show Item On Head Players | Compass, Box And Fruit", false, function(chkfrt)
+tab7:Toggle("โชว์ไอเทมบนหัวผู้เล่น | เข็มทิศ, กล่อง, ผลไม้", false, function(chkfrt)
     Checkfruitfind = chkfrt
 
     if Checkfruitfind then
@@ -982,7 +938,7 @@ tab7:Toggle("Show Item On Head Players | Compass, Box And Fruit", false, functio
     end
 end)
 
-tab7:Label("Check Fruit Spawn On Tree | [ Beta ] One Piece: Ascended")
+tab7:Label("เช็คจุดเกิดผลไม้ใต้ต้นไม้ | [ Beta ] One Piece: Ascended")
 
 local Workspace = game:GetService("Workspace")
 
@@ -1013,12 +969,12 @@ local function getItemByName(name)
 end
 
 -- 🔹 Dropdown
-dropdownItems = tab7:Dropdown("Select Item :", foundItems, function(v)
+dropdownItems = tab7:Dropdown("เลือก ผลไม้ :", foundItems, function(v)
     selectedItemName = v
 end)
 
 -- 🔹 รีเฟรช
-tab7:Button("Refresh Items", function()
+tab7:Button("รีเฟรชไอเทม", function()
     refreshItems()
 
     if dropdownItems and dropdownItems.Refresh then
@@ -1029,7 +985,7 @@ tab7:Button("Refresh Items", function()
 end)
 
 -- 🔹 View
-tab7:Toggle("View Item", false, function(state)
+tab7:Toggle("ดูมุมมอง ผลไม้ปีศาจ", false, function(state)
     if not selectedItemName then return end
 
     local item = getItemByName(selectedItemName)
@@ -1046,13 +1002,15 @@ tab7:Toggle("View Item", false, function(state)
     end
 end)
 
-local tab8 = lib.tabs:Taps("Settings")
-tab8:Label("Change Ui Language [ Soon . . . ]")
-tab8:Button("Thai Language", function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/keseerattanakorn/Bankzahh/refs/heads/main/ReaperXOPD_Th.lua"))() 
+local tab8 = lib.tabs:Taps("ตั้งค่า")
+tab8:Label("เปลี่ยนเมนูภาษา [ ปิดทุกฝั่งชั่นก่อนเปลี่ยนภาษา ]")
+tab8:Button("ภาษาไทย", function()
+lib:Notifile("Alert", "กำลังเปลี่ยนเป็น ภาษาไทย", 2)
+wait(2)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/keseerattanakorn/Bankzahh/refs/heads/main/ReaperXOPD_th.lua"))() 
 end)
 
-tab8:Button("English Language", function()
+tab8:Button("ภาษาอังกฤษ", function()
 lib:Notifile("Alert", "Changing to English Language", 2)
 wait(2)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/keseerattanakorn/Bankzahh/refs/heads/main/ReaperXOPD.lua"))()
