@@ -713,39 +713,48 @@ tab7:Toggle("ไฮไลท์ผู้เล่น", false, function(esphl)
 
                         local chr = plr.Character
 
-                        local humanoid =
-                            chr:FindFirstChildOfClass("Humanoid")
+                        local parts = {
+                            "Head",
+                            "Torso",
+                            "Left Arm",
+                            "Right Arm",
+                            "Left Leg",
+                            "Right Leg"
+                        }
 
-                        if humanoid then
+                        for _, partName in pairs(parts) do
 
-                            local highlight =
-                                chr:FindFirstChild("PlayerHighlight")
+                            local part =
+                                chr:FindFirstChild(partName)
 
-                            if not highlight then
+                            if part
+                            and not part:FindFirstChild("PartHighlight") then
 
-                                highlight = Instance.new("Highlight")
+                                local hl = Instance.new("Highlight")
 
-                                highlight.Name = "PlayerHighlight"
-                                highlight.Parent = chr
-                                highlight.Adornee = chr
+                                hl.Name = "PartHighlight"
+                                hl.Parent = part
+                                hl.Adornee = part
 
-                                highlight.FillColor =
+                                -- ไม่เติมสีข้างใน
+                                hl.FillTransparency = 1
+
+                                -- เส้นขอบ
+                                hl.OutlineTransparency = 0
+
+                                hl.FillColor =
                                     Color3.fromRGB(255,255,255)
 
-                                highlight.OutlineColor =
+                                hl.OutlineColor =
                                     Color3.fromRGB(255,255,255)
 
-                                highlight.FillTransparency = 0.7
-                                highlight.OutlineTransparency = 0
-
-                                highlight.DepthMode =
+                                hl.DepthMode =
                                     Enum.HighlightDepthMode.AlwaysOnTop
                             end
                         end
                     end
                 end
 
-                -- เช็คเรื่อย ๆ กันตายเกิดใหม่
                 task.wait(1)
             end
 
@@ -754,13 +763,11 @@ tab7:Toggle("ไฮไลท์ผู้เล่น", false, function(esphl)
 
                 if plr.Character then
 
-                    local hl =
-                        plr.Character:FindFirstChild(
-                            "PlayerHighlight"
-                        )
+                    for _, v in pairs(plr.Character:GetDescendants()) do
 
-                    if hl then
-                        hl:Destroy()
+                        if v.Name == "PartHighlight" then
+                            v:Destroy()
+                        end
                     end
                 end
             end
