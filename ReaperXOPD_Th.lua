@@ -45,6 +45,7 @@ for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) 
     end
 end
 
+--[[
 local tab = lib.tabs:Taps("ตกปลา")
 tab:Label("ฝั่งชั่น ออโต้ตกปลา [ รอการแก้ไข ] ")
 
@@ -164,9 +165,10 @@ spawn(function()
         end
     end
 end)
+]]--
 
-local tab1 = lib.tabs:Taps("ออโต้")
-tab1:Label("ฝั่งชั่น ออโต้คีบอร์ด [ ใส่เลข 0 เพื่อหยุดกดคีย์ค้าง ] ")
+local tab1 = lib.tabs:Taps("มาโคร")
+tab1:Label("ฝั่งชั่นมาโคร ออโต้คีบอร์ด [ ใส่เลข 0 เพื่อหยุดกดคีย์ค้าง ] ")
 local VIM = game:GetService("VirtualInputManager")
 
 local function runAuto(stateFunc, keyFunc, timeFunc)
@@ -480,8 +482,8 @@ local bounds = data:FindFirstChild("Bounds")
 
 print("-- ========== [การลงดัน ของผู้เล่นคนนี้] ========== --")
 print(" ฆ่าบอสเอส ไปทั้งหมด: " .. (ace and ace.Value))  
-print(" เคลียร์ดันมารีน ไปทั้งหมด: " .. (marine and marine.Value))
-print(" เคลียร์ดันEndless ไปทั้งหมด: " .. (endless and endless.Value))
+print(" ลงดันมารีน ไปทั้งหมด: " .. (marine and marine.Value))
+print(" ลงดันEndless ไปทั้งหมด: " .. (endless and endless.Value))
 print("-- ========== [ผู้เล่น] ========== --")
 print("เช็ค ผู้เล่น: " .. selectedName .. " ข้อมูลทั้งหมด")  
 local fruit1Aura = (aurafruit1 and aurafruit1.Value ~= "None") and " [ ออร่า ]" or ""
@@ -490,25 +492,45 @@ local fruit2Aura = (aurafruit2 and aurafruit2.Value ~= "None") and " [ ออร
 print(" ผลช่อง 1: " .. (fruit1 and fruit1.Value or "None") .. fruit1Aura)  
 print(" ผลช่อง 2: " .. (fruit2 and fruit2.Value or "None") .. fruit2Aura)
 print("-- ========== [Status] ========== --")  
-print(" ค่าป้องกัน เวล: " .. (defense and defense.Value or "N/A"))  
-print(" ค่าเมรี เวล: " .. (melee and melee.Value or "N/A"))  
-print(" ค่าปืน เวล: " .. (sniper and sniper.Value or "N/A"))  
-print(" ค่าดาบ เวล: " .. (sword and sword.Value or "N/A"))
-print(" ค่าฮาคิ เวล: " .. (haki and haki.Value or "N/A"))
+print(" ป้องกัน เวล: " .. (defense and defense.Value or "N/A"))  
+print(" เมรี เวล: " .. (melee and melee.Value or "N/A"))  
+print(" ปืน เวล: " .. (sniper and sniper.Value or "N/A"))  
+print(" ดาบ เวล: " .. (sword and sword.Value or "N/A"))
+print(" ฮาคิ เวล: " .. (haki and haki.Value or "N/A"))
 print("-- ========== [Status of Spending And Kills Amounts] ========== --")
 print(" มีเพชร จำนวน : " .. (gems and formatNumber(gems.Value) or "N/A"))
 print(" มีเบรี จำนวน : " .. (beris and formatNumber(beris.Value) or "N/A"))
 print(" มีฆ่า จำนวน: " .. (kills and formatNumber(kills.Value) or "N/A"))
-print("-- ========== [พีรามิด ผลช่อง 1] ========== --")  
-print(" พีรามิดผลช่อง 1 ค่าป้องกัน: " .. (dft1defense and dft1defense.Value or "N/A"))  
-print(" พีรามิดผลช่อง 1 ค่าเมรี: " .. (dft1melee and dft1melee.Value or "N/A"))  
-print(" พีรามิดผลช่อง 1 ค่าปืน: " .. (dft1sniper and dft1sniper.Value or "N/A"))  
-print(" พีรามิดผลช่อง 1 ค่าดาบ: " .. (dft1sword and dft1sword.Value or "N/A"))  
-print("-- ========== [พีรามิด ผลช่อง 2] ========== --")  
-print(" พีรามิดผลช่อง 2 ค่าป้องกัน: " .. (dft2defense and dft2defense.Value or "N/A"))  
-print(" พีรามิดผลช่อง 2 ค่าเมรี: " .. (dft2melee and dft2melee.Value or "N/A"))  
-print(" พีรามิดผลช่อง 2 ค่าปืน: " .. (dft2sniper and dft2sniper.Value or "N/A"))  
-print(" พีรามิดผลช่อง 2 ค่าดาบ: " .. (dft2sword and dft2sword.Value or "N/A"))  
+local function convertBar(value)
+    if not value then
+        return "N/A"
+    end
+
+    local num = tonumber(value)
+    if not num then
+        return tostring(value)
+    end
+
+    -- 1.1 ถึง 2.0
+    if num >= 1.1 and num <= 2.0 then
+        local bars = math.floor((num - 1.0) * 10 + 0.5)
+        return bars .. " ขีด"
+    end
+
+    return tostring(num)
+end
+
+print("-- ========== [พีรามิด ผลช่อง 1] ========== --")
+print(" พีรามิดผลช่อง 1 ค่าป้องกัน: " .. convertBar(dft1defense and dft1defense.Value))
+print(" พีรามิดผลช่อง 1 ค่าเมรี: " .. convertBar(dft1melee and dft1melee.Value))
+print(" พีรามิดผลช่อง 1 ค่าปืน: " .. convertBar(dft1sniper and dft1sniper.Value))
+print(" พีรามิดผลช่อง 1 ค่าดาบ: " .. convertBar(dft1sword and dft1sword.Value))
+
+print("-- ========== [พีรามิด ผลช่อง 2] ========== --")
+print(" พีรามิดผลช่อง 2 ค่าป้องกัน: " .. convertBar(dft2defense and dft2defense.Value))
+print(" พีรามิดผลช่อง 2 ค่าเมรี: " .. convertBar(dft2melee and dft2melee.Value))
+print(" พีรามิดผลช่อง 2 ค่าปืน: " .. convertBar(dft2sniper and dft2sniper.Value))
+print(" พีรามิดผลช่อง 2 ค่าดาบ: " .. convertBar(dft2sword and dft2sword.Value))
 local storageValues = {}
 
 for i = 1, 12 do
@@ -538,7 +560,7 @@ for i = 1, 3 do
     table.insert(boundValues, foundb)
 end
 
-print("-- ========== [เป๋าม่วงผลไม้ปีศาจ ของผู้เล่นคนนี้] ========== --")
+print("-- ========== [เป๋าม่วงผลปีศาจ ของผู้เล่น] ========== --")
 
 for i, bound in ipairs(boundValues) do
 
