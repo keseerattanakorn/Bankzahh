@@ -321,7 +321,8 @@ local function getItemList(player)
         ["Rare Box"] = 0,
         ["Ultra Rare Box"] = 0,
         ["Compass"] = 0,
-        ["Silver Compass"] = 0
+        ["Silver Compass"] = 0,
+		["Platinum Cache"] = 0
     }
 	
     if not player then
