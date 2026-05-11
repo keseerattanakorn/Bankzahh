@@ -778,31 +778,44 @@ tab7:Toggle("ESP Highlight Players", false, function(state)
 
                         local chr = plr.Character
 
-                        local highlight =
-                            chr:FindFirstChild("PlayerHighlight")
+                        local parts = {
+                            "Head",
+                            "Torso",
+                            "Left Arm",
+                            "Right Arm",
+                            "Left Leg",
+                            "Right Leg"
+                        }
 
-                        if not highlight then
+                        for _, partName in pairs(parts) do
 
-                            highlight = Instance.new("Highlight")
+                            local part =
+                                chr:FindFirstChild(partName)
 
-                            highlight.Name = "PlayerHighlight"
-                            highlight.Parent = chr
-                            highlight.Adornee = chr
+                            if part
+                            and not part:FindFirstChild("PartHighlight") then
 
-                            highlight.FillColor =
-                                Color3.fromRGB(255,255,255)
+                                local hl = Instance.new("Highlight")
 
-                            highlight.OutlineColor =
-                                Color3.fromRGB(255,255,255)
+                                hl.Name = "PartHighlight"
+                                hl.Parent = part
+                                hl.Adornee = part
 
-                            -- ไม่เติมสีข้างใน
-                            highlight.FillTransparency = 1
+                                -- ไม่เติมสีข้างใน
+                                hl.FillTransparency = 1
 
-                            -- เอาแค่เส้นรอบตัว
-                            highlight.OutlineTransparency = 0
+                                -- เส้นขอบ
+                                hl.OutlineTransparency = 0
 
-                            highlight.DepthMode =
-                                Enum.HighlightDepthMode.AlwaysOnTop
+                                hl.FillColor =
+                                    Color3.fromRGB(255,255,255)
+
+                                hl.OutlineColor =
+                                    Color3.fromRGB(255,255,255)
+
+                                hl.DepthMode =
+                                    Enum.HighlightDepthMode.AlwaysOnTop
+                            end
                         end
                     end
                 end
@@ -815,13 +828,11 @@ tab7:Toggle("ESP Highlight Players", false, function(state)
 
                 if plr.Character then
 
-                    local hl =
-                        plr.Character:FindFirstChild(
-                            "PlayerHighlight"
-                        )
+                    for _, v in pairs(plr.Character:GetDescendants()) do
 
-                    if hl then
-                        hl:Destroy()
+                        if v.Name == "PartHighlight" then
+                            v:Destroy()
+                        end
                     end
                 end
             end
