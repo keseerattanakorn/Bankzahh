@@ -127,7 +127,7 @@ titleBar.InputBegan:Connect(function(input)
 
         task.delay(0.12, function()
             if input.UserInputState == Enum.UserInputState.Begin then
-           local moved = (input.Position - startPosInput).Magnitude
+                local moved = (input.Position - startPosInput).Magnitude
 
                 -- เธ•เนเธญเธเธเธดเนเธ + เนเธกเนเนเธเนเธเธฅเธดเธเธฃเธฑเธง
                 if moved < 5 and (tick() - startTime) > 0.1 then
@@ -160,141 +160,81 @@ UserInputService.InputChanged:Connect(function(input)
     end
 end)
 
--- Hub Toggle
-local hubToggle = Instance.new("TextButton")
-hubToggle.Name = "HubToggle"
-hubToggle.Size = UDim2.new(0, 120, 0, 50)
-hubToggle.Position = UDim2.new(0.5, -90, 0, 10)
-hubToggle.AnchorPoint = Vector2.new(0.5,0)
-hubToggle.BackgroundColor3 = Color3.fromRGB(25,25,25)
-hubToggle.BackgroundTransparency = 0.2
-hubToggle.Text = "ReaperX Hub"
-hubToggle.TextColor3 = Color3.fromRGB(255,255,255)
-hubToggle.Font = Enum.Font.GothamBold
-hubToggle.TextSize = 18
-hubToggle.Visible = false
-hubToggle.Parent = gui
-createUICorner(hubToggle, UDim.new(1,0))
+    -- Hub Toggle (small rounded horizontal button to reopen)
+    local hubToggle = Instance.new("TextButton")
+    hubToggle.Name = "HubToggle"
+    hubToggle.Size = UDim2.new(0, 120, 0, 50)
+    hubToggle.Position = UDim2.new(0.5, -90, 0, 10)
+    hubToggle.AnchorPoint = Vector2.new(0.5,0)
+    hubToggle.BackgroundColor3 = Color3.fromRGB(25,25,25)
+    hubToggle.BackgroundTransparency = 0.2
+    hubToggle.Text = "ReaperX Hub"
+    hubToggle.TextColor3 = Color3.fromRGB(255,255,255)
+    hubToggle.Font = Enum.Font.GothamBold
+    hubToggle.TextSize = 18
+    hubToggle.Visible = false
+    hubToggle.Parent = gui
+    createUICorner(hubToggle, UDim.new(1,0))
 
--- Drag support
-local hubDragging = false
-local hubDragInput
-local hubDragStart
-local hubStartPos
+    -- เธเธดเธ”เน€เธกเธเธนเธซเธฅเธฑเธ
+closeBtn.MouseButton1Click:Connect(function()
+    -- เธขเนเธญเน€เธกเธเธนเธซเธฅเธฑเธ
+    TweenService:Create(
+        main,
+        TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+        {Size = UDim2.new(0.5, 0, 0, 0), Position = UDim2.new(0.5, 0, -0.2, 0)}
+    ):Play()
 
-local function updateHub(input)
-	local delta = input.Position - hubDragStart
+    task.delay(0.45, function()
+        main.Visible = false
+        hubToggle.Visible = true
+        hubToggle.Size = UDim2.new(0, 50, 0, 50) -- เน€เธฃเธดเนเธกเธเธเธฒเธ”เน€เธฅเนเธ
+        hubToggle.Position = UDim2.new(0.5, 0, -0.2, 0) -- เน€เธฃเธดเนเธกเธเธญเธเธเธญเธ”เนเธฒเธเธเธ
+        -- เธเธขเธฒเธขเธเธธเนเธกเธงเธเธฃเธตเน€เธฅเนเธเธเนเธญเธข
+        TweenService:Create(
+    hubToggle,
+    TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+    {Size = UDim2.new(0, 120, 0, 50), Position = UDim2.new(0.5, 0, 0, 10)}
+):Play()
+    end)
+end)
 
-	hubToggle.Position = UDim2.new(
-		hubStartPos.X.Scale,
-		hubStartPos.X.Offset + delta.X,
-		hubStartPos.Y.Scale,
-		hubStartPos.Y.Offset + delta.Y
-	)
+-- เธเธ”เธเธธเนเธกเธงเธเธฃเธต
+hubToggle.MouseButton1Click:Connect(function()
+    TweenService:Create(
+        hubToggle,
+        TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
+        {Size = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0.5, 0, -0.2, 0)}
+    ):Play()
+
+    task.delay(0.35, function()
+        hubToggle.Visible = false
+        main.Visible = true
+        
+        -- โ… เธฃเธตเน€เธเนเธ•เธเธเธฒเธ”/เธ•เธณเนเธซเธเนเธเธเนเธญเธ Tween
+        main.Size = UDim2.new(0.5, 0, 0, 0)
+        main.Position = UDim2.new(0.5, 0, -0.2, 0)
+
+        TweenService:Create(
+            main,
+            TweenInfo.new(0.45, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            {Size = UDim2.new(0.5, 0, 0.7, 0), Position = UDim2.new(0.5, 0, 0.5, 0)}
+        ):Play()
+    end)
+end)
+
+    -- Expose for tabs creation
+    self.tabButtons = tabButtons
+    self.pages = pages
+    self.gui = gui
+    self.main = main
+    self.hubToggle = hubToggle
+
+    return self -- return library so caller can use library.tabs or create tabs
 end
 
-hubToggle.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1
-	or input.UserInputType == Enum.UserInputType.Touch then
-
-		hubDragging = true
-		hubDragStart = input.Position
-		hubStartPos = hubToggle.Position
-
-		input.Changed:Connect(function()
-			if input.UserInputState == Enum.UserInputState.End then
-				hubDragging = false
-			end
-		end)
-	end
-end)
-
-hubToggle.InputChanged:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseMovement
-	or input.UserInputType == Enum.UserInputType.Touch then
-		hubDragInput = input
-	end
-end)
-
-UserInputService.InputChanged:Connect(function(input)
-	if hubDragging and input == hubDragInput then
-		updateHub(input)
-	end
-end)
-
--- Close Main -> Show Toggle
-closeBtn.MouseButton1Click:Connect(function()
-	TweenService:Create(
-		main,
-		TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-		{
-			Size = UDim2.new(0.5, 0, 0, 0),
-			Position = UDim2.new(
-				main.Position.X.Scale,
-				main.Position.X.Offset,
-				-0.2,
-				0
-			)
-		}
-	):Play()
-
-	task.delay(0.45, function()
-		main.Visible = false
-		hubToggle.Visible = true
-
-		hubToggle.Size = UDim2.new(0,50,0,50)
-
-		TweenService:Create(
-			hubToggle,
-			TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-			{Size = UDim2.new(0,120,0,50)}
-		):Play()
-	end)
-end)
-
--- Open Main
-hubToggle.MouseButton1Click:Connect(function()
-	if hubDragging then return end
-
-	TweenService:Create(
-		hubToggle,
-		TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
-		{
-			Size = UDim2.new(0,0,0,0)
-		}
-	):Play()
-
-	task.delay(0.35, function()
-		hubToggle.Visible = false
-		main.Visible = true
-
-		main.Size = UDim2.new(0.5,0,0,0)
-
-		TweenService:Create(
-			main,
-			TweenInfo.new(0.45, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-			{
-				Size = UDim2.new(0.5,0,0.7,0),
-				Position = UDim2.new(
-					main.Position.X.Scale,
-					main.Position.X.Offset,
-					0.5,
-					0
-				)
-			}
-		):Play()
-	end)
-end)
-
--- expose
-library.tabButtons = tabButtons
-library.pages = pages
-library.gui = gui
-library.main = main
-library.hubToggle = hubToggle
-
 -- Tabs system
-tabs = {}
+local tabs = {}
 
 function tabs:Taps(name)
     assert(library.tabButtons and library.pages, "Call library:Win(title) before creating tabs.")
