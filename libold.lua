@@ -578,86 +578,6 @@ function newPage:Textbox(title, desc, placeholder, callback)
     return container
     end
 
-    return newPage
-end
-
--- Notification system
-local activeNotifs = {}
-
-function library:Notifile(title, msg, duration)
-
-    local gui = CoreGui:FindFirstChild("redui")
-    if not gui then return end
-
-    if #activeNotifs >= 3 then
-        local oldest = table.remove(activeNotifs,1)
-        if oldest then
-            oldest:Destroy()
-        end
-    end
-
-    local notif = Instance.new("Frame")
-    notif.Size = UDim2.new(0,300,0,60)
-    notif.Position = UDim2.new(1,310,1,-80)
-    notif.AnchorPoint = Vector2.new(1,1)
-    notif.BackgroundColor3 = Color3.fromRGB(25,25,25)
-    notif.BackgroundTransparency = 0.4
-    notif.BorderSizePixel = 0
-    notif.Parent = gui
-    createUICorner(notif, UDim.new(0,8))
-
-    local label = Instance.new("TextLabel")
-    label.Size = UDim2.new(1,-10,1,0)
-    label.Position = UDim2.new(0,5,0,0)
-    label.BackgroundTransparency = 1
-    label.Text = msg or ""
-    label.TextColor3 = Color3.fromRGB(255,255,255)
-    label.Font = Enum.Font.SourceSans
-    label.TextSize = 16
-    label.TextXAlignment = Enum.TextXAlignment.Left
-    label.Parent = notif
-
-    for i,n in ipairs(activeNotifs) do
-        local goalPos = UDim2.new(1,-10,1,-10-(70*i))
-        TweenService:Create(n,TweenInfo.new(0.18),{
-            Position = goalPos
-        }):Play()
-    end
-
-    table.insert(activeNotifs,notif)
-
-    TweenService:Create(
-        notif,
-        TweenInfo.new(0.28),
-        {
-            Position = UDim2.new(1,-10,1,-10)
-        }
-    ):Play()
-
-    task.delay(duration or 3,function()
-
-        local tweenOut = TweenService:Create(
-            notif,
-            TweenInfo.new(0.28),
-            {
-                Position = UDim2.new(1,310,1,-10)
-            }
-        )
-
-        tweenOut:Play()
-        tweenOut.Completed:Wait()
-
-        for i,n in ipairs(activeNotifs) do
-            if n == notif then
-                table.remove(activeNotifs,i)
-                break
-            end
-        end
-
-        notif:Destroy()
-    end)
-end
-
 function newPage:Dropdown(title, desc, items, callback)
 
     local container = Instance.new("Frame")
@@ -901,6 +821,86 @@ function newPage:Dropdown(title, desc, items, callback)
     end)
 
     return container
+    end
+
+    return newPage
+end
+
+-- Notification system
+local activeNotifs = {}
+
+function library:Notifile(title, msg, duration)
+
+    local gui = CoreGui:FindFirstChild("redui")
+    if not gui then return end
+
+    if #activeNotifs >= 3 then
+        local oldest = table.remove(activeNotifs,1)
+        if oldest then
+            oldest:Destroy()
+        end
+    end
+
+    local notif = Instance.new("Frame")
+    notif.Size = UDim2.new(0,300,0,60)
+    notif.Position = UDim2.new(1,310,1,-80)
+    notif.AnchorPoint = Vector2.new(1,1)
+    notif.BackgroundColor3 = Color3.fromRGB(25,25,25)
+    notif.BackgroundTransparency = 0.4
+    notif.BorderSizePixel = 0
+    notif.Parent = gui
+    createUICorner(notif, UDim.new(0,8))
+
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1,-10,1,0)
+    label.Position = UDim2.new(0,5,0,0)
+    label.BackgroundTransparency = 1
+    label.Text = msg or ""
+    label.TextColor3 = Color3.fromRGB(255,255,255)
+    label.Font = Enum.Font.SourceSans
+    label.TextSize = 16
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.Parent = notif
+
+    for i,n in ipairs(activeNotifs) do
+        local goalPos = UDim2.new(1,-10,1,-10-(70*i))
+        TweenService:Create(n,TweenInfo.new(0.18),{
+            Position = goalPos
+        }):Play()
+    end
+
+    table.insert(activeNotifs,notif)
+
+    TweenService:Create(
+        notif,
+        TweenInfo.new(0.28),
+        {
+            Position = UDim2.new(1,-10,1,-10)
+        }
+    ):Play()
+
+    task.delay(duration or 3,function()
+
+        local tweenOut = TweenService:Create(
+            notif,
+            TweenInfo.new(0.28),
+            {
+                Position = UDim2.new(1,310,1,-10)
+            }
+        )
+
+        tweenOut:Play()
+        tweenOut.Completed:Wait()
+
+        for i,n in ipairs(activeNotifs) do
+            if n == notif then
+                table.remove(activeNotifs,i)
+                break
+            end
+        end
+
+        notif:Destroy()
+    end)
 end
 
 library.tabs = tabs
