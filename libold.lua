@@ -378,13 +378,16 @@ function newPage:Button(text, desc, callback)
 
     local container = Instance.new("Frame")
     container.Size = UDim2.new(1,-10,0,50)
-    container.BackgroundTransparency = 1
+    container.BackgroundColor3 = Color3.fromRGB(40,40,40)
+    container.BackgroundTransparency = 0.4
     container.Parent = page
+    createUICorner(container, UDim.new(0,6))
 
     local button = Instance.new("TextButton")
-    button.Size = UDim2.new(1,0,0,30)
+    button.Size = UDim2.new(1,-10,0,24)
+    button.Position = UDim2.new(0,5,0,2)
     button.BackgroundColor3 = Color3.fromRGB(60,60,60)
-    button.BackgroundTransparency = 0.4
+    button.BackgroundTransparency = 0.2
     button.TextColor3 = Color3.fromRGB(255,255,255)
     button.Font = Enum.Font.SourceSans
     button.TextSize = 16
@@ -393,8 +396,8 @@ function newPage:Button(text, desc, callback)
     createUICorner(button, UDim.new(0,6))
 
     local description = Instance.new("TextLabel")
-    description.Size = UDim2.new(1,-4,0,16)
-    description.Position = UDim2.new(0,2,0,32)
+    description.Size = UDim2.new(1,-15,0,14)
+    description.Position = UDim2.new(0,10,0,30)
     description.BackgroundTransparency = 1
     description.Text = desc or ""
     description.TextColor3 = Color3.fromRGB(180,180,180)
