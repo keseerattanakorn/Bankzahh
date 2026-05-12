@@ -374,6 +374,207 @@ function tabs:Taps(name)
         return sectionFrame
     end
 
+function newPage:Button(text, desc, callback)
+
+    local container = Instance.new("Frame")
+    container.Size = UDim2.new(1,-10,0,50)
+    container.BackgroundTransparency = 1
+    container.Parent = page
+
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(1,0,0,30)
+    button.BackgroundColor3 = Color3.fromRGB(60,60,60)
+    button.BackgroundTransparency = 0.4
+    button.TextColor3 = Color3.fromRGB(255,255,255)
+    button.Font = Enum.Font.SourceSans
+    button.TextSize = 16
+    button.Text = text or "Button"
+    button.Parent = container
+    createUICorner(button, UDim.new(0,6))
+
+    local description = Instance.new("TextLabel")
+    description.Size = UDim2.new(1,-4,0,16)
+    description.Position = UDim2.new(0,2,0,32)
+    description.BackgroundTransparency = 1
+    description.Text = desc or ""
+    description.TextColor3 = Color3.fromRGB(180,180,180)
+    description.Font = Enum.Font.SourceSans
+    description.TextSize = 13
+    description.TextXAlignment = Enum.TextXAlignment.Left
+    description.Parent = container
+
+    button.MouseButton1Click:Connect(function()
+        if callback then
+            pcall(callback)
+        end
+    end)
+
+    return container
+end
+
+function newPage:Section(txt, desc)
+
+    local sectionFrame = Instance.new("Frame")
+    sectionFrame.Size = UDim2.new(1,-10,0,42)
+    sectionFrame.BackgroundTransparency = 1
+    sectionFrame.Parent = page
+
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1,0,0,22)
+    label.BackgroundTransparency = 1
+    label.Text = "^| "..(txt or "").." |^"
+    label.TextColor3 = Color3.fromRGB(200,200,200)
+    label.Font = Enum.Font.SourceSansBold
+    label.TextSize = 17
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.Parent = sectionFrame
+
+    local description = Instance.new("TextLabel")
+    description.Size = UDim2.new(1,0,0,14)
+    description.Position = UDim2.new(0,0,0,22)
+    description.BackgroundTransparency = 1
+    description.Text = desc or ""
+    description.TextColor3 = Color3.fromRGB(150,150,150)
+    description.Font = Enum.Font.SourceSans
+    description.TextSize = 13
+    description.TextXAlignment = Enum.TextXAlignment.Left
+    description.Parent = sectionFrame
+
+    return sectionFrame
+end
+
+function newPage:Toggle(text, desc, default, callback)
+
+    local container = Instance.new("Frame")
+    container.Size = UDim2.new(1,-10,0,50)
+    container.BackgroundColor3 = Color3.fromRGB(40,40,40)
+    container.BackgroundTransparency = 0.4
+    container.Parent = page
+    createUICorner(container, UDim.new(0,6))
+
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1,-70,0,24)
+    label.Position = UDim2.new(0,10,0,2)
+    label.BackgroundTransparency = 1
+    label.Text = text or "Toggle"
+    label.TextColor3 = Color3.fromRGB(255,255,255)
+    label.Font = Enum.Font.SourceSans
+    label.TextSize = 16
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.Parent = container
+
+    local description = Instance.new("TextLabel")
+    description.Size = UDim2.new(1,-15,0,14)
+    description.Position = UDim2.new(0,10,0,28)
+    description.BackgroundTransparency = 1
+    description.Text = desc or ""
+    description.TextColor3 = Color3.fromRGB(180,180,180)
+    description.Font = Enum.Font.SourceSans
+    description.TextSize = 13
+    description.TextXAlignment = Enum.TextXAlignment.Left
+    description.Parent = container
+
+    local toggleBtn = Instance.new("TextButton")
+    toggleBtn.Size = UDim2.new(0,50,0,24)
+    toggleBtn.Position = UDim2.new(1,-60,0.5,-12)
+    toggleBtn.BackgroundColor3 = Color3.fromRGB(60,60,60)
+    toggleBtn.BackgroundTransparency = 0.4
+    toggleBtn.Text = ""
+    toggleBtn.Parent = container
+    createUICorner(toggleBtn, UDim.new(0,6))
+
+    local knob = Instance.new("Frame")
+    knob.Size = UDim2.new(0,20,0,20)
+    knob.Position = default and UDim2.new(1,-22,0.5,-10) or UDim2.new(0,2,0.5,-10)
+    knob.BackgroundColor3 = default and Color3.fromRGB(0,170,255) or Color3.fromRGB(150,150,150)
+    knob.Parent = toggleBtn
+    createUICorner(knob, UDim.new(1,0))
+
+    local state = default and true or false
+
+    toggleBtn.MouseButton1Click:Connect(function()
+
+        state = not state
+
+        local newPos = state
+            and UDim2.new(1,-22,0.5,-10)
+            or UDim2.new(0,2,0.5,-10)
+
+        knob:TweenPosition(
+            newPos,
+            Enum.EasingDirection.Out,
+            Enum.EasingStyle.Quad,
+            0.12,
+            true
+        )
+
+        knob.BackgroundColor3 = state
+            and Color3.fromRGB(0,170,255)
+            or Color3.fromRGB(150,150,150)
+
+        if callback then
+            pcall(callback,state)
+        end
+    end)
+
+    if callback then
+        pcall(callback,state)
+    end
+
+    return container
+end
+
+function newPage:Textbox(title, desc, placeholder, callback)
+
+    local container = Instance.new("Frame")
+    container.Size = UDim2.new(1,-10,0,50)
+    container.BackgroundTransparency = 1
+    container.Parent = page
+
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(0.38,0,0,20)
+    label.Position = UDim2.new(0,10,0,0)
+    label.BackgroundTransparency = 1
+    label.Text = title or ""
+    label.TextColor3 = Color3.fromRGB(255,255,255)
+    label.Font = Enum.Font.SourceSans
+    label.TextSize = 16
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.Parent = container
+
+    local description = Instance.new("TextLabel")
+    description.Size = UDim2.new(1,-10,0,14)
+    description.Position = UDim2.new(0,10,0,22)
+    description.BackgroundTransparency = 1
+    description.Text = desc or ""
+    description.TextColor3 = Color3.fromRGB(180,180,180)
+    description.Font = Enum.Font.SourceSans
+    description.TextSize = 13
+    description.TextXAlignment = Enum.TextXAlignment.Left
+    description.Parent = container
+
+    local box = Instance.new("TextBox")
+    box.Size = UDim2.new(0.58,-20,0,24)
+    box.Position = UDim2.new(0.42,0,0.5,-12)
+    box.BackgroundColor3 = Color3.fromRGB(50,50,50)
+    box.BackgroundTransparency = 0.4
+    box.PlaceholderText = placeholder or ""
+    box.Text = ""
+    box.TextColor3 = Color3.fromRGB(255,255,255)
+    box.Font = Enum.Font.SourceSans
+    box.TextSize = 16
+    box.Parent = container
+    createUICorner(box, UDim.new(0,6))
+
+    box.FocusLost:Connect(function(enter)
+        if enter and callback then
+            pcall(callback,box.Text)
+        end
+    end)
+
+    return container
+    end
+
     return newPage
 end
 
