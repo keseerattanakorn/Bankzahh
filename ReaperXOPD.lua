@@ -177,38 +177,51 @@ spawn(function()
 end)
 ]]--
 
---[[local tab1 = lib.tabs:Taps("มาโคร")
+local tab1 = lib.tabs:Taps("มาโคร")
+
 tab1:Label("ฝั่งชั่นมาโคร ออโต้คีบอร์ด [ ใส่เลข 0 เพื่อหยุดกดคีย์ค้าง ] ")
+
 local VIM = game:GetService("VirtualInputManager")
 
 local function runAuto(stateFunc, keyFunc, timeFunc)
     task.spawn(function()
+
         while true do
+
             if stateFunc() and keyFunc() then
+
                 local key = keyFunc()
                 local hold = tonumber(timeFunc())
 
+                -- กันค่า nil / หัวข้อ dropdown
+                if not key or not Enum.KeyCode[key] then
+                    task.wait()
+                    continue
+                end
+
                 if hold == nil then
-                    -- ไม่ใส่ = 1.5 วิ
+
                     VIM:SendKeyEvent(true, Enum.KeyCode[key], false, game)
                     task.wait(0.05)
                     VIM:SendKeyEvent(false, Enum.KeyCode[key], false, game)
                     task.wait(1.5)
 
                 elseif hold == 0 then
-                    -- 0 = 1 วิ
+
                     VIM:SendKeyEvent(true, Enum.KeyCode[key], false, game)
                     task.wait(0.05)
                     VIM:SendKeyEvent(false, Enum.KeyCode[key], false, game)
                     task.wait(1)
 
                 else
-                    -- กดค้าง
+
                     VIM:SendKeyEvent(true, Enum.KeyCode[key], false, game)
                     task.wait(hold)
                     VIM:SendKeyEvent(false, Enum.KeyCode[key], false, game)
                     task.wait(0.1)
+
                 end
+
             else
                 task.wait()
             end
@@ -216,50 +229,138 @@ local function runAuto(stateFunc, keyFunc, timeFunc)
     end)
 end
 
-local keys = {"| ↘️สกิลดาบ↙️ |","Y","| ↘️สกิลผลช่อง 1↙️ |","Z","X","C","V","B","N","| ↘️สกิลผลช่ิงที่ 2↙️ |","F","G","H","J","K","| ↘️ฮาคิ↙️ |","R","Q"}
+-- เอาเฉพาะคีย์จริง
+local keys = {
+    "Y",
+    "Z",
+    "X",
+    "C",
+    "V",
+    "B",
+    "N",
+    "F",
+    "G",
+    "H",
+    "J",
+    "K",
+    "R",
+    "Q"
+}
 
--- Z
-local selectedKeyZ, selectedTimeZ, stateZ
-tab1:Dropdown("เลือก คีย์ :", keys, function(v) selectedKeyZ = v end)
-tab1:Textbox("คีย์กดค้าง :", "ใส่เลข", function(v) selectedTimeZ = v end)
-tab1:Toggle("ออโต้ คีย์", false, function(v) stateZ = v end)
-runAuto(function() return stateZ end, function() return selectedKeyZ end, function() return selectedTimeZ end)
+-- =========================
+-- SLOT 1
+-- =========================
 
--- X
-local selectedKeyX, selectedTimeX, stateX
-tab1:Dropdown("เลือก คีย์ :", keys, function(v) selectedKeyX = v end)
-tab1:Textbox("คีย์กดค้าง :", "ใส่เลข", function(v) selectedTimeX = v end)
-tab1:Toggle("ออโต้ คีย์", false, function(v) stateX = v end)
-runAuto(function() return stateX end, function() return selectedKeyX end, function() return selectedTimeX end)
+local selectedKey1, selectedTime1, state1
 
--- C
-local selectedKeyC, selectedTimeC, stateC
-tab1:Dropdown("เลือก คีย์ :", keys, function(v) selectedKeyC = v end)
-tab1:Textbox("คีย์กดค้าง :", "ใส่เลข", function(v) selectedTimeC = v end)
-tab1:Toggle("ออโต้ คีย์", false, function(v) stateC = v end)
-runAuto(function() return stateC end, function() return selectedKeyC end, function() return selectedTimeC end)
+tab1:Dropdown(
+    "เลือก คีย์ :",
+    "เลือกปุ่มที่จะกดอัตโนมัติ",
+    keys,
+    function(v)
+        selectedKey1 = v
+    end
+)
 
--- V
-local selectedKeyV, selectedTimeV, stateV
-tab1:Dropdown("เลือก คีย์ :", keys, function(v) selectedKeyV = v end)
-tab1:Textbox("คีย์กดค้าง :", "ใส่เลข", function(v) selectedTimeV = v end)
-tab1:Toggle("ออโต้ คีย์", false, function(v) stateV = v end)
-runAuto(function() return stateV end, function() return selectedKeyV end, function() return selectedTimeV end)
+tab1:Textbox(
+    "คีย์กดค้าง :",
+    "ใส่เลขวินาที",
+    function(v)
+        selectedTime1 = v
+    end
+)
 
--- B
-local selectedKeyB, selectedTimeB, stateB
-tab1:Dropdown("เลือก คีย์ :", keys, function(v) selectedKeyB = v end)
-tab1:Textbox("คีย์กดค้าง :", "ใส่เลข", function(v) selectedTimeB = v end)
-tab1:Toggle("ออโต้ คีย์", false, function(v) stateB = v end)
-runAuto(function() return stateB end, function() return selectedKeyB end, function() return selectedTimeB end)
+tab1:Toggle(
+    "ออโต้ คีย์",
+    "เปิด / ปิด การกดออโต้",
+    false,
+    function(v)
+        state1 = v
+    end
+)
 
--- N
-local selectedKeyN, selectedTimeN, stateN
-tab1:Dropdown("เลือก คีย์ :", keys, function(v) selectedKeyN = v end)
-tab1:Textbox("คีย์กดค้าง :", "ใส่เลข", function(v) selectedTimeN = v end)
-tab1:Toggle("ออโต้ คีย์", false, function(v) stateN = v end)
-runAuto(function() return stateN end, function() return selectedKeyN end, function() return selectedTimeN end)
-]]--
+runAuto(
+    function() return state1 end,
+    function() return selectedKey1 end,
+    function() return selectedTime1 end
+)
+
+-- =========================
+-- SLOT 2
+-- =========================
+
+local selectedKey2, selectedTime2, state2
+
+tab1:Dropdown(
+    "เลือก คีย์ :",
+    "เลือกปุ่มที่จะกดอัตโนมัติ",
+    keys,
+    function(v)
+        selectedKey2 = v
+    end
+)
+
+tab1:Textbox(
+    "คีย์กดค้าง :",
+    "ใส่เลขวินาที",
+    function(v)
+        selectedTime2 = v
+    end
+)
+
+tab1:Toggle(
+    "ออโต้ คีย์",
+    "เปิด / ปิด การกดออโต้",
+    false,
+    function(v)
+        state2 = v
+    end
+)
+
+runAuto(
+    function() return state2 end,
+    function() return selectedKey2 end,
+    function() return selectedTime2 end
+)
+
+-- =========================
+-- SLOT 3
+-- =========================
+
+local selectedKey3, selectedTime3, state3
+
+tab1:Dropdown(
+    "เลือก คีย์ :",
+    "เลือกปุ่มที่จะกดอัตโนมัติ",
+    keys,
+    function(v)
+        selectedKey3 = v
+    end
+)
+
+tab1:Textbox(
+    "คีย์กดค้าง :",
+    "ใส่เลขวินาที",
+    function(v)
+        selectedTime3 = v
+    end
+)
+
+tab1:Toggle(
+    "ออโต้ คีย์",
+    "เปิด / ปิด การกดออโต้",
+    false,
+    function(v)
+        state3 = v
+    end
+)
+
+runAuto(
+    function() return state3 end,
+    function() return selectedKey3 end,
+    function() return selectedTime3 end
+)
+
 local tab3 = lib.tabs:Taps("ผู้เล่น")
 tab3:Label("คำนวณเรทเข็มทิศ | ของ โหมดจุติ ")
 local lp = Players.LocalPlayer
@@ -993,7 +1094,7 @@ dropdownItems = tab7:Dropdown("เลือก ผลไม้ :",
 end)
 
 -- 🔹 รีเฟรช
-tab7:Button("รีเฟรชไอเทม", function()
+tab7:Button("รีเฟรชไอเทม", "กดรีเฟรชเพื่อหาผลไม้ในเซิฟ", function()
     refreshItems()
 
     if dropdownItems and dropdownItems.Refresh then
@@ -1004,7 +1105,7 @@ tab7:Button("รีเฟรชไอเทม", function()
 end)
 
 -- 🔹 View
-tab7:Toggle("ดูมุมมอง ผลไม้ปีศาจ", false, function(state)
+tab7:Toggle("ดูมุมมอง ผลไม้ปีศาจ", "ดูมุมมองของผลไม้ปีศาจ", false, function(state)
     if not selectedItemName then return end
 
     local item = getItemByName(selectedItemName)
