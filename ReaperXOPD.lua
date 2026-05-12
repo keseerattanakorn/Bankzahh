@@ -265,6 +265,7 @@ tab1:Dropdown(
 tab1:Textbox(
     "คีย์กดค้าง :",
     "ใส่เลขวินาที",
+	"0",
     function(v)
         selectedTime1 = v
     end
@@ -272,7 +273,7 @@ tab1:Textbox(
 
 tab1:Toggle(
     "ออโต้ คีย์",
-    "เปิด / ปิด การกดออโต้",
+    "เปิด / ปิด การกดออโต้มาโคร",
     false,
     function(v)
         state1 = v
@@ -303,6 +304,7 @@ tab1:Dropdown(
 tab1:Textbox(
     "คีย์กดค้าง :",
     "ใส่เลขวินาที",
+	"0",
     function(v)
         selectedTime2 = v
     end
@@ -310,7 +312,7 @@ tab1:Textbox(
 
 tab1:Toggle(
     "ออโต้ คีย์",
-    "เปิด / ปิด การกดออโต้",
+    "เปิด / ปิด การกดออโต้มาโคร",
     false,
     function(v)
         state2 = v
@@ -341,6 +343,7 @@ tab1:Dropdown(
 tab1:Textbox(
     "คีย์กดค้าง :",
     "ใส่เลขวินาที",
+	"0",
     function(v)
         selectedTime3 = v
     end
@@ -348,7 +351,7 @@ tab1:Textbox(
 
 tab1:Toggle(
     "ออโต้ คีย์",
-    "เปิด / ปิด การกดออโต้",
+    "เปิด / ปิด การกดออโต้มาโคร",
     false,
     function(v)
         state3 = v
