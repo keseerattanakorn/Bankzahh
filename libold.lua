@@ -294,7 +294,7 @@ library.main = main
 library.hubToggle = hubToggle
 
 -- Tabs system
-local tabs = {}
+tabs = {}
 
 function tabs:Taps(name)
     assert(library.tabButtons and library.pages, "Call library:Win(title) before creating tabs.")
