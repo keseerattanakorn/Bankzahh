@@ -45,6 +45,16 @@ for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) 
     end
 end
 
+local tab0 = lib.tabs:Taps("อัพเดต")
+tab0:Section(
+    "อัพเดตนี้มี. . .",
+    "ระบบเมนูถูกเปลี่ยนแปลงใหม่หมด แก้บัค Ui เล็กน้อยเพื่อให้ใช้งานได้"
+)
+
+tab0:Section(
+    "อัพเดตนี้มี. . .",
+    "ระบบปุ่มเปิดและปิดเมนูแบบลาก ยังไม่แก้..."
+)
 --[[
 local tab = lib.tabs:Taps("ตกปลา")
 tab:Label("ฝั่งชั่น ออโต้ตกปลา [ รอการแก้ไข ] ")
@@ -293,11 +303,11 @@ local list = {
 }
 
 tab3:Dropdown(
-    "เรทเข็มทิศที่คำนวณ % (Lv."..lvl..")",
-    "ดูเรทการออกกล่อง",list, function(v)
-        print(v)
-    end
-)
+    "เช็คเรทที่คำนวณ (เวล "..lvl..")",
+    "ดูเรท % ออกกล่องของเข็มทิศ",
+list, function(v)
+print(v)
+    end)
 
 tab3:Label("ผู้เล่น")
 local playerNames = {}
@@ -404,14 +414,16 @@ end
 -- =========================
 refreshPlayers()
 
-tab3:Dropdown("เลือก ผู้เล่น :", playerNames, function(name)
+tab3:Dropdown("เลือก ผู้เล่น :", "เลือกชื่อผู้เล่นเพื่อใช้งานฝั่งชั่นอื่นๆ", playerNames, function(name)
     selectedPlayer = name
 end)
 
-tab3:Dropdown("กระเป๋า ผู้เล่น :", itemList, function(v)
+tab3:Dropdown("กระเป๋า ผู้เล่น :",
+	"ดูของในกระเป๋าผู้เล่น เช่น Compass, Box และผลหายาก",
+	itemList, function(v)
 end)
 
-tab3:Toggle("ดูมุมมอง ผู้เล่น", false, function(state)
+tab3:Toggle("ดูมุมมอง ผู้เล่น", "ดูมุมมองผู้เล่นที่เราเลือก", false, function(state)
 	if selectedPlayer then
 		local target = Players:FindFirstChild(selectedPlayer)
 		if target and target.Character and target.Character:FindFirstChild("Humanoid") then
@@ -424,18 +436,18 @@ tab3:Toggle("ดูมุมมอง ผู้เล่น", false, function(st
 	end
 end)
 
-tab3:Button("รีเฟรช ชื่อผู้เล่น", function()
+tab3:Button("รีเฟรช ชื่อผู้เล่น", "กดรีเฟรชเพื่อรีเจอชื่อผู้เล่นที่เข้ามาใหม่", function()
     refreshPlayers()
 end)
 
 -- =========================
 -- 🔘 ปุ่มรีเฟรชเฉพาะของ
 -- =========================
-tab3:Button("รีเฟรชไอเทม", function()
+tab3:Button("รีเฟรชไอเทม", "กดรีเฟรชเพื่อรีของในกระเป๋าผู้เล่นที่เราเลือก", function()
     refreshItems()
 end)
 
-tab3:Button("เช็คข้อมูลผู้เล่นทั้งหมด", function()
+tab3:Button("เช็คข้อมูลผู้เล่นทั้งหมด", "เช็คข้อมูลทุกอย่างในตัวของผู้เล่นที่เราเลือก", function()
 local selectedName = selectedPlayer
 local player = game.Players:FindFirstChild(selectedName)
 if not player then return end
@@ -635,7 +647,7 @@ end)]]--
 local tab7 = lib.tabs:Taps("อื่นๆ")
 tab7:Label("เช็คดาบลับทั้งหมด [ รอก่อน . . . ]")
 
-tab7:Toggle("เช็คเลือดและฮาคิ ผู้เล่น", false, function(plrck)
+tab7:Toggle("เช็คเลือดและฮาคิ ผู้เล่น", "โชว์จำนวนเลือดและฮาคิบนหัว", false, function(plrck)
 checkhealth = plrck
 
 if checkhealth then
@@ -723,7 +735,7 @@ end
 
 end)
 
-tab7:Toggle("ไฮไลท์ผู้เล่น", false, function(esphl)
+tab7:Toggle("ไฮไลท์ผู้เล่น", "ไฮไลท์ร่างผู้เล่นทุกคนให้เรืองแสง", false, function(esphl)
 
     espHighlight = esphl
 
@@ -881,7 +893,7 @@ end
 --// 🔘 Toggle (เปิด = โชว์ / ปิด = ลบ)
 local Checkfruitfind = false
 
-tab7:Toggle("โชว์ไอเทมบนหัวผู้เล่น | เข็มทิศ, กล่อง, ผลไม้", false, function(chkfrt)
+tab7:Toggle("โชว์ไอเทมบนหัวผู้เล่น", "โชว์ของบนหัวผู้เล่น เช่น Compass, Box และ Fruit", false, function(chkfrt)
     Checkfruitfind = chkfrt
 
     if Checkfruitfind then
@@ -973,7 +985,10 @@ local function getItemByName(name)
 end
 
 -- 🔹 Dropdown
-dropdownItems = tab7:Dropdown("เลือก ผลไม้ :", foundItems, function(v)
+dropdownItems = tab7:Dropdown("เลือก ผลไม้ :", 
+	"เลือกผลไม้ที่เจอ",
+	foundItems, 
+	function(v)
     selectedItemName = v
 end)
 
@@ -1008,13 +1023,13 @@ end)
 
 local tab8 = lib.tabs:Taps("ตั้งค่า")
 tab8:Label("เปลี่ยนเมนูภาษา [ ปิดทุกฝั่งชั่นก่อนเปลี่ยนภาษา ]")
-tab8:Button("ภาษาไทย", function()
+tab8:Button("ภาษาไทย", "Ui ฉบับ ภาษาไทย", function()
 lib:Notifile("Alert", "กำลังเปลี่ยนเป็น ภาษาไทย", 2)
 wait(2)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/keseerattanakorn/Bankzahh/refs/heads/main/ReaperXOPD.lua"))()
 end)
 
-tab8:Button("ภาษาอังกฤษ", function()
+tab8:Button("ภาษาอังกฤษ", "Ui ฉบับ ภาษา อังกฤษ [ยังไม่พร้อมใช้งาน]", function()
 lib:Notifile("Alert", "Changing to English Language", 2)
 wait(2)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/keseerattanakorn/Bankzahh/refs/heads/main/ReaperXOPD_Eng.lua"))() 
