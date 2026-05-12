@@ -661,19 +661,20 @@ end
 function newPage:Dropdown(title, desc, items, callback)
 
     local container = Instance.new("Frame")
-    container.Size = UDim2.new(1,-10,0,50)
+    container.Size = UDim2.new(1, -10, 0, 50)
     container.BackgroundColor3 = Color3.fromRGB(40,40,40)
     container.BackgroundTransparency = 0.4
     container.ClipsDescendants = true
+    container.LayoutOrder = 0
     container.Parent = page
     createUICorner(container, UDim.new(0,6))
 
     local titleLabel = Instance.new("TextLabel")
-    titleLabel.Size = UDim2.new(0.45,0,0,20)
+    titleLabel.Size = UDim2.new(0.45, 0, 0, 20)
     titleLabel.Position = UDim2.new(0,10,0,2)
     titleLabel.BackgroundTransparency = 1
     titleLabel.Text = title or "Dropdown"
-    titleLabel.TextColor3 = Color3.fromRGB(255,255,255)
+    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     titleLabel.Font = Enum.Font.SourceSans
     titleLabel.TextSize = 16
     titleLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -691,11 +692,11 @@ function newPage:Dropdown(title, desc, items, callback)
     description.Parent = container
 
     local dropdownButton = Instance.new("TextButton")
-    dropdownButton.Size = UDim2.new(0.45,-10,0,24)
-    dropdownButton.Position = UDim2.new(0.55,0,0,3)
-    dropdownButton.BackgroundColor3 = Color3.fromRGB(55,55,55)
+    dropdownButton.Size = UDim2.new(0.45, -10, 0, 24)
+    dropdownButton.Position = UDim2.new(0.55, 0, 0, 3)
+    dropdownButton.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
     dropdownButton.BackgroundTransparency = 0.3
-    dropdownButton.TextColor3 = Color3.fromRGB(255,255,255)
+    dropdownButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     dropdownButton.Font = Enum.Font.SourceSans
     dropdownButton.TextSize = 16
     dropdownButton.Text = " . . . "
@@ -703,23 +704,28 @@ function newPage:Dropdown(title, desc, items, callback)
     createUICorner(dropdownButton, UDim.new(0,6))
 
     local arrow = Instance.new("TextLabel")
-    arrow.Size = UDim2.new(0,20,1,0)
-    arrow.Position = UDim2.new(1,-22,0,0)
+    arrow.Size = UDim2.new(0, 20, 1, 0)
+    arrow.Position = UDim2.new(1, -20, 0, 0)
     arrow.BackgroundTransparency = 1
     arrow.Text = "▶"
-    arrow.TextColor3 = Color3.fromRGB(255,255,255)
+    arrow.TextColor3 = Color3.fromRGB(255, 255, 255)
     arrow.Font = Enum.Font.SourceSansBold
     arrow.TextSize = 14
     arrow.Parent = dropdownButton
 
+    local opened = false
+    local selectedOption = nil
+
     local optionContainer = Instance.new("ScrollingFrame")
-    optionContainer.Size = UDim2.new(1,-10,0,0)
+    optionContainer.Size = UDim2.new(1, -10, 0, 0)
     optionContainer.Position = UDim2.new(0,5,0,52)
     optionContainer.BackgroundColor3 = Color3.fromRGB(35,35,35)
     optionContainer.BackgroundTransparency = 0.2
     optionContainer.BorderSizePixel = 0
+    optionContainer.ClipsDescendants = true
+    optionContainer.CanvasSize = UDim2.new(0, 0, 0, 0)
     optionContainer.ScrollBarThickness = 4
-    optionContainer.CanvasSize = UDim2.new(0,0,0,0)
+    optionContainer.ZIndex = 5
     optionContainer.Visible = false
     optionContainer.Parent = container
     createUICorner(optionContainer, UDim.new(0,6))
@@ -743,26 +749,24 @@ function newPage:Dropdown(title, desc, items, callback)
     searchBox.Position = UDim2.new(0,2,0,2)
     searchBox.PlaceholderText = "Search..."
     searchBox.Text = ""
-    searchBox.BackgroundColor3 = Color3.fromRGB(45,45,45)
-    searchBox.TextColor3 = Color3.fromRGB(255,255,255)
-    searchBox.Font = Enum.Font.SourceSans
-    searchBox.TextSize = 15
+    searchBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    searchBox.TextColor3 = Color3.fromRGB(255, 255, 255)
     searchBox.ClearTextOnFocus = false
+    searchBox.Font = Enum.Font.SourceSans
+    searchBox.TextSize = 16
+    searchBox.ZIndex = 6
     searchBox.Parent = optionContainer
     createUICorner(searchBox, UDim.new(0,6))
 
-    local opened = false
-    local selectedOption = nil
-
     local function createOptions(filter)
 
-        for _,v in ipairs(optionContainer:GetChildren()) do
-            if v:IsA("TextButton") then
-                v:Destroy()
+        for _, child in ipairs(optionContainer:GetChildren()) do
+            if child:IsA("TextButton") then
+                child:Destroy()
             end
         end
 
-        for _,item in ipairs(items) do
+        for _, item in ipairs(items) do
 
             if filter == "" or string.find(
                 string.lower(item),
@@ -770,34 +774,51 @@ function newPage:Dropdown(title, desc, items, callback)
             ) then
 
                 local option = Instance.new("TextButton")
-                option.Size = UDim2.new(1,-4,0,24)
-                option.BackgroundColor3 =
-                    item == selectedOption
-                    and Color3.fromRGB(80,80,80)
-                    or Color3.fromRGB(50,50,50)
+                option.Size = UDim2.new(1,-4,0,25)
 
-                option.BackgroundTransparency = 0.2
-                option.TextColor3 = Color3.fromRGB(255,255,255)
-                option.Font = Enum.Font.SourceSans
-                option.TextSize = 15
+                option.BackgroundColor3 =
+                    (item == selectedOption)
+                    and Color3.fromRGB(90, 90, 90)
+                    or Color3.fromRGB(40, 40, 40)
+
+                option.BackgroundTransparency = 0.4
+                option.TextColor3 = Color3.fromRGB(255, 255, 255)
                 option.Text = item
+                option.Font = Enum.Font.SourceSans
+                option.TextSize = 16
+                option.ZIndex = 6
                 option.Parent = optionContainer
+
                 createUICorner(option, UDim.new(0,6))
+
+                option.MouseEnter:Connect(function()
+
+                    if item ~= selectedOption then
+                        option.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+                    end
+                end)
+
+                option.MouseLeave:Connect(function()
+
+                    if item ~= selectedOption then
+                        option.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+                    end
+                end)
 
                 option.MouseButton1Click:Connect(function()
 
                     selectedOption = item
                     dropdownButton.Text = item
-                    arrow.Text = "▶"
 
                     if callback then
-                        pcall(callback,item)
+                        callback(item)
                     end
 
                     opened = false
+                    arrow.Text = "▶"
 
                     optionContainer:TweenSize(
-                        UDim2.new(1,-10,0,0),
+                        UDim2.new(1, -10, 0, 0),
                         Enum.EasingDirection.Out,
                         Enum.EasingStyle.Quad,
                         0.2,
@@ -833,12 +854,11 @@ function newPage:Dropdown(title, desc, items, callback)
         if opened then
 
             optionContainer.Visible = true
-
             searchBox.Text = ""
 
             createOptions("")
 
-            local dropSize = math.min(#items * 26 + 35,180)
+            local dropSize = math.min(#items * 25 + 30, 150)
 
             container:TweenSize(
                 UDim2.new(1,-10,0,55 + dropSize),
@@ -849,7 +869,7 @@ function newPage:Dropdown(title, desc, items, callback)
             )
 
             optionContainer:TweenSize(
-                UDim2.new(1,-10,0,dropSize),
+                UDim2.new(1, -10, 0, dropSize),
                 Enum.EasingDirection.Out,
                 Enum.EasingStyle.Quad,
                 0.2,
@@ -859,7 +879,7 @@ function newPage:Dropdown(title, desc, items, callback)
         else
 
             optionContainer:TweenSize(
-                UDim2.new(1,-10,0,0),
+                UDim2.new(1, -10, 0, 0),
                 Enum.EasingDirection.Out,
                 Enum.EasingStyle.Quad,
                 0.2,
