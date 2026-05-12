@@ -292,9 +292,12 @@ local list = {
     "Ultra Rare Box : "..string.format("%.3f", ultra).."%"
 }
 
-tab3:Dropdown("เรทเข็มทิศที่คำนวณ % (Lv."..lvl..")", list, function(v)
-    print(v)
-end)
+tab3:Dropdown(
+    "เรทเข็มทิศที่คำนวณ % (Lv."..lvl..")",
+    "ดูเรทการออกกล่อง",list, function(v)
+        print(v)
+    end
+)
 
 tab3:Label("ผู้เล่น")
 local playerNames = {}
