@@ -658,6 +658,231 @@ function library:Notifile(title, msg, duration)
     end)
 end
 
+function newPage:Dropdown(title, desc, items, callback)
+
+    local container = Instance.new("Frame")
+    container.Size = UDim2.new(1,-10,0,50)
+    container.BackgroundColor3 = Color3.fromRGB(40,40,40)
+    container.BackgroundTransparency = 0.4
+    container.ClipsDescendants = true
+    container.Parent = page
+    createUICorner(container, UDim.new(0,6))
+
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Size = UDim2.new(0.45,0,0,20)
+    titleLabel.Position = UDim2.new(0,10,0,2)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Text = title or "Dropdown"
+    titleLabel.TextColor3 = Color3.fromRGB(255,255,255)
+    titleLabel.Font = Enum.Font.SourceSans
+    titleLabel.TextSize = 16
+    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    titleLabel.Parent = container
+
+    local description = Instance.new("TextLabel")
+    description.Size = UDim2.new(1,-15,0,14)
+    description.Position = UDim2.new(0,10,0,30)
+    description.BackgroundTransparency = 1
+    description.Text = desc or ""
+    description.TextColor3 = Color3.fromRGB(180,180,180)
+    description.Font = Enum.Font.SourceSans
+    description.TextSize = 13
+    description.TextXAlignment = Enum.TextXAlignment.Left
+    description.Parent = container
+
+    local dropdownButton = Instance.new("TextButton")
+    dropdownButton.Size = UDim2.new(0.45,-10,0,24)
+    dropdownButton.Position = UDim2.new(0.55,0,0,3)
+    dropdownButton.BackgroundColor3 = Color3.fromRGB(55,55,55)
+    dropdownButton.BackgroundTransparency = 0.3
+    dropdownButton.TextColor3 = Color3.fromRGB(255,255,255)
+    dropdownButton.Font = Enum.Font.SourceSans
+    dropdownButton.TextSize = 16
+    dropdownButton.Text = " . . . "
+    dropdownButton.Parent = container
+    createUICorner(dropdownButton, UDim.new(0,6))
+
+    local arrow = Instance.new("TextLabel")
+    arrow.Size = UDim2.new(0,20,1,0)
+    arrow.Position = UDim2.new(1,-22,0,0)
+    arrow.BackgroundTransparency = 1
+    arrow.Text = "▶"
+    arrow.TextColor3 = Color3.fromRGB(255,255,255)
+    arrow.Font = Enum.Font.SourceSansBold
+    arrow.TextSize = 14
+    arrow.Parent = dropdownButton
+
+    local optionContainer = Instance.new("ScrollingFrame")
+    optionContainer.Size = UDim2.new(1,-10,0,0)
+    optionContainer.Position = UDim2.new(0,5,0,52)
+    optionContainer.BackgroundColor3 = Color3.fromRGB(35,35,35)
+    optionContainer.BackgroundTransparency = 0.2
+    optionContainer.BorderSizePixel = 0
+    optionContainer.ScrollBarThickness = 4
+    optionContainer.CanvasSize = UDim2.new(0,0,0,0)
+    optionContainer.Visible = false
+    optionContainer.Parent = container
+    createUICorner(optionContainer, UDim.new(0,6))
+
+    local UIListLayout = Instance.new("UIListLayout")
+    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayout.Padding = UDim.new(0,2)
+    UIListLayout.Parent = optionContainer
+
+    UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        optionContainer.CanvasSize = UDim2.new(
+            0,
+            0,
+            0,
+            UIListLayout.AbsoluteContentSize.Y + 5
+        )
+    end)
+
+    local searchBox = Instance.new("TextBox")
+    searchBox.Size = UDim2.new(1,-4,0,24)
+    searchBox.Position = UDim2.new(0,2,0,2)
+    searchBox.PlaceholderText = "Search..."
+    searchBox.Text = ""
+    searchBox.BackgroundColor3 = Color3.fromRGB(45,45,45)
+    searchBox.TextColor3 = Color3.fromRGB(255,255,255)
+    searchBox.Font = Enum.Font.SourceSans
+    searchBox.TextSize = 15
+    searchBox.ClearTextOnFocus = false
+    searchBox.Parent = optionContainer
+    createUICorner(searchBox, UDim.new(0,6))
+
+    local opened = false
+    local selectedOption = nil
+
+    local function createOptions(filter)
+
+        for _,v in ipairs(optionContainer:GetChildren()) do
+            if v:IsA("TextButton") then
+                v:Destroy()
+            end
+        end
+
+        for _,item in ipairs(items) do
+
+            if filter == "" or string.find(
+                string.lower(item),
+                string.lower(filter)
+            ) then
+
+                local option = Instance.new("TextButton")
+                option.Size = UDim2.new(1,-4,0,24)
+                option.BackgroundColor3 =
+                    item == selectedOption
+                    and Color3.fromRGB(80,80,80)
+                    or Color3.fromRGB(50,50,50)
+
+                option.BackgroundTransparency = 0.2
+                option.TextColor3 = Color3.fromRGB(255,255,255)
+                option.Font = Enum.Font.SourceSans
+                option.TextSize = 15
+                option.Text = item
+                option.Parent = optionContainer
+                createUICorner(option, UDim.new(0,6))
+
+                option.MouseButton1Click:Connect(function()
+
+                    selectedOption = item
+                    dropdownButton.Text = item
+                    arrow.Text = "▶"
+
+                    if callback then
+                        pcall(callback,item)
+                    end
+
+                    opened = false
+
+                    optionContainer:TweenSize(
+                        UDim2.new(1,-10,0,0),
+                        Enum.EasingDirection.Out,
+                        Enum.EasingStyle.Quad,
+                        0.2,
+                        true
+                    )
+
+                    container:TweenSize(
+                        UDim2.new(1,-10,0,50),
+                        Enum.EasingDirection.Out,
+                        Enum.EasingStyle.Quad,
+                        0.2,
+                        true
+                    )
+
+                    task.delay(0.2,function()
+                        optionContainer.Visible = false
+                    end)
+                end)
+            end
+        end
+    end
+
+    searchBox:GetPropertyChangedSignal("Text"):Connect(function()
+        createOptions(searchBox.Text)
+    end)
+
+    dropdownButton.MouseButton1Click:Connect(function()
+
+        opened = not opened
+
+        arrow.Text = opened and "▼" or "▶"
+
+        if opened then
+
+            optionContainer.Visible = true
+
+            searchBox.Text = ""
+
+            createOptions("")
+
+            local dropSize = math.min(#items * 26 + 35,180)
+
+            container:TweenSize(
+                UDim2.new(1,-10,0,55 + dropSize),
+                Enum.EasingDirection.Out,
+                Enum.EasingStyle.Quad,
+                0.2,
+                true
+            )
+
+            optionContainer:TweenSize(
+                UDim2.new(1,-10,0,dropSize),
+                Enum.EasingDirection.Out,
+                Enum.EasingStyle.Quad,
+                0.2,
+                true
+            )
+
+        else
+
+            optionContainer:TweenSize(
+                UDim2.new(1,-10,0,0),
+                Enum.EasingDirection.Out,
+                Enum.EasingStyle.Quad,
+                0.2,
+                true
+            )
+
+            container:TweenSize(
+                UDim2.new(1,-10,0,50),
+                Enum.EasingDirection.Out,
+                Enum.EasingStyle.Quad,
+                0.2,
+                true
+            )
+
+            task.delay(0.2,function()
+                optionContainer.Visible = false
+            end)
+        end
+    end)
+
+    return container
+end
+
 library.tabs = tabs
 
 return library
