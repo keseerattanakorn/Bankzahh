@@ -364,7 +364,7 @@ function tabs:Taps(name)
         label.Size = UDim2.new(1, -10, 1, 0)
         label.Position = UDim2.new(0,5,0,0)
         label.BackgroundTransparency = 1
-        label.Text = "^| " .. (txt or "") .. " |^"
+        label.Text = "• " .. (txt or "") .. " •"
         label.TextColor3 = Color3.fromRGB(200,200,200)
         label.Font = Enum.Font.SourceSansBold
         label.TextSize = 16
