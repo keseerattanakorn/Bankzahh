@@ -161,36 +161,16 @@ UserInputService.InputChanged:Connect(function(input)
 end)
 
     -- Hub Toggle (small rounded horizontal button to reopen)
-    local hubToggle = Instance.new("TextButton")
-hubToggle.Name = "HubToggle"
-hubToggle.Size = UDim2.new(0, 120, 0, 50)
-hubToggle.Position = UDim2.new(0.5, -90, 0, 10)
-hubToggle.AnchorPoint = Vector2.new(0.5,0)
-hubToggle.BackgroundColor3 = Color3.fromRGB(25,25,25)
-hubToggle.BackgroundTransparency = 0.2
-hubToggle.Text = "ReaperX Hub"
-hubToggle.TextColor3 = Color3.fromRGB(255,255,255)
-hubToggle.Font = Enum.Font.GothamBold
-hubToggle.TextSize = 18
-hubToggle.Visible = false
-hubToggle.Parent = gui
-createUICorner(hubToggle, UDim.new(1,0))
-
--- DRAG PC + MOBILE
+    -- DRAG PC + MOBILE
 local UserInputService = game:GetService("UserInputService")
 
 local dragging = false
 local dragInput
 local dragStart
 local startPos
-local moved = false
 
 local function update(input)
 	local delta = input.Position - dragStart
-
-	if math.abs(delta.X) > 3 or math.abs(delta.Y) > 3 then
-		moved = true
-	end
 
 	hubToggle.Position = UDim2.new(
 		startPos.X.Scale,
@@ -205,27 +185,12 @@ hubToggle.InputBegan:Connect(function(input)
 	or input.UserInputType == Enum.UserInputType.Touch then
 
 		dragging = true
-		moved = false
 		dragStart = input.Position
 		startPos = hubToggle.Position
-
-		-- Animation ตอนกด
-		TweenService:Create(
-			hubToggle,
-			TweenInfo.new(0.12, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-			{Size = UDim2.new(0, 110, 0, 45)}
-		):Play()
 
 		input.Changed:Connect(function()
 			if input.UserInputState == Enum.UserInputState.End then
 				dragging = false
-
-				-- Animation ปล่อย
-				TweenService:Create(
-					hubToggle,
-					TweenInfo.new(0.12, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-					{Size = UDim2.new(0, 120, 0, 50)}
-				):Play()
 			end
 		end)
 	end
@@ -239,46 +204,11 @@ hubToggle.InputChanged:Connect(function(input)
 end)
 
 UserInputService.InputChanged:Connect(function(input)
-	if input == dragInput and dragging then
+	if dragging and input == dragInput then
 		update(input)
 	end
 end)
-
--- กดเปิดเมนู (ถ้าไม่ได้ลาก)
-hubToggle.MouseButton1Click:Connect(function()
-	if moved then return end
-
-	TweenService:Create(
-		hubToggle,
-		TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
-		{
-			Size = UDim2.new(0, 0, 0, 0),
-			Position = UDim2.new(
-				hubToggle.Position.X.Scale,
-				hubToggle.Position.X.Offset,
-				hubToggle.Position.Y.Scale - 0.2,
-				hubToggle.Position.Y.Offset
-			)
-		}
-	):Play()
-
-	task.delay(0.35, function()
-		hubToggle.Visible = false
-		main.Visible = true
-
-		main.Size = UDim2.new(0.5, 0, 0, 0)
-		main.Position = UDim2.new(0.5, 0, -0.2, 0)
-
-		TweenService:Create(
-			main,
-			TweenInfo.new(0.45, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-			{
-				Size = UDim2.new(0.5, 0, 0.7, 0),
-				Position = UDim2.new(0.5, 0, 0.5, 0)
-			}
-		):Play()
-	end)
-end)
+	
 -- Tabs system
 local tabs = {}
 
