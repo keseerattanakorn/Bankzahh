@@ -167,7 +167,7 @@ spawn(function()
 end)
 ]]--
 
-local tab1 = lib.tabs:Taps("มาโคร")
+--[[local tab1 = lib.tabs:Taps("มาโคร")
 tab1:Label("ฝั่งชั่นมาโคร ออโต้คีบอร์ด [ ใส่เลข 0 เพื่อหยุดกดคีย์ค้าง ] ")
 local VIM = game:GetService("VirtualInputManager")
 
@@ -249,7 +249,7 @@ tab1:Dropdown("เลือก คีย์ :", keys, function(v) selectedKeyN =
 tab1:Textbox("คีย์กดค้าง :", "ใส่เลข", function(v) selectedTimeN = v end)
 tab1:Toggle("ออโต้ คีย์", false, function(v) stateN = v end)
 runAuto(function() return stateN end, function() return selectedKeyN end, function() return selectedTimeN end)
-
+]]--
 local tab3 = lib.tabs:Taps("ผู้เล่น")
 tab3:Label("คำนวณเรทเข็มทิศ | ของ โหมดจุติ ")
 local lp = Players.LocalPlayer
