@@ -208,7 +208,16 @@ UserInputService.InputChanged:Connect(function(input)
 		update(input)
 	end
 end)
-	
+
+self.tabButtons = tabButtons
+    self.pages = pages
+    self.gui = gui
+    self.main = main
+    self.hubToggle = hubToggle
+
+    return self -- return library so caller can use library.tabs or create tabs
+end
+
 -- Tabs system
 local tabs = {}
 
