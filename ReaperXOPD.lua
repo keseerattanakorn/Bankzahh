@@ -24,6 +24,7 @@ local ultrarareFruits = {
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local Camera = workspace.CurrentCamera
+local RunService = game:GetService("RunService")
 
 local function formatNumber(num)
     return tostring(num):reverse():gsub("(%d%d%d)", "%1,"):reverse():gsub("^,", "")
@@ -523,15 +524,44 @@ tab3:Dropdown("กระเป๋า ผู้เล่น :",
 	itemList, function(v)
 end)
 
+local spectateConnection
+
 tab3:Toggle("ดูมุมมอง ผู้เล่น", "ดูมุมมองผู้เล่นที่เราเลือก", false, function(state)
-	if selectedPlayer then
+
+	if spectateConnection then
+		spectateConnection:Disconnect()
+		spectateConnection = nil
+	end
+
+	if state then
 		local target = Players:FindFirstChild(selectedPlayer)
-		if target and target.Character and target.Character:FindFirstChild("Humanoid") then
-			if state then
-				Camera.CameraSubject = target.Character.Humanoid
-			else
-				Camera.CameraSubject = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid")
+
+		if target and target.Character then
+			local head = target.Character:FindFirstChild("Head")
+
+			if head then
+				Camera.CameraType = Enum.CameraType.Scriptable
+
+				spectateConnection = RunService.RenderStepped:Connect(function()
+
+					if target.Character and target.Character:FindFirstChild("Head") then
+						local head = target.Character.Head
+
+						-- มุมมองเหมือนสายตาผู้เล่น
+						Camera.CFrame =
+							head.CFrame
+							* CFrame.new(0, 0.5, 0)
+
+					end
+				end)
 			end
+		end
+
+	else
+		Camera.CameraType = Enum.CameraType.Custom
+
+		if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+			Camera.CameraSubject = LocalPlayer.Character.Humanoid
 		end
 	end
 end)
