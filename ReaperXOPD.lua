@@ -689,15 +689,15 @@ for i, bound in ipairs(boundValues) do
 
         local fruitName = parts[1] or "Unknow"
 
-        local melee = parts[2] or "0"
-        local sniper = parts[3] or "0"
-        local defense = parts[4] or "0"
+        local defense = parts[2] or "0"
+        local melee = parts[3] or "0"
+        local sniper = parts[4] or "0"
         local sword = parts[5] or "0"
 
         print(" ผลไม้เป๋าม่วงช่อง " .. i .. ": " .. fruitName)
+        print("  พีรามิด ค่าดีเฟ้น: " .. defense)
         print("  พีรามิด ค่าเมรี: " .. melee)
         print("  พีรามิด ค่าปืน: " .. sniper)
-        print("  พีรามิด ค่าดีเฟ้น: " .. defense)
         print("  พีรามิด ค่าดาบ: " .. sword)
 
     else
