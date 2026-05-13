@@ -524,67 +524,17 @@ tab3:Dropdown("กระเป๋า ผู้เล่น :",
 	itemList, function(v)
 end)
 
-local spectateConnection
-
 tab3:Toggle("ดูมุมมอง ผู้เล่น", "ดูมุมมองผู้เล่นที่เราเลือก", false, function(state)
-
-	if spectateConnection then
-		spectateConnection:Disconnect()
-		spectateConnection = nil
-	end
-
-	if state then
-		local target = Players:FindFirstChild(selectedPlayer)
-
-		if target and target.Character then
-			local humanoid = target.Character:FindFirstChild("Humanoid")
-			local head = target.Character:FindFirstChild("Head")
-
-			if humanoid and head then
-
-				-- ใช้มุมกล้อง Roblox ปกติ
-				Camera.CameraSubject = humanoid
-				Camera.CameraType = Enum.CameraType.Custom
-
-				-- ปรับทิศกล้องตามหัวคนที่ส่อง
-				spectateConnection = RunService.RenderStepped:Connect(function()
-
-					if target.Character and target.Character:FindFirstChild("Head") then
-						local h = target.Character.Head
-
-						-- รักษาระยะกล้องเดิม
-						local distance =
-							(Camera.CFrame.Position - Camera.Focus.Position).Magnitude
-
-						-- มุมมองตามหน้าที่คนโดนส่องหัน
-						local lookVector = h.CFrame.LookVector
-
-						local camPos =
-							h.Position
-							- lookVector * distance
-							+ Vector3.new(0, 2, 0)
-
-						Camera.CFrame =
-							CFrame.new(
-								camPos,
-								h.Position + lookVector * 10
-							)
-					end
-				end)
-			end
-		end
-
-	else
-		Camera.CameraType = Enum.CameraType.Custom
-
-		if LocalPlayer.Character then
-			local hum = LocalPlayer.Character:FindFirstChild("Humanoid")
-
-			if hum then
-				Camera.CameraSubject = hum
-			end
-		end
-	end
+if selectedPlayer then
+local target = Players:FindFirstChild(selectedPlayer)
+if target and target.Character and target.Character:FindFirstChild("Humanoid") then
+if state then
+Camera.CameraSubject = target.Character.Humanoid
+else
+Camera.CameraSubject = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid")
+end
+end
+end
 end)
 
 tab3:Button("รีเฟรช ชื่อผู้เล่น", "กดรีเฟรชเพื่อรีเจอชื่อผู้เล่นที่เข้ามาใหม่", function()
