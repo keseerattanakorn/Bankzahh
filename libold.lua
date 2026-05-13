@@ -139,118 +139,76 @@ function library:Win(title)
     end)
 
     -- HUB TOGGLE
-    local hubToggle = Instance.new("TextButton")
-    hubToggle.Name = "HubToggle"
-    hubToggle.Size = UDim2.new(0,120,0,50)
-    hubToggle.Position = UDim2.new(0.5,-90,0,10)
-    hubToggle.AnchorPoint = Vector2.new(0.5,0)
-    hubToggle.BackgroundColor3 = Color3.fromRGB(25,25,25)
-    hubToggle.BackgroundTransparency = 0.2
-    hubToggle.Text = "ReaperX Hub"
-    hubToggle.TextColor3 = Color3.fromRGB(255,255,255)
-    hubToggle.Font = Enum.Font.GothamBold
-    hubToggle.TextSize = 18
+local hubToggle = Instance.new("TextButton")
+hubToggle.Name = "HubToggle"
+hubToggle.Size = UDim2.new(0,120,0,50)
+hubToggle.Position = UDim2.new(0,20,0,20)
+hubToggle.BackgroundColor3 = Color3.fromRGB(25,25,25)
+hubToggle.BackgroundTransparency = 0.2
+hubToggle.Text = "☠️"
+hubToggle.TextColor3 = Color3.fromRGB(255,255,255)
+hubToggle.Font = Enum.Font.GothamBold
+hubToggle.TextSize = 18
+hubToggle.Visible = false
+hubToggle.Parent = gui
+hubToggle.Active = true
+createUICorner(hubToggle, UDim.new(1,0))
+
+-- DRAG HUB (มือถือ + คอม)
+local draggingHub = false
+local dragInput
+local dragStart
+local startPos
+
+hubToggle.InputBegan:Connect(function(input)
+
+    if input.UserInputType == Enum.UserInputType.MouseButton1
+    or input.UserInputType == Enum.UserInputType.Touch then
+
+        draggingHub = true
+        dragStart = input.Position
+        startPos = hubToggle.Position
+        dragInput = input
+    end
+end)
+
+hubToggle.InputEnded:Connect(function(input)
+
+    if input == dragInput then
+        draggingHub = false
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+
+    if draggingHub and input == dragInput then
+
+        local delta = input.Position - dragStart
+
+        hubToggle.Position = UDim2.new(
+            startPos.X.Scale,
+            startPos.X.Offset + delta.X,
+            startPos.Y.Scale,
+            startPos.Y.Offset + delta.Y
+        )
+    end
+end)
+
+-- ปิดเมนู
+closeBtn.MouseButton1Click:Connect(function()
+
+    main.Visible = false
+    hubToggle.Visible = true
+
+end)
+
+-- เปิดเมนู
+hubToggle.MouseButton1Click:Connect(function()
+
+    main.Visible = true
     hubToggle.Visible = false
-    hubToggle.Parent = gui
-    createUICorner(hubToggle, UDim.new(1,0))
 
-    -- DRAG HUB
-    local hubDragging = false
-    local hubDragStart
-    local hubStartPos
-    local hubDragInput
-
-    hubToggle.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1
-        or input.UserInputType == Enum.UserInputType.Touch then
-
-            hubDragging = true
-            hubDragStart = input.Position
-            hubStartPos = hubToggle.Position
-            hubDragInput = input
-        end
-    end)
-
-    hubToggle.InputEnded:Connect(function(input)
-        if input == hubDragInput then
-            hubDragging = false
-        end
-    end)
-
-    UserInputService.InputChanged:Connect(function(input)
-        if hubDragging and input == hubDragInput then
-
-            local delta = input.Position - hubDragStart
-
-            hubToggle.Position = UDim2.new(
-                hubStartPos.X.Scale,
-                hubStartPos.X.Offset + delta.X,
-                hubStartPos.Y.Scale,
-                hubStartPos.Y.Offset + delta.Y
-            )
-        end
-    end)
-
-    -- CLOSE
-    closeBtn.MouseButton1Click:Connect(function()
-
-        TweenService:Create(
-            main,
-            TweenInfo.new(0.4, Enum.EasingStyle.Quad),
-            {
-                Size = UDim2.new(0.5,0,0,0),
-                Position = UDim2.new(0.5,0,-0.2,0)
-            }
-        ):Play()
-
-        task.delay(0.45,function()
-
-            main.Visible = false
-            hubToggle.Visible = true
-
-            hubToggle.Size = UDim2.new(0,50,0,50)
-
-            TweenService:Create(
-                hubToggle,
-                TweenInfo.new(0.3, Enum.EasingStyle.Quad),
-                {
-                    Size = UDim2.new(0,120,0,50)
-                }
-            ):Play()
-
-        end)
-    end)
-
-    -- OPEN
-    hubToggle.MouseButton1Click:Connect(function()
-
-        TweenService:Create(
-            hubToggle,
-            TweenInfo.new(0.3, Enum.EasingStyle.Quad),
-            {
-                Size = UDim2.new(0,0,0,0)
-            }
-        ):Play()
-
-        task.delay(0.35,function()
-
-            hubToggle.Visible = false
-            main.Visible = true
-
-            main.Size = UDim2.new(0.5,0,0,0)
-            main.Position = UDim2.new(0.5,0,-0.2,0)
-
-            TweenService:Create(
-                main,
-                TweenInfo.new(0.45, Enum.EasingStyle.Quad),
-                {
-                    Size = UDim2.new(0.5,0,0.7,0),
-                    Position = UDim2.new(0.5,0,0.5,0)
-                }
-            ):Play()
-
-        end)
-    end)
+end)
 
     library.tabButtons = tabButtons
     library.pages = pages
