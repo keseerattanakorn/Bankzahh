@@ -138,52 +138,67 @@ function library:Win(title)
         end
     end)
 
-    -- HUB TOGGLE
+  -- HUB TOGGLE
 local hubToggle = Instance.new("TextButton")
 hubToggle.Name = "HubToggle"
-hubToggle.Size = UDim2.new(0,120,0,50)
+hubToggle.AutomaticSize = Enum.AutomaticSize.X
+hubToggle.Size = UDim2.new(0,0,0,50)
 hubToggle.Position = UDim2.new(0,20,0,20)
 hubToggle.BackgroundColor3 = Color3.fromRGB(25,25,25)
 hubToggle.BackgroundTransparency = 0.2
-hubToggle.Text = "☠️"
+hubToggle.Text = " 😈 "
 hubToggle.TextColor3 = Color3.fromRGB(255,255,255)
 hubToggle.Font = Enum.Font.GothamBold
 hubToggle.TextSize = 18
 hubToggle.Visible = false
-hubToggle.Parent = gui
 hubToggle.Active = true
+hubToggle.Draggable = false
+hubToggle.Parent = gui
 createUICorner(hubToggle, UDim.new(1,0))
 
--- DRAG HUB (มือถือ + คอม)
-local draggingHub = false
-local dragInput
-local dragStart
-local startPos
+local hubPadding = Instance.new("UIPadding")
+hubPadding.PaddingLeft = UDim.new(0,15)
+hubPadding.PaddingRight = UDim.new(0,15)
+hubPadding.Parent = hubToggle
+
+-- DRAG SYSTEM
+local dragging = false
+local dragInput = nil
+local dragStart = nil
+local startPos = nil
+local moved = false
 
 hubToggle.InputBegan:Connect(function(input)
 
     if input.UserInputType == Enum.UserInputType.MouseButton1
     or input.UserInputType == Enum.UserInputType.Touch then
 
-        draggingHub = true
+        dragging = true
+        moved = false
         dragStart = input.Position
         startPos = hubToggle.Position
         dragInput = input
     end
 end)
 
-hubToggle.InputEnded:Connect(function(input)
+hubToggle.InputChanged:Connect(function(input)
 
-    if input == dragInput then
-        draggingHub = false
+    if input.UserInputType == Enum.UserInputType.MouseMovement
+    or input.UserInputType == Enum.UserInputType.Touch then
+
+        dragInput = input
     end
 end)
 
 UserInputService.InputChanged:Connect(function(input)
 
-    if draggingHub and input == dragInput then
+    if input == dragInput and dragging then
 
         local delta = input.Position - dragStart
+
+        if math.abs(delta.X) > 3 or math.abs(delta.Y) > 3 then
+            moved = true
+        end
 
         hubToggle.Position = UDim2.new(
             startPos.X.Scale,
@@ -191,6 +206,15 @@ UserInputService.InputChanged:Connect(function(input)
             startPos.Y.Scale,
             startPos.Y.Offset + delta.Y
         )
+    end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+
+    if input.UserInputType == Enum.UserInputType.MouseButton1
+    or input.UserInputType == Enum.UserInputType.Touch then
+
+        dragging = false
     end
 end)
 
@@ -205,11 +229,16 @@ end)
 -- เปิดเมนู
 hubToggle.MouseButton1Click:Connect(function()
 
+    -- กันตอนลากแล้วเด้งเปิด
+    if moved then
+        return
+    end
+
     main.Visible = true
     hubToggle.Visible = false
 
 end)
-
+    
     library.tabButtons = tabButtons
     library.pages = pages
     library.gui = gui
